@@ -10,4 +10,5 @@ class SmartEduXApplicationTests {
 	void contextLoads() {
 	}
 
+
 }
