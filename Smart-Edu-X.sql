@@ -433,8 +433,8 @@ CREATE TABLE `videocourse_user` (
                                   `VideoCourseID` int NOT NULL COMMENT '课程ID',
                                   `UserID` int NOT NULL COMMENT '用户ID',
                                   `ViewingState` int COMMENT '观看时长',
-                                  CONSTRAINT `videocourse_FK` FOREIGN KEY (`VideoCourseID`) REFERENCES `videocourse`(`VideoCourseID`),
-                                  CONSTRAINT `user_FK` FOREIGN KEY (`UserID`) REFERENCES `user`(`UserID`)
+                                  CONSTRAINT `videocourse_user_videocourse_FK` FOREIGN KEY (`VideoCourseID`) REFERENCES `videocourse`(`VideoCourseID`),
+                                  CONSTRAINT `videocourse_user_user_FK` FOREIGN KEY (`UserID`) REFERENCES `user`(`UserID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -457,8 +457,8 @@ DROP TABLE IF EXISTS `question_knowledge`;
 CREATE TABLE `question_knowledge` (
                                          `TestQuestionID` int NOT NULL COMMENT '试题ID',
                                          `KnowledgeID` int NOT NULL COMMENT '知识点ID',
-                                         CONSTRAINT `testquestion_FK` FOREIGN KEY (`TestQuestionID`) REFERENCES `testquestion`(`TestQuestionID`),
-                                         CONSTRAINT `knowledge_FK` FOREIGN KEY (`KnowledgeID`) REFERENCES `knowledge`(`KnowledgeID`)
+                                         CONSTRAINT `question_knowledge_testquestion_FK` FOREIGN KEY (`TestQuestionID`) REFERENCES `testquestion`(`TestQuestionID`),
+                                         CONSTRAINT `question_knowledge_knowledge_FK` FOREIGN KEY (`KnowledgeID`) REFERENCES `knowledge`(`KnowledgeID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -471,8 +471,8 @@ CREATE TABLE `question_testpaper` (
                                       `TestPaperID` int NOT NULL COMMENT '知识点ID',
                                       `Score` int NOT NULL COMMENT '试题分数',
                                       `SortNum` int NOT NULL COMMENT '试题序号',
-                                      CONSTRAINT `testquestion_FK` FOREIGN KEY (`TestQuestionID`) REFERENCES `testquestion`(`TestQuestionID`),
-                                      CONSTRAINT `testpaper_FK` FOREIGN KEY (`TestPaperID`) REFERENCES `testpaper`(`TestPaperID`)
+                                      CONSTRAINT `question_testpaper_testquestion_FK` FOREIGN KEY (`TestQuestionID`) REFERENCES `testquestion`(`TestQuestionID`),
+                                      CONSTRAINT `question_testpaper_testpaper_FK` FOREIGN KEY (`TestPaperID`) REFERENCES `testpaper`(`TestPaperID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -487,8 +487,8 @@ CREATE TABLE `testrecord_question` (
                                       `SortNum` int NOT NULL COMMENT '试题序号',
                                       `UserAnswer` json COMMENT '用户答案',
                                       `IsCorrect` bool COMMENT '正确情况',
-                                      CONSTRAINT `testquestion_FK` FOREIGN KEY (`TestQuestionID`) REFERENCES `testquestion`(`TestQuestionID`),
-                                      CONSTRAINT `testrecord_FK` FOREIGN KEY (`TestRecordID`) REFERENCES `testrecord`(`TsetRecordID`)
+                                      CONSTRAINT `testrecord_question_testquestion_FK` FOREIGN KEY (`TestQuestionID`) REFERENCES `testquestion`(`TestQuestionID`),
+                                      CONSTRAINT `testrecord_question_testrecord_FK` FOREIGN KEY (`TestRecordID`) REFERENCES `testrecord`(`TsetRecordID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -502,8 +502,8 @@ CREATE TABLE `testanalyse_knowledge` (
                                        `ContainKnowledgeNum` int NOT NULL COMMENT '试卷中包含知识点个数',
                                        `CorrectKnowledgeNum` int NOT NULL COMMENT '正确知识点个数',
 #                                        `MasteryDegree` float NOT NULL COMMENT '知识点掌握程度',
-                                       CONSTRAINT `testanalyse_FK` FOREIGN KEY (`TestAnalyseID`) REFERENCES `testanalyse`(`TestAnalyseID`),
-                                       CONSTRAINT `knowledgeID_FK` FOREIGN KEY (`KnowledgeID`) REFERENCES `knowledge`(`KnowledgeID`)
+                                       CONSTRAINT `testanalyse_knowledge_testanalyse_FK` FOREIGN KEY (`TestAnalyseID`) REFERENCES `testanalyse`(`TestAnalyseID`),
+                                       CONSTRAINT `testanalyse_knowledge_knowledgeID_FK` FOREIGN KEY (`KnowledgeID`) REFERENCES `knowledge`(`KnowledgeID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
