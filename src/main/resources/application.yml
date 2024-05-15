@@ -1,1 +1,21 @@
-spring.application.name=Smart-Edu-X
+server:
+  port: 9090
+spring:
+  mvc:
+    path match:
+      matching-strategy: ant_path_matcher
+    view:
+      prefix: /WEB-INF/jsp/
+      suffix: .jsp
+  datasource:
+    username: root
+    password: zxcvbn123
+    url: jdbc:mysql://localhost:3306/smartedux?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
+    driver-class-name: com.mysql.cj.jdbc.Driver
+# Swagger
+swagger:
+  enabled: true
+#  thymeleaf:
+#    prefix: classpath:/templates/
+#    suffix: .html
+#    cache: false
