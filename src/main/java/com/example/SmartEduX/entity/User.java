@@ -35,7 +35,7 @@ public class User {
     private Double userscore;
     @ApiModelProperty(value = "用户列", example = "")
     private String usercol;
-    @ApiModelProperty(value = "令牌",  example = "NULL")
+    @ApiModelProperty(value = "令牌",  example = "")
     @TableField(exist = false)
     private String usertoken;
 }
