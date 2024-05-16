@@ -24,16 +24,20 @@ DROP TABLE IF EXISTS `bigcourse`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `bigcourse` (
   `CourseID` int NOT NULL AUTO_INCREMENT COMMENT '课程ID',
-  `CourseName` varchar(20) NOT NULL COMMENT '课程名称',
+  `CourseName` varchar(255) NOT NULL COMMENT '课程名称',
   `CourseDescription` varchar(500) NOT NULL COMMENT '课程描述',
   `CourseCover` varchar(500) NOT NULL COMMENT '课程封面',
   `CourseDomain` varchar(20) NOT NULL COMMENT '课程涉及领域',
-  `CourseImage` varchar(500) DEFAULT NULL COMMENT '课程详情图片',
+  `CourseImage` varchar(500) NOT NULL COMMENT '课程详情图片',
   `MajorChapters` json NOT NULL COMMENT '大章节',
+  `StudyPathID` int DEFAULT NULL,
+  `TestPaperID` int DEFAULT NULL,
   PRIMARY KEY (`CourseID`),
-  CONSTRAINT `bigcourse_studypath_FK` FOREIGN KEY (`CourseID`) REFERENCES `studypath` (`StudyPathID`),
-  CONSTRAINT `bigcourse_testpaper_FK` FOREIGN KEY (`CourseID`) REFERENCES `testpaper` (`TestPaperID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='大课程';
+  KEY `bigcourse_studypath_FK` (`StudyPathID`),
+  KEY `bigcourse_testpaper_FK` (`TestPaperID`),
+  CONSTRAINT `bigcourse_studypath_FK` FOREIGN KEY (`StudyPathID`) REFERENCES `studypath` (`StudyPathID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `bigcourse_testpaper_FK` FOREIGN KEY (`TestPaperID`) REFERENCES `testpaper` (`TestPaperID`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3 COMMENT='大课程';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,6 +46,7 @@ CREATE TABLE `bigcourse` (
 
 LOCK TABLES `bigcourse` WRITE;
 /*!40000 ALTER TABLE `bigcourse` DISABLE KEYS */;
+INSERT INTO `bigcourse` VALUES (1,'Web前端：从零开始做网站','本课程专为零基础学员准备，从网页基础深入到网页布局开发。课程内容讲解详细，注重细节，让你从入门到精通，一周时间掌握HTML+CSS网页开发。经过学习与实战，可独立开发出高质量的静态网页项目。','https://demo-api.meedu.xyz/storage/images/v43GltVoGF95TDaznUIa6fDmYcIDWQJlEOeh5EqN.png','前端开发','	https://meedu-cos.meedu.xyz/images/paXabsbymlQwlRD8tV3OoPwBrf3jB1E3XslOeDri.png','[\"HTML 网站的骨架\", \"CSS 网站的美颜\", \"项目网站的部署\"]',1,1),(2,'从零玩转HTML5（跨平台开发）','能够利用所学的html、css、photoshop对已经设计好的企业网站界面设计，手把手教会大家对企业网站进行进行切片制作和DIV+CSS布局，独立完成制作静态网站页面和模板，并完成浏览器兼容性测试。','	https://demo-api.meedu.xyz/storage/images/v9PYbvR7bCZXTSk3scR1GV1gccno1qOlnYB3cRS0.png\r\n','前端开发','https://meedu-cos.meedu.xyz/images/paXabsbymlQwlRD8tV3OoPwBrf3jB1E3XslOeDri.png','[\"CSS3特性\", \"伸缩布局\"]',1,1),(3,'零基础吃透微信小程序','本教程目标是从零开始带领读者上手实战小程序开发，课程以微信小程序的核心概念作为主线，介绍配置文件、页面样式文件、JavaScript 的基本知识。并以指南针为例对基本知识进行扩展，另外加上开发工具的安装、小程序发布等内容。','https://demo-api.meedu.xyz/storage/images/N9LKos3c5HZt5MeNW4DFucRXxCPhSLM1ZlDLOtKh.png\r\n','小程序开发','https://meedu-cos.meedu.xyz/images/paXabsbymlQwlRD8tV3OoPwBrf3jB1E3XslOeDri.png','[\"小程序基础\", \"小程序进阶\"]',1,1),(4,'Vue2+Vue3前端框架入门与实战','如果你之前已经习惯了用jQuery操作DOM，学习Vue.js时请先抛开手动操作DOM的思维，因为Vue.js是数据驱动的，你无需手动操作DOM。 它通过一些特殊的HTML语法，将DOM和数据绑定起来。','https://demo-api.meedu.xyz/storage/images/74sZVx4EcT7das1EqgYaBrQj9HUFe0BXVBD5QyTK.png','前端开发','	https://meedu-cos.meedu.xyz/images/paXabsbymlQwlRD8tV3OoPwBrf3jB1E3XslOeDri.png','[\"课程介绍和开发工具\", \"ES6新特性\"]',1,1),(5,'SpringCloud实战（k8s&doceker）','本系列课程我将带大家从K8s基础入门到K8s项目实战，一条龙学习路径帮你学透K8s，成为K8s高级工程师，突破年薪30W！','	https://demo-api.meedu.xyz/storage/images/JLyw8tHNwvA62qa3oePHnGAYdp89Q64EUm0Jb9ss.png','后端开发','https://meedu-cos.meedu.xyz/images/paXabsbymlQwlRD8tV3OoPwBrf3jB1E3XslOeDri.png','[\"docker入门\", \"镜像仓库管理\"]',1,1),(6,'Pytorch深度学习入门与实战','yTorch框架核心使用方法解读，基于最新算法（论文）展开项目实战，全部内容均基于真实数据集与实际任务需求展开，500+课时，30+大型项目实战，适合转行就业与进阶提升的同学们。','https://demo-api.meedu.xyz/storage/images/em6V36Mb8lHVYO1Pxc2cAXt7wDmKcxFo1Be0OkA2.png','深度学习','	https://meedu-cos.meedu.xyz/images/paXabsbymlQwlRD8tV3OoPwBrf3jB1E3XslOeDri.png','[\"Pytorch概述\", \"深度学习基础\"]',1,1),(7,'Go Web开发（进阶实战）','本课程介绍如何用Go语言进行Web应用的开发，将Go语言的特性与Web开发实战组合到一起，帮读者成功地构建跨平台的应用程序，节省Go语言开发Web的宝贵时间。有了这些针对真实问题的解决方案放在手边，大多数编程难题都会迎刃而解。','	https://demo-api.meedu.xyz/storage/images/pONk6mmw4R1NVpUhqu4SArdzG3NaxEcuRqDbDXwY.png','后端开发','	https://meedu-cos.meedu.xyz/images/paXabsbymlQwlRD8tV3OoPwBrf3jB1E3XslOeDri.png','[\"Go操作常见数据库\", \"Go Web开发常用组件\"]',1,1),(8,'一次性搞定Java入门（高新全栈+安卓）','本课程为Java零基础入门部分，让您快速上手Java编程，为Java网站开发，安卓程序设计与开发打下基础。 本课程已完结，走在技术前沿，用实力说话。','https://demo-api.meedu.xyz/storage/images/1K54to6jXihAkLAEJlauA4jGfKkr8fGxpvDfx5Rv.png','后端开发','https://meedu-cos.meedu.xyz/images/paXabsbymlQwlRD8tV3OoPwBrf3jB1E3XslOeDri.png','[\"Java环境安卓配置\", \"Java基本语法\", \"数据类型\", \"变量和常量\"]',1,1);
 /*!40000 ALTER TABLE `bigcourse` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -118,7 +123,7 @@ CREATE TABLE `imageandtext` (
   `ArticleContent` longtext NOT NULL COMMENT '文章内容',
   `ReleaseTime` datetime NOT NULL COMMENT '发布时间',
   PRIMARY KEY (`ImageAndTextID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='图文';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3 COMMENT='图文';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -127,6 +132,7 @@ CREATE TABLE `imageandtext` (
 
 LOCK TABLES `imageandtext` WRITE;
 /*!40000 ALTER TABLE `imageandtext` DISABLE KEYS */;
+INSERT INTO `imageandtext` VALUES (1,102,100,'揭开 AI、机器学习和深度学习的神秘面纱','人工智能','https://meedu-cos.meedu.xyz/images/admin/xbnWzaStcDPNoAnYJ5PIDFHZFIXSOJD7leNSHYv0.jpg','文章内容','2021-10-07 12:45:00');
 /*!40000 ALTER TABLE `imageandtext` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -274,7 +280,7 @@ CREATE TABLE `studypath` (
   `StudyPathClassification` varchar(10) NOT NULL COMMENT '学习路径分类',
   `CourseNumber` int NOT NULL COMMENT '课程数量',
   PRIMARY KEY (`StudyPathID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='学习路径';
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3 COMMENT='学习路径';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -283,6 +289,7 @@ CREATE TABLE `studypath` (
 
 LOCK TABLES `studypath` WRITE;
 /*!40000 ALTER TABLE `studypath` DISABLE KEYS */;
+INSERT INTO `studypath` VALUES (1,'前端工程师0基础从入门到大型项目构建','0基础学前端工程师，打造全栈能力知识体系,从网页搭建再到移动APP，小程序开发，一套课程，直达就业！','https://meedu-cos.meedu.xyz/images/ea0wSNSwa6xvVAb0U34iaxRSlJoNkMaRrlI254FC.png','编程开发',4),(2,'前端工程师0基础从入门到大型项目构建','0基础学前端工程师，打造全栈能力知识体系,从网页搭建再到移动APP，小程序开发，一套课程，直达就业！','https://meedu-cos.meedu.xyz/images/ea0wSNSwa6xvVAb0U34iaxRSlJoNkMaRrlI254FC.png','编程开发',4),(3,'产品运营到数据分析高薪必修课','无论你是零基础的小白、初级用户研究员或是以用户为中心的产品经理、设计师、运营、市场等，学完本套课程，都将成为会“读心术”的用户研究员，牢牢“黏”住用户！','https://meedu-cos.meedu.xyz/images/63eaQMKsRTzfH9XvxY9ugHOFUx4g5K100x9cHVkh.png','产品运营',3),(4,'产品运营到数据分析高薪必修课','无论你是零基础的小白、初级用户研究员或是以用户为中心的产品经理、设计师、运营、市场等，学完本套课程，都将成为会“读心术”的用户研究员，牢牢“黏”住用户！','https://meedu-cos.meedu.xyz/images/63eaQMKsRTzfH9XvxY9ugHOFUx4g5K100x9cHVkh.png','产品运营',3);
 /*!40000 ALTER TABLE `studypath` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -383,7 +390,7 @@ CREATE TABLE `testpaper` (
   `QuestionNumber` int NOT NULL COMMENT '题目数量',
   `Duration` varchar(100) NOT NULL COMMENT '持续时间',
   PRIMARY KEY (`TestPaperID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='试卷';
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3 COMMENT='试卷';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -392,6 +399,7 @@ CREATE TABLE `testpaper` (
 
 LOCK TABLES `testpaper` WRITE;
 /*!40000 ALTER TABLE `testpaper` DISABLE KEYS */;
+INSERT INTO `testpaper` VALUES (1,'1',1,1,1,'1');
 /*!40000 ALTER TABLE `testpaper` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -605,4 +613,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-16 10:46:29
+-- Dump completed on 2024-05-16 22:44:57
