@@ -87,5 +87,13 @@ public class UserController {
         return Result.success(userFromDb);
     }
 
-
+    @CrossOrigin
+    @PostMapping("/update")
+    public Result<?> update(@RequestBody User user){
+        User userFromDb = userMapper.selectOne(new LambdaQueryWrapper<User>()
+                .eq(User::getUserphone, user.getUserphone()));
+        userFromDb = user;
+        userMapper.updateById(userFromDb);
+        return Result.success(userFromDb);
+    }
 }
