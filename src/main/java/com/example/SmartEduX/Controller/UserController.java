@@ -39,7 +39,7 @@ public class UserController {
             return Result.error("-1", "用户名已重复");
         }
         if (res2 != null) {
-            return Result.error("-2", "该手机号已注册");
+            return Result.error("-1", "该手机号已注册");
         }
 
         // 使用BCryptPasswordEncoder加密密码
