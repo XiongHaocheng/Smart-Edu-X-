@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Api(tags = "API接口")
@@ -34,4 +35,37 @@ public class BigCourseController {
         // 返回查询到的课程数据
         return Result.success(courses,"成功");
     }
+        @ApiOperation("获取各类录播课程信息")
+        @CrossOrigin
+        @GetMapping(value = "/videocourseinfo")
+        public Result<List<BigCourse>> getVideoCourses(@RequestParam String currentNavItem) {
+            // 根据 currentNavItem 的值进行数据库查询
+            List<BigCourse> courses = new ArrayList<>();
+            if (currentNavItem.equals("全部")) {
+                courses = bigCourseMapper.selectList(null);
+            } else if (currentNavItem.equals("前端开发")) {
+                // 如果 currentNavItem 为 "前端开发"，则查询前端开发课程
+                QueryWrapper<BigCourse> queryWrapper = new QueryWrapper<>();
+                queryWrapper.eq("coursedomain", "前端开发");
+                courses = bigCourseMapper.selectList(queryWrapper);
+            } else if (currentNavItem.equals("后端开发")) {
+                QueryWrapper<BigCourse> queryWrapper = new QueryWrapper<>();
+                queryWrapper.eq("coursedomain", "后端开发");
+                courses = bigCourseMapper.selectList(queryWrapper);
+            }
+            else if (currentNavItem.equals("移动开发")) {
+                QueryWrapper<BigCourse> queryWrapper = new QueryWrapper<>();
+                queryWrapper.eq("coursedomain", "移动开发");
+                courses = bigCourseMapper.selectList(queryWrapper);
+            }
+            else if (currentNavItem.equals("人工智能")) {
+                QueryWrapper<BigCourse> queryWrapper = new QueryWrapper<>();
+                queryWrapper.eq("coursedomain", "人工智能");
+                courses = bigCourseMapper.selectList(queryWrapper);
+            }
+            // 根据其他条件查询其他类型的课程
+            return Result.success(courses,"成功");
+        }
+
 }
+
