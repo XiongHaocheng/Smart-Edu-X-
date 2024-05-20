@@ -31,21 +31,22 @@ public class Result<T> {
     public Result() {
     }
 
-    public Result(T data) {
+    public Result(T data , String msg) {
         this.data = data;
+        this.message = msg;
     }
 
-    public static Result success() {
+    public static Result success(String msg) {
         Result result = new Result<>();
         result.setCode("0");
-        result.setMessage("成功");
+        result.setMessage(msg);
         return result;
     }
 
-    public static <T> Result<T> success(T data) {
-        Result<T> result = new Result<>(data);
+    public static <T> Result<T> success(T data ,String msg) {
+        Result<T> result = new Result<>(data,msg);
         result.setCode("0");
-        result.setMessage("成功");
+        result.setMessage(msg);
         return result;
     }
 

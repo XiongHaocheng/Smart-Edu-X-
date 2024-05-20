@@ -53,7 +53,7 @@ public class UserController {
         userMapper.insert(user);
 
         // 返回成功的响应
-        return Result.success();
+        return Result.success("注册成功");
     }
 
     @CrossOrigin
@@ -83,17 +83,18 @@ public class UserController {
 
 // 可以增加用户访问计数
         LoginUser.addVisitCount();
+
 // 返回包含用户信息和Token的成功响应
-        return Result.success(userFromDb);
+        return Result.success(userFromDb,"登录成功");
     }
 
     @CrossOrigin
     @PostMapping("/update")
-    public Result<?> update(@RequestBody User user){
+    public Result<?> update(@RequestBody User user) {
         User userFromDb = userMapper.selectOne(new LambdaQueryWrapper<User>()
                 .eq(User::getUserphone, user.getUserphone()));
         userFromDb = user;
         userMapper.updateById(userFromDb);
-        return Result.success(userFromDb);
+        return Result.success(userFromDb,"更新成功");
     }
 }

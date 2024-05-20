@@ -33,7 +33,7 @@ public class ImageAndTextController {
             return Result.error("-1", "未找到任何图文数据");
         }
 
-        return Result.success(imageAndText);
+        return Result.success(imageAndText,"成功");
     }
 
     @ApiOperation("增加阅读人数")

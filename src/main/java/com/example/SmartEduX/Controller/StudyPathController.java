@@ -33,7 +33,7 @@ public class StudyPathController {
             return Result.error("-1", "未找到任何学习路径数据");
         }
         // 返回查询到的学习路径数据
-        return Result.success(studyPaths);
+        return Result.success(studyPaths,"成功");
     }
 }
 

@@ -32,6 +32,6 @@ public class BigCourseController {
             return Result.error("-1", "未找到符合条件的课程数据");
         }
         // 返回查询到的课程数据
-        return Result.success(courses);
+        return Result.success(courses,"成功");
     }
 }
