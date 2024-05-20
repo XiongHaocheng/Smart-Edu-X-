@@ -7,6 +7,8 @@ import com.example.SmartEduX.LoginUser;
 import com.example.SmartEduX.Utils.TokenUtils;
 import com.example.SmartEduX.common.Result;
 import com.example.SmartEduX.entity.User;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import io.swagger.annotations.Api;
 
 import javax.annotation.Resource;
@@ -96,5 +98,34 @@ public class UserController {
         userFromDb = user;
         userMapper.updateById(userFromDb);
         return Result.success(userFromDb,"更新成功");
+    }
+
+    @CrossOrigin
+    @PostMapping("/updatePassword")
+    public Result<?> updatePassword(@RequestBody String passwordFormdata){
+
+        Gson gson = new Gson();
+        JsonObject jsonObject = gson.fromJson(passwordFormdata, JsonObject.class);
+
+        // 从JsonObject中获取各个值
+        String userphone = jsonObject.get("userphone").getAsString();
+        String oldpassword = jsonObject.get("oldpassword").getAsString();
+        String newpassword = jsonObject.get("newpassword").getAsString();
+
+
+        User userFromDb = userMapper.selectOne(new LambdaQueryWrapper<User>()
+                .eq(User::getUserphone, userphone));
+        String passwordFromDb = userFromDb.getUserpassword();
+
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        if(!passwordEncoder.matches(oldpassword, passwordFromDb)){
+            return Result.error("-1","原密码错误");
+        }else{
+            String encodedPassword = passwordEncoder.encode(newpassword);
+            userFromDb.setUserpassword(encodedPassword);
+            userMapper.updateById(userFromDb);
+            return Result.success(userFromDb,"更新密码成功！");
+        }
+
     }
 }
