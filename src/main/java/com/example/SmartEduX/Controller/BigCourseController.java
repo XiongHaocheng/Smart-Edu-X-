@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.SmartEduX.Mapper.BigCourseMapper;
 import com.example.SmartEduX.common.Result;
 import com.example.SmartEduX.entity.BigCourse;
+import com.example.SmartEduX.entity.ImageAndText;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class BigCourseController {
         // 返回查询到的课程数据
         return Result.success(courses,"成功");
     }
-        @ApiOperation("获取各类录播课程信息")
+        @ApiOperation("获取各类录播课程信息（录播课首页）")
         @CrossOrigin
         @GetMapping(value = "/videocourseinfo")
         public Result<List<BigCourse>> getVideoCourses(@RequestParam String currentNavItem) {
@@ -43,29 +44,31 @@ public class BigCourseController {
             List<BigCourse> courses = new ArrayList<>();
             if (currentNavItem.equals("全部")) {
                 courses = bigCourseMapper.selectList(null);
-            } else if (currentNavItem.equals("前端开发")) {
+            } else {
                 // 如果 currentNavItem 为 "前端开发"，则查询前端开发课程
                 QueryWrapper<BigCourse> queryWrapper = new QueryWrapper<>();
-                queryWrapper.eq("coursedomain", "前端开发");
-                courses = bigCourseMapper.selectList(queryWrapper);
-            } else if (currentNavItem.equals("后端开发")) {
-                QueryWrapper<BigCourse> queryWrapper = new QueryWrapper<>();
-                queryWrapper.eq("coursedomain", "后端开发");
-                courses = bigCourseMapper.selectList(queryWrapper);
-            }
-            else if (currentNavItem.equals("移动开发")) {
-                QueryWrapper<BigCourse> queryWrapper = new QueryWrapper<>();
-                queryWrapper.eq("coursedomain", "移动开发");
-                courses = bigCourseMapper.selectList(queryWrapper);
-            }
-            else if (currentNavItem.equals("人工智能")) {
-                QueryWrapper<BigCourse> queryWrapper = new QueryWrapper<>();
-                queryWrapper.eq("coursedomain", "人工智能");
+                queryWrapper.eq("coursedomain", currentNavItem);
                 courses = bigCourseMapper.selectList(queryWrapper);
             }
             // 根据其他条件查询其他类型的课程
             return Result.success(courses,"成功");
         }
-
+    @ApiOperation("获取录播课各课程内容（录播课详细页）")
+    @CrossOrigin
+    @GetMapping(value = "/videodetailcourseinfo")
+    public Result<BigCourse> getVideoDetialCourses(@RequestParam Integer courseId) {
+        BigCourse course = bigCourseMapper.selectById(courseId);
+        if (course != null){
+            BigCourse courses = new BigCourse();
+            courses.setCoursename(course.getCoursename());
+            courses.setCoursedescription(course.getCoursedescription());
+            courses.setCoursecover(course.getCoursecover());
+            courses.setCourseimage(course.getCourseimage());
+            courses.setMajorchapters(course.getMajorchapters());
+            return Result.success(courses,"成功");
+        }else{
+            return Result.error("-1", "找不到课程信息");
+        }
+    }
 }
 

@@ -50,6 +50,7 @@ public class Result<T> {
         return result;
     }
 
+
     public static Result error(String code, String msg) {
         Result result = new Result();
         result.setCode(code);
