@@ -29,9 +29,9 @@ public class CommentController {
     @ApiOperation("获取评论信息")
     @CrossOrigin
     @GetMapping(value = "/commentinfo")
-    public Result<List<Map<String, Object>>> getCommentinfo(@RequestParam Integer courseId, @RequestParam Integer userId) {
+    public Result<List<Map<String, Object>>> getCommentinfo(@RequestParam Integer courseId) {
         QueryWrapper<Comment> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("courseid", courseId).eq("userid",userId);
+        queryWrapper.eq("courseid", courseId);
         List<Comment> comments = commentMapper.selectList(queryWrapper);
         // 检查是否有相关记录
         if (comments == null || comments.isEmpty()) {
