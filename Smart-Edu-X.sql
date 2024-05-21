@@ -87,14 +87,22 @@ CREATE TABLE `comment` (
   `CommentID` int NOT NULL AUTO_INCREMENT COMMENT '评论ID',
   `Avatar` varchar(500) NOT NULL COMMENT '头像',
   `Name` varchar(10) NOT NULL COMMENT '昵称',
-  `CommenTime` datetime NOT NULL COMMENT '评论时间',
-  `CommenContent` varchar(500) NOT NULL COMMENT '评论内容',
+  `CommentTime` varchar(20) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '评论时间',
+  `CommentContent` varchar(500) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '评论内容',
+  `UserID` int DEFAULT NULL,
+  `ImageAndTextID` int DEFAULT NULL,
+  `VideoCourseID` int DEFAULT NULL,
+  `CourseID` int DEFAULT NULL,
   PRIMARY KEY (`CommentID`),
-  CONSTRAINT `comment_bigcourse_FK` FOREIGN KEY (`CommentID`) REFERENCES `bigcourse` (`CourseID`),
-  CONSTRAINT `comment_imageandtest_FK` FOREIGN KEY (`CommentID`) REFERENCES `imageandtext` (`ImageAndTextID`),
-  CONSTRAINT `comment_user_FK` FOREIGN KEY (`CommentID`) REFERENCES `user` (`UserID`),
-  CONSTRAINT `comment_videocourse_FK` FOREIGN KEY (`CommentID`) REFERENCES `videocourse` (`VideoCourseID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='评论';
+  KEY `comment_user_FK` (`UserID`),
+  KEY `comment_videocourse_FK` (`VideoCourseID`),
+  KEY `comment_bigcourse_FK` (`CourseID`),
+  KEY `comment_imageandtext_FK` (`ImageAndTextID`),
+  CONSTRAINT `comment_bigcourse_FK` FOREIGN KEY (`CourseID`) REFERENCES `bigcourse` (`CourseID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `comment_imageandtext_FK` FOREIGN KEY (`ImageAndTextID`) REFERENCES `imageandtext` (`ImageAndTextID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `comment_user_FK` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `comment_videocourse_FK` FOREIGN KEY (`VideoCourseID`) REFERENCES `videocourse` (`VideoCourseID`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb3 COMMENT='评论';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -103,6 +111,7 @@ CREATE TABLE `comment` (
 
 LOCK TABLES `comment` WRITE;
 /*!40000 ALTER TABLE `comment` DISABLE KEYS */;
+INSERT INTO `comment` VALUES (1,'http://thirdqq.qlogo.cn/ek_qqapp/AQAiaTtkWG4N7cqBR7LCpBpHXZib6GTS2tm0AXwfGqVAIE2zho0g7NawiaQ6EykAZb3C9aerqIP/100','xhc','2024-05-21','很不错的课程',10,NULL,NULL,1),(2,'http://thirdqq.qlogo.cn/ek_qqapp/AQAiaTtkWG4N7cqBR7LCpBpHXZib6GTS2tm0AXwfGqVAIE2zho0g7NawiaQ6EykAZb3C9aerqIP/100','xxx','2024-05-21','能学到很多',11,NULL,NULL,1),(3,'http://thirdqq.qlogo.cn/ek_qqapp/AQAiaTtkWG4N7cqBR7LCpBpHXZib6GTS2tm0AXwfGqVAIE2zho0g7NawiaQ6EykAZb3C9aerqIP/100','xhc','2024-05-21','博观而约取，厚积而薄发',10,NULL,NULL,2),(4,'http://thirdqq.qlogo.cn/ek_qqapp/AQAiaTtkWG4N7cqBR7LCpBpHXZib6GTS2tm0AXwfGqVAIE2zho0g7NawiaQ6EykAZb3C9aerqIP/100','xhc','2024-05-21','课程内容不错',10,NULL,NULL,2),(5,'https://img1.baidu.com/it/u=3622150954,2575811681&fm=253&app=120&size=w931&n=0&f=JPEG&fmt=auto?sec=1716397200&t=0b7c986b5fc51c2236c6a2f6147c391d','xhc','2024-05-21','123123',10,NULL,NULL,1),(6,'https://img1.baidu.com/it/u=3622150954,2575811681&fm=253&app=120&size=w931&n=0&f=JPEG&fmt=auto?sec=1716397200&t=0b7c986b5fc51c2236c6a2f6147c391d','xhc','2024-05-21','123123',10,NULL,NULL,1),(7,'https://img1.baidu.com/it/u=3622150954,2575811681&fm=253&app=120&size=w931&n=0&f=JPEG&fmt=auto?sec=1716397200&t=0b7c986b5fc51c2236c6a2f6147c391d','xhc','2024-05-21','还行',10,NULL,NULL,3),(8,'https://img1.baidu.com/it/u=3622150954,2575811681&fm=253&app=120&size=w931&n=0&f=JPEG&fmt=auto?sec=1716397200&t=0b7c986b5fc51c2236c6a2f6147c391d','xhc','2024-05-21','评论',10,NULL,NULL,3),(9,'https://img1.baidu.com/it/u=3622150954,2575811681&fm=253&app=120&size=w931&n=0&f=JPEG&fmt=auto?sec=1716397200&t=0b7c986b5fc51c2236c6a2f6147c391d','xhc','2024-05-21','111',10,NULL,NULL,3),(10,'https://img1.baidu.com/it/u=3622150954,2575811681&fm=253&app=120&size=w931&n=0&f=JPEG&fmt=auto?sec=1716397200&t=0b7c986b5fc51c2236c6a2f6147c391d','xhc','2024-05-21','go web开发很不错',10,NULL,NULL,7);
 /*!40000 ALTER TABLE `comment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -521,7 +530,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (10,'xhc','$2a$10$tMe2PrgKtw.zHam3GInDRu438EJp2q5Yt6UUvsfRE6a/MRuQMpVJG','','18880448303','','0','0',0,'',NULL),(11,'xxx','$2a$10$8y.CQOie9LdTATz1cpug8Op/Bg.CV97ubLXKPZ2PstIq77Tj37WFG',NULL,'15329541753',NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `user` VALUES (10,'xhc','$2a$10$8y.CQOie9LdTATz1cpug8Op/Bg.CV97ubLXKPZ2PstIq77Tj37WFG','https://img1.baidu.com/it/u=3622150954,2575811681&fm=253&app=120&size=w931&n=0&f=JPEG&fmt=auto?sec=1716397200&t=0b7c986b5fc51c2236c6a2f6147c391d','18880448303','','0','0',0,'',NULL),(11,'xxx','$2a$10$8y.CQOie9LdTATz1cpug8Op/Bg.CV97ubLXKPZ2PstIq77Tj37WFG','http://thirdqq.qlogo.cn/ek_qqapp/AQAiaTtkWG4N7cqBR7LCpBpHXZib6GTS2tm0AXwfGqVAIE2zho0g7NawiaQ6EykAZb3C9aerqIP/100','15329541753',NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -617,4 +626,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-20 23:30:29
+-- Dump completed on 2024-05-21 11:39:22
