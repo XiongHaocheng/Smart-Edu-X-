@@ -1,6 +1,5 @@
 package com.example.SmartEduX.Controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.example.SmartEduX.Mapper.BigCourseMapper;
 import com.example.SmartEduX.Mapper.VideoCourseMapper;
 import com.example.SmartEduX.common.Result;
 import com.example.SmartEduX.entity.VideoCourse;
@@ -13,15 +12,11 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.*;
 @Mapper
-
 @Api(tags = "API接口")
 @RestController
 @RequestMapping("videocourse")
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class VideoCourseController {
-    @Autowired
-    @Resource
-    private BigCourseMapper bigCourseMapper;
     @Autowired
     @Resource
     private VideoCourseMapper videoCourseMapper;

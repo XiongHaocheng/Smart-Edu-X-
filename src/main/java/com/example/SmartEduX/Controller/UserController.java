@@ -64,29 +64,26 @@ public class UserController {
         // 假设user是请求中传来的用户对象，包含登录时输入的用户名和密码
         User userFromDb = userMapper.selectOne(new LambdaQueryWrapper<User>()
                 .eq(User::getUserphone, user.getUserphone()));
-
-// 检查是否找到了用户
+        // 检查是否找到了用户
         if (userFromDb == null) {
-            return Result.error("-1", "用户名或密码错误");
+            return Result.error("-1", "手机号或密码错误");
         }
 
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-// 使用BCrypt进行密码匹配验证
+        // 使用BCrypt进行密码匹配验证
         if (!passwordEncoder.matches(user.getUserpassword(), userFromDb.getUserpassword())) {
             // 如果密码不匹配
-            return Result.error("-1", "用户名或密码错误");
+            return Result.error("-1", "手机号或密码错误");
         }
-
-
         // 如果用户名和密码都匹配，则生成Token
         String token = TokenUtils.genToken(userFromDb);
         userFromDb.setUsertoken(token);
 
-// 可以增加用户访问计数
+        // 可以增加用户访问计数
         LoginUser.addVisitCount();
 
-// 返回包含用户信息和Token的成功响应
+        // 返回包含用户信息和Token的成功响应
         return Result.success(userFromDb,"登录成功");
     }
 
@@ -127,5 +124,13 @@ public class UserController {
             return Result.success(userFromDb,"更新密码成功！");
         }
 
+    }
+    @ApiOperation("获取用户头像")
+    @CrossOrigin
+    @GetMapping(value ="/useravatar")
+    public Result<String> getUserAvatar(@RequestParam Integer userId) {
+    User user = userMapper.selectById(userId);
+    String result = user.getUseravatar();
+    return Result.success(result,"成功");
     }
 }
