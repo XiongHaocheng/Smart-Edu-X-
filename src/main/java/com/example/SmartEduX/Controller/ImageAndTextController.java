@@ -1,8 +1,9 @@
 package com.example.SmartEduX.Controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.SmartEduX.Mapper.ImageAndTextMapper;
 import com.example.SmartEduX.common.Result;
+import com.example.SmartEduX.entity.BigCourse;
 import com.example.SmartEduX.entity.ImageAndText;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -10,8 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Api(tags = "API接口")
 @RestController
@@ -34,6 +35,24 @@ public class ImageAndTextController {
         }
 
         return Result.success(imageAndText,"成功");
+    }
+
+    @ApiOperation("获取各领域图文")
+    @CrossOrigin
+    @GetMapping(value = "/topicinfo")
+    public Result<List<ImageAndText>> getHotTopic(@RequestParam String currentNavItem){
+        // 根据 currentNavItem 的值进行数据库查询
+        List<ImageAndText> topic = new ArrayList<>();
+        if (currentNavItem.equals("全部")) {
+            topic = imageAndTextMapper.selectList(null);
+        } else {
+            // 如果 currentNavItem 为 "前端开发"，则查询前端开发课程
+            QueryWrapper<ImageAndText> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("contentdomain", currentNavItem);
+            topic = imageAndTextMapper.selectList(queryWrapper);
+        }
+        // 根据其他条件查询其他类型的课程
+        return Result.success(topic,"成功");
     }
 
     @ApiOperation("增加阅读人数")
