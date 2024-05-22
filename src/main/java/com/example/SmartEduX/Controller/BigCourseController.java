@@ -6,6 +6,7 @@ import com.example.SmartEduX.Mapper.BigCourseMapper;
 import com.example.SmartEduX.common.Result;
 import com.example.SmartEduX.entity.BigCourse;
 import com.example.SmartEduX.entity.ImageAndText;
+import com.example.SmartEduX.entity.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,6 +69,21 @@ public class BigCourseController {
             return Result.success(courses,"成功");
         }else{
             return Result.error("-1", "找不到课程信息");
+        }
+    }
+    @ApiOperation("根据课程名获取ID")
+    @CrossOrigin
+    @GetMapping(value = "/bigcourseIDinfo")
+    public Result<Integer> getBigCourseID(@RequestParam String studyPathCourseName) {
+        QueryWrapper<BigCourse> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("coursename", studyPathCourseName);
+        List<BigCourse> ID = bigCourseMapper.selectList(queryWrapper);
+        if (!ID.isEmpty()) {
+            BigCourse course = ID.get(0);
+            Integer courseId = course.getCourseid();
+            return Result.success(courseId,"成功");
+        } else {
+            return Result.error("-1","课程不存在");
         }
     }
 }

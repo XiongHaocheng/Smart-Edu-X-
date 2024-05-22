@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Api(tags = "API接口")
@@ -34,6 +35,39 @@ public class StudyPathController {
         }
         // 返回查询到的学习路径数据
         return Result.success(studyPaths,"成功");
+    }
+
+    @ApiOperation("获取各类学习路径信息（学习路径首页）")
+    @CrossOrigin
+    @GetMapping(value = "/studypathclassificationinfo")
+    public Result<List<StudyPath>> getVideoCourses(@RequestParam String currentNavItem) {
+        // 根据 currentNavItem 的值进行数据库查询
+        List<StudyPath> studyPaths = new ArrayList<>();
+        if (currentNavItem.equals("全部")) {
+            studyPaths = studyPathMapper.selectList(null);
+        } else {
+            // 如果 currentNavItem 为 其它，则查询前端开发课程
+            QueryWrapper<StudyPath> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("studypathclassification", currentNavItem);
+            studyPaths = studyPathMapper.selectList(queryWrapper);
+        }
+        // 根据其他条件查询其他类型的课程
+        return Result.success(studyPaths,"成功");
+    }
+    @ApiOperation("获取学习路径详细页信息")
+    @CrossOrigin
+    @GetMapping(value = "/studypathdetail")
+    public Result<StudyPath> getStudyPathDetail(@RequestParam Integer studyPathID) {
+        StudyPath studyPath = studyPathMapper.selectById(studyPathID);
+        if (studyPath != null){
+            StudyPath studyPaths = new StudyPath();
+            studyPaths.setStudypathname(studyPath.getStudypathname());
+            studyPaths.setStudypathdescription(studyPath.getStudypathdescription());
+            studyPaths.setStudypathcover(studyPath.getStudypathcover());
+            return Result.success(studyPaths,"成功");
+        }else{
+            return Result.error("-1", "找不到课程信息");
+        }
     }
 }
 

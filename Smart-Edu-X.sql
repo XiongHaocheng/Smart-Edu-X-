@@ -30,12 +30,15 @@ CREATE TABLE `bigcourse` (
   `CourseDomain` varchar(20) NOT NULL COMMENT '课程涉及领域',
   `CourseImage` varchar(500) NOT NULL COMMENT '课程详情图片',
   `MajorChapters` json NOT NULL COMMENT '大章节',
-  `StudyPathID` int DEFAULT NULL,
   `TestPaperID` int DEFAULT NULL,
+  `ModuleID` int DEFAULT NULL,
+  `StudyPathID` int DEFAULT NULL,
   PRIMARY KEY (`CourseID`),
-  KEY `bigcourse_studypath_FK` (`StudyPathID`),
   KEY `bigcourse_testpaper_FK` (`TestPaperID`),
+  KEY `bigcourse_studypathmodule_FK` (`ModuleID`),
+  KEY `bigcourse_studypath_FK` (`StudyPathID`),
   CONSTRAINT `bigcourse_studypath_FK` FOREIGN KEY (`StudyPathID`) REFERENCES `studypath` (`StudyPathID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `bigcourse_studypathmodule_FK` FOREIGN KEY (`ModuleID`) REFERENCES `studypathmodule` (`ModuleID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `bigcourse_testpaper_FK` FOREIGN KEY (`TestPaperID`) REFERENCES `testpaper` (`TestPaperID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb3 COMMENT='大课程';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -46,7 +49,7 @@ CREATE TABLE `bigcourse` (
 
 LOCK TABLES `bigcourse` WRITE;
 /*!40000 ALTER TABLE `bigcourse` DISABLE KEYS */;
-INSERT INTO `bigcourse` VALUES (1,'Web前端：从零开始做网站','本课程专为零基础学员准备，从网页基础深入到网页布局开发。课程内容讲解详细，注重细节，让你从入门到精通，一周时间掌握HTML+CSS网页开发。经过学习与实战，可独立开发出高质量的静态网页项目。','https://demo-api.meedu.xyz/storage/images/v43GltVoGF95TDaznUIa6fDmYcIDWQJlEOeh5EqN.png','前端开发','	https://demo-api.meedu.xyz/storage/images/ejBg9WDmlBmieJabDiMeKGU5VNw7WtcSwJkSv8L6.png','[\"HTML 网站的骨架\", \"CSS 网站的美颜\", \"项目网站的部署\"]',1,1),(2,'从零玩转HTML5（跨平台开发）','能够利用所学的html、css、photoshop对已经设计好的企业网站界面设计，手把手教会大家对企业网站进行进行切片制作和DIV+CSS布局，独立完成制作静态网站页面和模板，并完成浏览器兼容性测试。','	https://demo-api.meedu.xyz/storage/images/v9PYbvR7bCZXTSk3scR1GV1gccno1qOlnYB3cRS0.png\r\n','前端开发','	https://demo-api.meedu.xyz/storage/images/ejBg9WDmlBmieJabDiMeKGU5VNw7WtcSwJkSv8L6.png','[\"CSS3特性\", \"伸缩布局\"]',1,1),(3,'零基础吃透微信小程序','本教程目标是从零开始带领读者上手实战小程序开发，课程以微信小程序的核心概念作为主线，介绍配置文件、页面样式文件、JavaScript 的基本知识。并以指南针为例对基本知识进行扩展，另外加上开发工具的安装、小程序发布等内容。','https://demo-api.meedu.xyz/storage/images/N9LKos3c5HZt5MeNW4DFucRXxCPhSLM1ZlDLOtKh.png\r\n','小程序开发','	https://demo-api.meedu.xyz/storage/images/ejBg9WDmlBmieJabDiMeKGU5VNw7WtcSwJkSv8L6.png','[\"小程序基础\", \"小程序进阶\"]',1,1),(4,'Vue2+Vue3前端框架入门与实战','如果你之前已经习惯了用jQuery操作DOM，学习Vue.js时请先抛开手动操作DOM的思维，因为Vue.js是数据驱动的，你无需手动操作DOM。 它通过一些特殊的HTML语法，将DOM和数据绑定起来。','https://demo-api.meedu.xyz/storage/images/74sZVx4EcT7das1EqgYaBrQj9HUFe0BXVBD5QyTK.png','前端开发','	https://demo-api.meedu.xyz/storage/images/ejBg9WDmlBmieJabDiMeKGU5VNw7WtcSwJkSv8L6.png','[\"课程介绍和开发工具\", \"ES6新特性\"]',1,1),(5,'SpringCloud实战（k8s&doceker）','本系列课程我将带大家从K8s基础入门到K8s项目实战，一条龙学习路径帮你学透K8s，成为K8s高级工程师，突破年薪30W！','	https://demo-api.meedu.xyz/storage/images/JLyw8tHNwvA62qa3oePHnGAYdp89Q64EUm0Jb9ss.png','后端开发','	https://demo-api.meedu.xyz/storage/images/ejBg9WDmlBmieJabDiMeKGU5VNw7WtcSwJkSv8L6.png','[\"docker入门\", \"镜像仓库管理\"]',1,1),(6,'Pytorch深度学习入门与实战','PyTorch框架核心使用方法解读，基于最新算法（论文）展开项目实战，全部内容均基于真实数据集与实际任务需求展开，500+课时，30+大型项目实战，适合转行就业与进阶提升的同学们。','https://demo-api.meedu.xyz/storage/images/em6V36Mb8lHVYO1Pxc2cAXt7wDmKcxFo1Be0OkA2.png','深度学习','	https://demo-api.meedu.xyz/storage/images/ejBg9WDmlBmieJabDiMeKGU5VNw7WtcSwJkSv8L6.png','[\"Pytorch概述\", \"深度学习基础\"]',1,1),(7,'Go Web开发（进阶实战）','本课程介绍如何用Go语言进行Web应用的开发，将Go语言的特性与Web开发实战组合到一起，帮读者成功地构建跨平台的应用程序，节省Go语言开发Web的宝贵时间。有了这些针对真实问题的解决方案放在手边，大多数编程难题都会迎刃而解。','	https://demo-api.meedu.xyz/storage/images/pONk6mmw4R1NVpUhqu4SArdzG3NaxEcuRqDbDXwY.png','后端开发','	https://demo-api.meedu.xyz/storage/images/ejBg9WDmlBmieJabDiMeKGU5VNw7WtcSwJkSv8L6.png','[\"Go操作常见数据库\", \"Go Web开发常用组件\"]',1,1),(8,'一次性搞定Java入门（高新全栈+安卓）','本课程为Java零基础入门部分，让您快速上手Java编程，为Java网站开发，安卓程序设计与开发打下基础。 本课程已完结，走在技术前沿，用实力说话。','https://demo-api.meedu.xyz/storage/images/1K54to6jXihAkLAEJlauA4jGfKkr8fGxpvDfx5Rv.png','后端开发','	https://demo-api.meedu.xyz/storage/images/ejBg9WDmlBmieJabDiMeKGU5VNw7WtcSwJkSv8L6.png','[\"Java环境安卓配置\", \"Java基本语法\", \"数据类型\", \"变量和常量\"]',1,1),(9,'Python数据分析（机器学习实战）','简单、实用的Python数据分析、数据挖掘视频教程，主要介绍Python在数据处理、数据分析、数据可视化、数据挖掘方面常用的实战方法与技巧。','	https://demo-api.meedu.xyz/storage/images/uoUR9iCcc1DPX1lOwFaL0GbUdw1tvIAAsaolj7n6.png','人工智能','	https://demo-api.meedu.xyz/storage/images/ejBg9WDmlBmieJabDiMeKGU5VNw7WtcSwJkSv8L6.png','[\"人工智能入门指南\", \"Python科学计算库\"]',1,1),(10,'Uni-app实战视频点播小程序','全网最详细的Uniapp实战开发app小程序课程，7大实战开发案例（社区交友，商城，即时通讯，音频小说、网盘、点播、直播）帮助你获得技术优势并提高面试竞争力。','	https://demo-api.meedu.xyz/storage/images/rvX9mXmAEf285HBKb3JFFjvlBkMIVXPQQKGPVrqP.png','移动开发','	https://demo-api.meedu.xyz/storage/images/ejBg9WDmlBmieJabDiMeKGU5VNw7WtcSwJkSv8L6.png','[\"准备工作\", \"项目分析和全局样式\", \"首页开发\", \"后端API开发\"]',1,1),(11,'微信公众号+小程序快速开发','本课程致力于打造一站式微信开发全方位学习模式，微信开发从入门到精通全套系统课程。从宝贵“实战案例”中总结“踩坑”经验，助你快速搭建微信公众号、小程序，彻底玩转微信开发。','https://demo-api.meedu.xyz/storage/images/VY3SVQog9nmUIPer80vaWea5bakgRJJUd7sA7IVV.png','移动开发','	https://demo-api.meedu.xyz/storage/images/ejBg9WDmlBmieJabDiMeKGU5VNw7WtcSwJkSv8L6.png','[\"微信开发基础\", \"公众号小程序实战案例\"]',1,1),(12,'IOS+Swift零基础教程（2021版iOS14）','课程会介绍需要用到的操作系统和开发工具，和编程语言 Swift 的注释、数据类型、函数、控制流语句（条件和循环）、可选类型、命名类型（枚举、类和结构体）的概念和使用方法，在 Project 项目中通过 .storyboard 文件进行应用的界面的实现，通过 .swift 文件进行应用的功能实现。','https://demo-api.meedu.xyz/storage/images/Qj2kY3vSI3o4rt5YCImxmWmxkNdwYQQYQraINNo5.png','移动开发','	https://demo-api.meedu.xyz/storage/images/ejBg9WDmlBmieJabDiMeKGU5VNw7WtcSwJkSv8L6.png','[\"Swift语言入门\", \"实战案例\"]',1,1),(13,'C++语言基础到进阶','关于内容特点 1、知识点讲解细致入微 2、结合大家平时易出现问题的点，详细解析 3、课程顺序符合思考逻辑，引导大家发现问题并解决问题 4、对于有C++基础的朋友，本系列视频，肯定能让你对C++有新的认识。','https://demo-api.meedu.xyz/storage/images/P0eroC3R9bAwUKvUY1z5HqLpTZdrwaif9qpXEBnC.png','后端开发','	https://demo-api.meedu.xyz/storage/images/ejBg9WDmlBmieJabDiMeKGU5VNw7WtcSwJkSv8L6.png','[\"C++语言介绍\", \"基本语言\", \"类\"]',1,1);
+INSERT INTO `bigcourse` VALUES (1,'Web前端：从零开始做网站','本课程专为零基础学员准备，从网页基础深入到网页布局开发。课程内容讲解详细，注重细节，让你从入门到精通，一周时间掌握HTML+CSS网页开发。经过学习与实战，可独立开发出高质量的静态网页项目。','https://demo-api.meedu.xyz/storage/images/v43GltVoGF95TDaznUIa6fDmYcIDWQJlEOeh5EqN.png','前端开发','	https://demo-api.meedu.xyz/storage/images/ejBg9WDmlBmieJabDiMeKGU5VNw7WtcSwJkSv8L6.png','[\"HTML 网站的骨架\", \"CSS 网站的美颜\", \"项目网站的部署\"]',1,3,2),(2,'从零玩转HTML5（跨平台开发）','能够利用所学的html、css、photoshop对已经设计好的企业网站界面设计，手把手教会大家对企业网站进行进行切片制作和DIV+CSS布局，独立完成制作静态网站页面和模板，并完成浏览器兼容性测试。','	https://demo-api.meedu.xyz/storage/images/v9PYbvR7bCZXTSk3scR1GV1gccno1qOlnYB3cRS0.png\r\n','前端开发','	https://demo-api.meedu.xyz/storage/images/ejBg9WDmlBmieJabDiMeKGU5VNw7WtcSwJkSv8L6.png','[\"CSS3特性\", \"伸缩布局\"]',1,3,2),(3,'零基础吃透微信小程序','本教程目标是从零开始带领读者上手实战小程序开发，课程以微信小程序的核心概念作为主线，介绍配置文件、页面样式文件、JavaScript 的基本知识。并以指南针为例对基本知识进行扩展，另外加上开发工具的安装、小程序发布等内容。','https://demo-api.meedu.xyz/storage/images/N9LKos3c5HZt5MeNW4DFucRXxCPhSLM1ZlDLOtKh.png\r\n','小程序开发','	https://demo-api.meedu.xyz/storage/images/ejBg9WDmlBmieJabDiMeKGU5VNw7WtcSwJkSv8L6.png','[\"小程序基础\", \"小程序进阶\"]',1,5,3),(4,'Vue2+Vue3前端框架入门与实战','如果你之前已经习惯了用jQuery操作DOM，学习Vue.js时请先抛开手动操作DOM的思维，因为Vue.js是数据驱动的，你无需手动操作DOM。 它通过一些特殊的HTML语法，将DOM和数据绑定起来。','https://demo-api.meedu.xyz/storage/images/74sZVx4EcT7das1EqgYaBrQj9HUFe0BXVBD5QyTK.png','前端开发','	https://demo-api.meedu.xyz/storage/images/ejBg9WDmlBmieJabDiMeKGU5VNw7WtcSwJkSv8L6.png','[\"课程介绍和开发工具\", \"ES6新特性\"]',1,4,2),(5,'SpringCloud实战（k8s&doceker）','本系列课程我将带大家从K8s基础入门到K8s项目实战，一条龙学习路径帮你学透K8s，成为K8s高级工程师，突破年薪30W！','	https://demo-api.meedu.xyz/storage/images/JLyw8tHNwvA62qa3oePHnGAYdp89Q64EUm0Jb9ss.png','后端开发','	https://demo-api.meedu.xyz/storage/images/ejBg9WDmlBmieJabDiMeKGU5VNw7WtcSwJkSv8L6.png','[\"docker入门\", \"镜像仓库管理\"]',1,1,1),(6,'Pytorch深度学习入门与实战','PyTorch框架核心使用方法解读，基于最新算法（论文）展开项目实战，全部内容均基于真实数据集与实际任务需求展开，500+课时，30+大型项目实战，适合转行就业与进阶提升的同学们。','https://demo-api.meedu.xyz/storage/images/em6V36Mb8lHVYO1Pxc2cAXt7wDmKcxFo1Be0OkA2.png','深度学习','	https://demo-api.meedu.xyz/storage/images/ejBg9WDmlBmieJabDiMeKGU5VNw7WtcSwJkSv8L6.png','[\"Pytorch概述\", \"深度学习基础\"]',1,6,3),(7,'Go Web开发（进阶实战）','本课程介绍如何用Go语言进行Web应用的开发，将Go语言的特性与Web开发实战组合到一起，帮读者成功地构建跨平台的应用程序，节省Go语言开发Web的宝贵时间。有了这些针对真实问题的解决方案放在手边，大多数编程难题都会迎刃而解。','	https://demo-api.meedu.xyz/storage/images/pONk6mmw4R1NVpUhqu4SArdzG3NaxEcuRqDbDXwY.png','后端开发','	https://demo-api.meedu.xyz/storage/images/ejBg9WDmlBmieJabDiMeKGU5VNw7WtcSwJkSv8L6.png','[\"Go操作常见数据库\", \"Go Web开发常用组件\"]',1,6,3),(8,'一次性搞定Java入门（高新全栈+安卓）','本课程为Java零基础入门部分，让您快速上手Java编程，为Java网站开发，安卓程序设计与开发打下基础。 本课程已完结，走在技术前沿，用实力说话。','https://demo-api.meedu.xyz/storage/images/1K54to6jXihAkLAEJlauA4jGfKkr8fGxpvDfx5Rv.png','后端开发','	https://demo-api.meedu.xyz/storage/images/ejBg9WDmlBmieJabDiMeKGU5VNw7WtcSwJkSv8L6.png','[\"Java环境安卓配置\", \"Java基本语法\", \"数据类型\", \"变量和常量\"]',1,1,1),(9,'Python数据分析（机器学习实战）','简单、实用的Python数据分析、数据挖掘视频教程，主要介绍Python在数据处理、数据分析、数据可视化、数据挖掘方面常用的实战方法与技巧。','	https://demo-api.meedu.xyz/storage/images/uoUR9iCcc1DPX1lOwFaL0GbUdw1tvIAAsaolj7n6.png','人工智能','	https://demo-api.meedu.xyz/storage/images/ejBg9WDmlBmieJabDiMeKGU5VNw7WtcSwJkSv8L6.png','[\"人工智能入门指南\", \"Python科学计算库\"]',1,2,1),(10,'Uni-app实战视频点播小程序','全网最详细的Uniapp实战开发app小程序课程，7大实战开发案例（社区交友，商城，即时通讯，音频小说、网盘、点播、直播）帮助你获得技术优势并提高面试竞争力。','	https://demo-api.meedu.xyz/storage/images/rvX9mXmAEf285HBKb3JFFjvlBkMIVXPQQKGPVrqP.png','移动开发','	https://demo-api.meedu.xyz/storage/images/ejBg9WDmlBmieJabDiMeKGU5VNw7WtcSwJkSv8L6.png','[\"准备工作\", \"项目分析和全局样式\", \"首页开发\", \"后端API开发\"]',1,NULL,NULL),(11,'微信公众号+小程序快速开发','本课程致力于打造一站式微信开发全方位学习模式，微信开发从入门到精通全套系统课程。从宝贵“实战案例”中总结“踩坑”经验，助你快速搭建微信公众号、小程序，彻底玩转微信开发。','https://demo-api.meedu.xyz/storage/images/VY3SVQog9nmUIPer80vaWea5bakgRJJUd7sA7IVV.png','移动开发','	https://demo-api.meedu.xyz/storage/images/ejBg9WDmlBmieJabDiMeKGU5VNw7WtcSwJkSv8L6.png','[\"微信开发基础\", \"公众号小程序实战案例\"]',1,NULL,NULL),(12,'IOS+Swift零基础教程（2021版iOS14）','课程会介绍需要用到的操作系统和开发工具，和编程语言 Swift 的注释、数据类型、函数、控制流语句（条件和循环）、可选类型、命名类型（枚举、类和结构体）的概念和使用方法，在 Project 项目中通过 .storyboard 文件进行应用的界面的实现，通过 .swift 文件进行应用的功能实现。','https://demo-api.meedu.xyz/storage/images/Qj2kY3vSI3o4rt5YCImxmWmxkNdwYQQYQraINNo5.png','移动开发','	https://demo-api.meedu.xyz/storage/images/ejBg9WDmlBmieJabDiMeKGU5VNw7WtcSwJkSv8L6.png','[\"Swift语言入门\", \"实战案例\"]',1,NULL,NULL),(13,'C++语言基础到进阶','关于内容特点 1、知识点讲解细致入微 2、结合大家平时易出现问题的点，详细解析 3、课程顺序符合思考逻辑，引导大家发现问题并解决问题 4、对于有C++基础的朋友，本系列视频，肯定能让你对C++有新的认识。','https://demo-api.meedu.xyz/storage/images/P0eroC3R9bAwUKvUY1z5HqLpTZdrwaif9qpXEBnC.png','后端开发','	https://demo-api.meedu.xyz/storage/images/ejBg9WDmlBmieJabDiMeKGU5VNw7WtcSwJkSv8L6.png','[\"C++语言介绍\", \"基本语言\", \"类\"]',1,NULL,NULL);
 /*!40000 ALTER TABLE `bigcourse` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -141,7 +144,7 @@ CREATE TABLE `imageandtext` (
 
 LOCK TABLES `imageandtext` WRITE;
 /*!40000 ALTER TABLE `imageandtext` DISABLE KEYS */;
-INSERT INTO `imageandtext` VALUES (1,104,100,'揭开 AI、机器学习和深度学习的神秘面纱','人工智能','https://meedu-cos.meedu.xyz/images/admin/xbnWzaStcDPNoAnYJ5PIDFHZFIXSOJD7leNSHYv0.jpg','文章内容','2021-10-07 12:45:00');
+INSERT INTO `imageandtext` VALUES (1,107,100,'揭开 AI、机器学习和深度学习的神秘面纱','人工智能','https://meedu-cos.meedu.xyz/images/admin/xbnWzaStcDPNoAnYJ5PIDFHZFIXSOJD7leNSHYv0.jpg','文章内容','2021-10-07 12:45:00');
 /*!40000 ALTER TABLE `imageandtext` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -283,7 +286,7 @@ DROP TABLE IF EXISTS `studypath`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `studypath` (
   `StudyPathID` int NOT NULL AUTO_INCREMENT,
-  `StudyPathName` varchar(20) NOT NULL COMMENT '学习路径名字',
+  `StudyPathName` varchar(255) NOT NULL COMMENT '学习路径名字',
   `StudyPathDescription` varchar(500) NOT NULL COMMENT '学习路径描述',
   `StudyPathCover` varchar(500) NOT NULL COMMENT '学习路径封面',
   `StudyPathClassification` varchar(10) NOT NULL COMMENT '学习路径分类',
@@ -298,7 +301,7 @@ CREATE TABLE `studypath` (
 
 LOCK TABLES `studypath` WRITE;
 /*!40000 ALTER TABLE `studypath` DISABLE KEYS */;
-INSERT INTO `studypath` VALUES (1,'前端工程师0基础从入门到大型项目构建','0基础学前端工程师，打造全栈能力知识体系,从网页搭建再到移动APP，小程序开发，一套课程，直达就业！','https://meedu-cos.meedu.xyz/images/ea0wSNSwa6xvVAb0U34iaxRSlJoNkMaRrlI254FC.png','编程开发',4),(2,'前端工程师0基础从入门到大型项目构建','0基础学前端工程师，打造全栈能力知识体系,从网页搭建再到移动APP，小程序开发，一套课程，直达就业！','https://meedu-cos.meedu.xyz/images/ea0wSNSwa6xvVAb0U34iaxRSlJoNkMaRrlI254FC.png','编程开发',4),(3,'产品运营到数据分析高薪必修课','无论你是零基础的小白、初级用户研究员或是以用户为中心的产品经理、设计师、运营、市场等，学完本套课程，都将成为会“读心术”的用户研究员，牢牢“黏”住用户！','https://meedu-cos.meedu.xyz/images/63eaQMKsRTzfH9XvxY9ugHOFUx4g5K100x9cHVkh.png','产品运营',3),(4,'产品运营到数据分析高薪必修课','无论你是零基础的小白、初级用户研究员或是以用户为中心的产品经理、设计师、运营、市场等，学完本套课程，都将成为会“读心术”的用户研究员，牢牢“黏”住用户！','https://meedu-cos.meedu.xyz/images/63eaQMKsRTzfH9XvxY9ugHOFUx4g5K100x9cHVkh.png','产品运营',3);
+INSERT INTO `studypath` VALUES (1,'从Java到Python两大王牌语言一次搞定','在Web的迅速发展中，Java被广泛接受并起到了绝对的推动作用。近几年，Python语言也受到了大多数程序员的青睐，本套课程一次搞定两大核心开发语言。','https://meedu-cos.meedu.xyz/images/K2rKWTsz985CgxOCPq7acb5DJtpAeDikuIrNJWTR.png','编程开发',4),(2,'前端工程师0基础从入门到大型项目构建','0基础学前端工程师，打造全栈能力知识体系,从网页搭建再到移动APP，小程序开发，一套课程，直达就业！','https://meedu-cos.meedu.xyz/images/ea0wSNSwa6xvVAb0U34iaxRSlJoNkMaRrlI254FC.png','编程开发',4),(3,'产品运营到数据分析高薪必修课','无论你是零基础的小白、初级用户研究员或是以用户为中心的产品经理、设计师、运营、市场等，学完本套课程，都将成为会“读心术”的用户研究员，牢牢“黏”住用户！','https://meedu-cos.meedu.xyz/images/63eaQMKsRTzfH9XvxY9ugHOFUx4g5K100x9cHVkh.png','产品运营',3);
 /*!40000 ALTER TABLE `studypath` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -311,11 +314,13 @@ DROP TABLE IF EXISTS `studypathmodule`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `studypathmodule` (
   `ModuleID` int NOT NULL AUTO_INCREMENT COMMENT '模块ID',
-  `ModuleName` varchar(20) NOT NULL COMMENT '模块名称',
+  `ModuleName` varchar(255) NOT NULL COMMENT '模块名称',
   `ModuleDescription` varchar(500) NOT NULL COMMENT '模块描述',
+  `StudyPathID` int DEFAULT NULL,
   PRIMARY KEY (`ModuleID`),
-  CONSTRAINT `studypathmodule_studypath_FK` FOREIGN KEY (`ModuleID`) REFERENCES `studypath` (`StudyPathID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='学习路径模块';
+  KEY `studypathmodule_studypath_FK` (`StudyPathID`),
+  CONSTRAINT `studypathmodule_studypath_FK` FOREIGN KEY (`StudyPathID`) REFERENCES `studypath` (`StudyPathID`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb3 COMMENT='学习路径模块';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -324,6 +329,7 @@ CREATE TABLE `studypathmodule` (
 
 LOCK TABLES `studypathmodule` WRITE;
 /*!40000 ALTER TABLE `studypathmodule` DISABLE KEYS */;
+INSERT INTO `studypathmodule` VALUES (1,'Java语言核心技术','课程主要内容包括Java语言基础知识、面向对象思想的实现及使用、Java异常处理机制等，通过经典案例为学生打下坚实的语言基础。',1),(2,'Python基础到提高','面向所有希望学习Python编程、进而能够在学习和工作中编写办公自动化、网页信息提取、数据分析处理、人工智能应用、娱乐游戏应用等实用程序的各行业人士。',1),(3,'前端基础入门','掌握H5语法和CSS3的样式，完成静态布局。掌握H5语法和CSS3的样式，完成静态布局。',2),(4,'必学框架到项目实战','Vue.JS 是目前火的前端框架之一,是一个构建数据驱动的 web 界面的渐进式框架。让我们真正的从零开始，真真正正完全系统学习Vue。',2),(5,'用户需求市场研究','本阶段课程帮助你洞察用户心理和行为，提取用户需求，设计出让用户惊艳的产品。',3),(6,'Python+SQL+算法+大数据分析，大厂专家讲师带你从0到1，多项企业级应用实战让你做会写代码的数据分析师！','Python+SQL+算法+大数据分析，大厂专家讲师带你从0到1，多项企业级应用实战让你做会写代码的数据分析师！',3);
 /*!40000 ALTER TABLE `studypathmodule` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -626,4 +632,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-22  9:48:16
+-- Dump completed on 2024-05-22 16:26:57
