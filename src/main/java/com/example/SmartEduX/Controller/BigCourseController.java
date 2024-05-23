@@ -37,23 +37,23 @@ public class BigCourseController {
         // 返回查询到的课程数据
         return Result.success(courses,"成功");
     }
-        @ApiOperation("获取各类录播课程信息（录播课首页）")
-        @CrossOrigin
-        @GetMapping(value = "/videocourseinfo")
-        public Result<List<BigCourse>> getVideoCourses(@RequestParam String currentNavItem) {
-            // 根据 currentNavItem 的值进行数据库查询
-            List<BigCourse> courses = new ArrayList<>();
-            if (currentNavItem.equals("全部")) {
-                courses = bigCourseMapper.selectList(null);
-            } else {
-                // 如果 currentNavItem 为 "前端开发"，则查询前端开发课程
-                QueryWrapper<BigCourse> queryWrapper = new QueryWrapper<>();
-                queryWrapper.eq("coursedomain", currentNavItem);
-                courses = bigCourseMapper.selectList(queryWrapper);
-            }
-            // 根据其他条件查询其他类型的课程
-            return Result.success(courses,"成功");
+    @ApiOperation("获取各类录播课程信息（录播课首页）")
+    @CrossOrigin
+    @GetMapping(value = "/videocourseinfo")
+    public Result<List<BigCourse>> getVideoCourses(@RequestParam String currentNavItem) {
+        // 根据 currentNavItem 的值进行数据库查询
+        List<BigCourse> courses = new ArrayList<>();
+        if (currentNavItem.equals("全部")) {
+            courses = bigCourseMapper.selectList(null);
+        } else {
+            // 如果 currentNavItem 为 "前端开发"，则查询前端开发课程
+            QueryWrapper<BigCourse> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("coursedomain", currentNavItem);
+            courses = bigCourseMapper.selectList(queryWrapper);
         }
+        // 根据其他条件查询其他类型的课程
+        return Result.success(courses,"成功");
+    }
     @ApiOperation("获取录播课各课程内容（录播课详细页）")
     @CrossOrigin
     @GetMapping(value = "/videodetailcourseinfo")

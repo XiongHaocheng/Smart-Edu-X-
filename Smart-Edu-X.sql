@@ -267,15 +267,20 @@ CREATE TABLE `question_testpaper` (
   CONSTRAINT `question_testpaper_testquestion_FK` FOREIGN KEY (`TestQuestionID`) REFERENCES `testquestion` (`TestQuestionID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
-
 --
 -- Dumping data for table `question_testpaper`
 --
 
 LOCK TABLES `question_testpaper` WRITE;
 /*!40000 ALTER TABLE `question_testpaper` DISABLE KEYS */;
+INSERT INTO smartedux.question_testpaper (TestQuestionID, TestPaperID, Score, SortNum) VALUES (1, 1, 10, 1);
+INSERT INTO smartedux.question_testpaper (TestQuestionID, TestPaperID, Score, SortNum) VALUES (2, 1, 10, 2);
+INSERT INTO smartedux.question_testpaper (TestQuestionID, TestPaperID, Score, SortNum) VALUES (3, 1, 10, 3);
+INSERT INTO smartedux.question_testpaper (TestQuestionID, TestPaperID, Score, SortNum) VALUES (4, 1, 10, 4);
+INSERT INTO smartedux.question_testpaper (TestQuestionID, TestPaperID, Score, SortNum) VALUES (5, 1, 10, 5);
 /*!40000 ALTER TABLE `question_testpaper` ENABLE KEYS */;
 UNLOCK TABLES;
+
 
 --
 -- Table structure for table `studypath`
@@ -414,7 +419,7 @@ CREATE TABLE `testpaper` (
 
 LOCK TABLES `testpaper` WRITE;
 /*!40000 ALTER TABLE `testpaper` DISABLE KEYS */;
-INSERT INTO `testpaper` VALUES (1,'1',1,1,1,'1');
+INSERT INTO smartedux.testpaper (TestPaperID, TestPaperName, FullScore, PassScore, QuestionNumber, Duration) VALUES (1, '测试试卷', 50, 30, 5, '5');
 /*!40000 ALTER TABLE `testpaper` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -434,13 +439,18 @@ CREATE TABLE `testquestion` (
   `MultipleChoice` json DEFAULT NULL COMMENT '多选选项',
   `FillBlankQuantity` int DEFAULT NULL COMMENT '填空数量',
   `SingleChoiceAnswer` char(1) DEFAULT NULL COMMENT '单选答案',
-  `MulitipleChoiceAnswer` json DEFAULT NULL COMMENT '多选答案',
+  `MultipleChoiceAnswer` json DEFAULT NULL COMMENT '多选答案',
   `JudgeAnswer` tinyint(1) DEFAULT NULL COMMENT '判断答案',
   `FillBlankAnswer` json DEFAULT NULL COMMENT '填空答案',
   `Analysis` varchar(500) DEFAULT NULL COMMENT '解析',
   PRIMARY KEY (`TestQuestionID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='试题';
 /*!40101 SET character_set_client = @saved_cs_client */;
+INSERT INTO smartedux.testquestion (TestQuestionID, QuestionText, QuestionImage, QuestionType, SingleChoice, MultipleChoice, FillBlankQuantity, SingleChoiceAnswer, MultipleChoiceAnswer, JudgeAnswer, FillBlankAnswer, Analysis) VALUES (1, '这是有图片的选择题测试()', 'https://img.tukuppt.com/png_preview/00/02/58/LFQPgeNTyr.jpg!/fw/780', '单选题', '[{"option": "A", "checked": false, "content": "选项A"}, {"option": "B", "checked": false, "content": "选项B"}, {"option": "C", "checked": false, "content": "选项C"}, {"option": "D", "checked": false, "content": "选项D"}]', null, null, 'A', null, null, null, '这是这道题的解析。');
+INSERT INTO smartedux.testquestion (TestQuestionID, QuestionText, QuestionImage, QuestionType, SingleChoice, MultipleChoice, FillBlankQuantity, SingleChoiceAnswer, MultipleChoiceAnswer, JudgeAnswer, FillBlankAnswer, Analysis) VALUES (2, '这是有无图片的选择题测试()', null, '单选题', '[{"option": "A", "checked": false, "content": "选项A"}, {"option": "B", "checked": false, "content": "选项B"}, {"option": "C", "checked": false, "content": "选项C"}, {"option": "D", "checked": false, "content": "选项D"}]', null, null, 'B', null, null, null, '无');
+INSERT INTO smartedux.testquestion (TestQuestionID, QuestionText, QuestionImage, QuestionType, SingleChoice, MultipleChoice, FillBlankQuantity, SingleChoiceAnswer, MultipleChoiceAnswer, JudgeAnswer, FillBlankAnswer, Analysis) VALUES (3, '这是多选题()', null, '多选题', '[{"option": "A", "checked": false, "content": "选项A"}, {"option": "B", "checked": false, "content": "选项B"}, {"option": "C", "checked": false, "content": "选项C"}, {"option": "D", "checked": false, "content": "选项D"}]', null, null, '', '["A", "C"]', null, null, null);
+INSERT INTO smartedux.testquestion (TestQuestionID, QuestionText, QuestionImage, QuestionType, SingleChoice, MultipleChoice, FillBlankQuantity, SingleChoiceAnswer, MultipleChoiceAnswer, JudgeAnswer, FillBlankAnswer, Analysis) VALUES (4, '这是填空题().()', null, '填空题', null, null, 2, null, null, null, '["1212", "212"]', null);
+INSERT INTO smartedux.testquestion (TestQuestionID, QuestionText, QuestionImage, QuestionType, SingleChoice, MultipleChoice, FillBlankQuantity, SingleChoiceAnswer, MultipleChoiceAnswer, JudgeAnswer, FillBlankAnswer, Analysis) VALUES (5, '这是判断题', null, '判断题', null, null, null, null, null, 1, null, null);
 
 --
 -- Dumping data for table `testquestion`
@@ -459,12 +469,20 @@ DROP TABLE IF EXISTS `testrecord`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `testrecord` (
-  `TsetRecordID` int NOT NULL AUTO_INCREMENT COMMENT '考试记录ID',
-  `TsetScore` float NOT NULL COMMENT '考试得分',
+  `TestRecordID` int NOT NULL AUTO_INCREMENT COMMENT '考试记录ID',
+  `TestScore` float NOT NULL COMMENT '考试得分',
   `FinishState` tinyint(1) NOT NULL COMMENT '完成状态（true or false）',
   `StartTime` datetime NOT NULL COMMENT '考试开始时间',
-  PRIMARY KEY (`TsetRecordID`),
-  CONSTRAINT `testrecord_testanalyse_FK` FOREIGN KEY (`TsetRecordID`) REFERENCES `testanalyse` (`TestAnalyseID`) ON DELETE CASCADE ON UPDATE CASCADE
+  `UserID` int NOT NULL COMMENT '用户ID',
+  `TestAnalyseID` int COMMENT '考试分析ID',
+  `TestPaperID` int COMMENT '试卷ID',
+  KEY `testrecord_testanalyse_FK`(`TestAnalyseID`),
+  KEY `testrecord_user_FK` (`UserID`),
+  KEY `testrecord_testpaper_FK` (`TestPaperID`),
+  PRIMARY KEY (`TestRecordID`),
+  CONSTRAINT `testrecord_user_FK` FOREIGN KEY  (`UserID`) REFERENCES `user`(`UserID`),
+  CONSTRAINT `testrecord_testpaper_FK` FOREIGN KEY (`TestPaperID`) REFERENCES `testpaper`(`TestPaperID`),
+  CONSTRAINT `testrecord_testanalyse_FK` FOREIGN KEY (`TestAnalyseID`) REFERENCES `testanalyse` (`TestAnalyseID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='考试记录';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -491,10 +509,10 @@ CREATE TABLE `testrecord_question` (
   `SortNum` int NOT NULL COMMENT '试题序号',
   `UserAnswer` json DEFAULT NULL COMMENT '用户答案',
   `IsCorrect` tinyint(1) DEFAULT NULL COMMENT '正确情况',
-  KEY `testrecord_question_testquestion_FK` (`TestQuestionID`),
+    KEY `testrecord_question_testquestion_FK` (`TestQuestionID`),
   KEY `testrecord_question_testrecord_FK` (`TestRecordID`),
   CONSTRAINT `testrecord_question_testquestion_FK` FOREIGN KEY (`TestQuestionID`) REFERENCES `testquestion` (`TestQuestionID`),
-  CONSTRAINT `testrecord_question_testrecord_FK` FOREIGN KEY (`TestRecordID`) REFERENCES `testrecord` (`TsetRecordID`)
+  CONSTRAINT `testrecord_question_testrecord_FK` FOREIGN KEY (`TestRecordID`) REFERENCES `testrecord` (`TestRecordID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
