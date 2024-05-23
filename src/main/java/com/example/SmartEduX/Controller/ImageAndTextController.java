@@ -46,7 +46,7 @@ public class ImageAndTextController {
         if (currentNavItem.equals("全部")) {
             topic = imageAndTextMapper.selectList(null);
         } else {
-            // 如果 currentNavItem 为 "前端开发"，则查询前端开发课程
+            // 如果 currentNavItem 为其它，则查询其它课程
             QueryWrapper<ImageAndText> queryWrapper = new QueryWrapper<>();
             queryWrapper.eq("contentdomain", currentNavItem);
             topic = imageAndTextMapper.selectList(queryWrapper);
