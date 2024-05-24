@@ -128,7 +128,39 @@ public class BigCourseController {
         }
         //System.out.println(mystudyinfo);
         return Result.success(mystudyinfo,"成功");
+    }
+    @ApiOperation("取消订阅")
+    @CrossOrigin
+    @PostMapping(value = "/deletesubscribe")
+    public Result<?> deleteSubscribe(@RequestParam Integer userID,@RequestParam Integer courseID) {
+        // 创建查询条件
+        QueryWrapper<BigCourse_User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("userid", userID).eq("courseid", courseID);
 
+        // 删除记录
+        int deleteCount = bigCourse_UserMapper.delete(queryWrapper);
+
+        if (deleteCount > 0) {
+            return Result.success("取消订阅成功");
+        } else {
+            return Result.error("-1", "取消订阅失败或记录不存在");
+        }
+    }
+
+    @ApiOperation("检查是否订阅")
+    @CrossOrigin
+    @PostMapping(value = "/isSubscribe")
+    public Result<Boolean> isSubscribe(@RequestParam Integer courseID, @RequestParam Integer userID) {
+        // 创建查询条件
+        QueryWrapper<BigCourse_User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("userid", userID).eq("courseid", courseID);
+        // 查询数据库
+        BigCourse_User bigCourseUser = bigCourse_UserMapper.selectOne(queryWrapper);
+        if(bigCourseUser==null){
+            return Result.success(false,"成功");//未订阅
+        }else{
+            return Result.success(true,"成功");//订阅了
+        }
     }
 }
 
