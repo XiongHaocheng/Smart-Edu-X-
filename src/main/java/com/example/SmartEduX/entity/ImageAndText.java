@@ -3,11 +3,14 @@ package com.example.SmartEduX.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -31,5 +34,5 @@ public class ImageAndText {
     @ApiModelProperty(value = "文章内容", example = "xhc")
     private String articlecontent;
     @ApiModelProperty(value = "发布时间", example = "xhc")
-    private Data releasetime;
+    private Date releasetime;
 }
