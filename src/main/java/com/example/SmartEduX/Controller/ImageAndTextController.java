@@ -59,7 +59,7 @@ public class ImageAndTextController {
     @CrossOrigin
     @RequestMapping(value = "/addviewnumber", method = RequestMethod.POST)
     public Result<?> addViewNumber(@RequestBody Integer id) {
-// 通过ID从数据库中查找对应的数据
+    // 通过ID从数据库中查找对应的数据
         ImageAndText imageAndText = imageAndTextMapper.selectById(id);
         if (imageAndText != null) {
             // 找到了对应的数据，将其阅读人数加1
@@ -71,6 +71,20 @@ public class ImageAndTextController {
             } else {
                 return Result.error("-1", "更新阅读人数失败");
             }
+        } else {
+            // 没有找到对应的数据，返回错误信息
+            return Result.error("-2", "未找到对应的图文数据");
+        }
+    }
+
+    @ApiOperation("获取文章具体内容")
+    @CrossOrigin
+    @RequestMapping(value = "/topicdetail")
+    public Result<ImageAndText> getTopicDetail(@RequestParam String topicid){
+        // 根据 currentNavItem 的值进行数据库查询
+        ImageAndText imageAndText = imageAndTextMapper.selectById(topicid);
+        if (imageAndText != null) {
+            return Result.success(imageAndText,"成功");
         } else {
             // 没有找到对应的数据，返回错误信息
             return Result.error("-2", "未找到对应的图文数据");

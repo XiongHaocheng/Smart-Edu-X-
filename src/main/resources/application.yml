@@ -9,9 +9,12 @@ spring:
       suffix: .jsp
   datasource:
     username: root
-    password: zxcvbn123
+    password: root
     url: jdbc:mysql://localhost:3306/smartedux?useUnicode=true&characterEncoding=utf-8&useSSL=true&serverTimezone=UTC
     driver-class-name: com.mysql.cj.jdbc.Driver
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
 # Swagger
 swagger:
   enabled: true
