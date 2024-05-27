@@ -5,6 +5,7 @@ import com.example.SmartEduX.Mapper.ImageAndTextMapper;
 import com.example.SmartEduX.common.Result;
 import com.example.SmartEduX.entity.BigCourse;
 import com.example.SmartEduX.entity.ImageAndText;
+import com.example.SmartEduX.entity.StudyPath;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,10 +24,10 @@ public class ImageAndTextController {
     @Resource
     private ImageAndTextMapper imageAndTextMapper;
 
-    @ApiOperation("获取图文信息")
+    @ApiOperation("获取部分图文信息")
     @CrossOrigin
     @GetMapping(value = "/imageandtextinfo")
-    public Result<List<ImageAndText>> getAllimageandtexts() {
+    public Result<List<ImageAndText>> getImageAndTexts() {
 
         List<ImageAndText> imageAndText = imageAndTextMapper.selectList(null);
         if (imageAndText.isEmpty()) {
@@ -34,9 +35,25 @@ public class ImageAndTextController {
             return Result.error("-1", "未找到任何图文数据");
         }
 
+        // 只保留前四个
+        List<ImageAndText> firstTwoImageAndText = imageAndText.subList(0, Math.min(4, imageAndText.size()));
+
+        // 返回
+        return Result.success(firstTwoImageAndText, "成功");
+    }
+    @ApiOperation("获取全部图文信息")
+    @CrossOrigin
+    @GetMapping(value = "/allimageandtextinfo")
+    public Result<List<ImageAndText>> getAllImageAndTexts() {
+
+        List<ImageAndText> imageAndText = imageAndTextMapper.selectList(null);
+        if (imageAndText.isEmpty()) {
+
+            return Result.error("-1", "未找到任何图文数据");
+        }
+        // 返回全部
         return Result.success(imageAndText,"成功");
     }
-
     @ApiOperation("获取各领域图文")
     @CrossOrigin
     @GetMapping(value = "/topicinfo")
@@ -67,7 +84,7 @@ public class ImageAndTextController {
             // 更新数据库中的数据
             int updated = imageAndTextMapper.updateById(imageAndText);
             if (updated > 0) {
-                return Result.success("阅读人数增加成功");
+                return Result.success("成功");
             } else {
                 return Result.error("-1", "更新阅读人数失败");
             }

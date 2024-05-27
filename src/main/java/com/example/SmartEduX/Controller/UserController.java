@@ -2,21 +2,20 @@ package com.example.SmartEduX.Controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.example.SmartEduX.Mapper.UserMapper;
 import com.example.SmartEduX.LoginUser;
+import com.example.SmartEduX.Mapper.UserMapper;
 import com.example.SmartEduX.Utils.TokenUtils;
 import com.example.SmartEduX.common.Result;
 import com.example.SmartEduX.entity.User;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import io.swagger.annotations.Api;
-
-import javax.annotation.Resource;
-
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
 
 @Api(tags = "API接口")
 @RestController
