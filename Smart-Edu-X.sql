@@ -448,15 +448,16 @@ CREATE TABLE `testquestion` (
   PRIMARY KEY (`TestQuestionID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='试题';
 /*!40101 SET character_set_client = @saved_cs_client */;
-INSERT INTO smartedux.testquestion (TestQuestionID, QuestionText, QuestionImage, QuestionType, SingleChoice, MultipleChoice, FillBlankQuantity, SingleChoiceAnswer, MultipleChoiceAnswer, JudgeAnswer, FillBlankAnswer, Analysis) VALUES (1, '这是有图片的选择题测试()', 'https://img.tukuppt.com/png_preview/00/02/58/LFQPgeNTyr.jpg!/fw/780', '单选题', '[{"option": "A", "checked": false, "content": "选项A"}, {"option": "B", "checked": false, "content": "选项B"}, {"option": "C", "checked": false, "content": "选项C"}, {"option": "D", "checked": false, "content": "选项D"}]', null, null, 'A', null, null, null, '这是这道题的解析。');
-INSERT INTO smartedux.testquestion (TestQuestionID, QuestionText, QuestionImage, QuestionType, SingleChoice, MultipleChoice, FillBlankQuantity, SingleChoiceAnswer, MultipleChoiceAnswer, JudgeAnswer, FillBlankAnswer, Analysis) VALUES (2, '这是有无图片的选择题测试()', null, '单选题', '[{"option": "A", "checked": false, "content": "选项A"}, {"option": "B", "checked": false, "content": "选项B"}, {"option": "C", "checked": false, "content": "选项C"}, {"option": "D", "checked": false, "content": "选项D"}]', null, null, 'B', null, null, null, '无');
-INSERT INTO smartedux.testquestion (TestQuestionID, QuestionText, QuestionImage, QuestionType, SingleChoice, MultipleChoice, FillBlankQuantity, SingleChoiceAnswer, MultipleChoiceAnswer, JudgeAnswer, FillBlankAnswer, Analysis) VALUES (3, '这是多选题()', null, '多选题', '[{"option": "A", "checked": false, "content": "选项A"}, {"option": "B", "checked": false, "content": "选项B"}, {"option": "C", "checked": false, "content": "选项C"}, {"option": "D", "checked": false, "content": "选项D"}]', null, null, '', '["A", "C"]', null, null, null);
-INSERT INTO smartedux.testquestion (TestQuestionID, QuestionText, QuestionImage, QuestionType, SingleChoice, MultipleChoice, FillBlankQuantity, SingleChoiceAnswer, MultipleChoiceAnswer, JudgeAnswer, FillBlankAnswer, Analysis) VALUES (4, '这是填空题().()', null, '填空题', null, null, 2, null, null, null, '["1212", "212"]', null);
-INSERT INTO smartedux.testquestion (TestQuestionID, QuestionText, QuestionImage, QuestionType, SingleChoice, MultipleChoice, FillBlankQuantity, SingleChoiceAnswer, MultipleChoiceAnswer, JudgeAnswer, FillBlankAnswer, Analysis) VALUES (5, '这是判断题', null, '判断题', null, null, null, null, null, 1, null, null);
 
 --
 -- Dumping data for table `testquestion`
 --
+INSERT INTO smartedux.testquestion (TestQuestionID, QuestionText, QuestionImage, QuestionType, SingleChoice, MultipleChoice, FillBlankQuantity, SingleChoiceAnswer, MultipleChoiceAnswer, JudgeAnswer, FillBlankAnswer, Analysis) VALUES (1, '这是有图片的选择题测试()', 'https://img.tukuppt.com/png_preview/00/02/58/LFQPgeNTyr.jpg!/fw/780', '单选题', '[{"option": "A", "checked": false, "content": "选项A"}, {"option": "B", "checked": false, "content": "选项B"}, {"option": "C", "checked": false, "content": "选项C"}, {"option": "D", "checked": false, "content": "选项D"}]', null, null, 'A', null, null, null, '这是这道题的解析。');
+INSERT INTO smartedux.testquestion (TestQuestionID, QuestionText, QuestionImage, QuestionType, SingleChoice, MultipleChoice, FillBlankQuantity, SingleChoiceAnswer, MultipleChoiceAnswer, JudgeAnswer, FillBlankAnswer, Analysis) VALUES (2, '这是有无图片的选择题测试()', null, '单选题', '[{"option": "A", "checked": false, "content": "选项A"}, {"option": "B", "checked": false, "content": "选项B"}, {"option": "C", "checked": false, "content": "选项C"}, {"option": "D", "checked": false, "content": "选项D"}]', null, null, 'B', null, null, null, '无');
+INSERT INTO smartedux.testquestion (TestQuestionID, QuestionText, QuestionImage, QuestionType, SingleChoice, MultipleChoice, FillBlankQuantity, SingleChoiceAnswer, MultipleChoiceAnswer, JudgeAnswer, FillBlankAnswer, Analysis) VALUES (3, '这是多选题()', null, '多选题', 'null', '[{"option": "A", "checked": false, "content": "选项A"}, {"option": "B", "checked": false, "content": "选项B"}, {"option": "C", "checked": false, "content": "选项C"}, {"option": "D", "checked": false, "content": "选项D"}]', null, '', '["A", "C"]', null, null, null);
+INSERT INTO smartedux.testquestion (TestQuestionID, QuestionText, QuestionImage, QuestionType, SingleChoice, MultipleChoice, FillBlankQuantity, SingleChoiceAnswer, MultipleChoiceAnswer, JudgeAnswer, FillBlankAnswer, Analysis) VALUES (4, '这是填空题().()', null, '填空题', null, null, 2, null, null, null, '["1212", "212"]', null);
+INSERT INTO smartedux.testquestion (TestQuestionID, QuestionText, QuestionImage, QuestionType, SingleChoice, MultipleChoice, FillBlankQuantity, SingleChoiceAnswer, MultipleChoiceAnswer, JudgeAnswer, FillBlankAnswer, Analysis) VALUES (5, '这是判断题', null, '判断题', null, null, null, null, null, 1, null, null);
+
 
 LOCK TABLES `testquestion` WRITE;
 /*!40000 ALTER TABLE `testquestion` DISABLE KEYS */;
@@ -509,7 +510,7 @@ CREATE TABLE `testrecord_question` (
   `TestRecordID` int NOT NULL COMMENT '记录ID',
   `Score` int NOT NULL COMMENT '试题分数',
   `SortNum` int NOT NULL COMMENT '试题序号',
-  `UserAnswer` json DEFAULT NULL COMMENT '用户答案',
+  `UserAnswer` varchar(5000) DEFAULT NULL COMMENT '用户答案',
   `IsCorrect` tinyint(1) DEFAULT NULL COMMENT '正确情况',
     KEY `testrecord_question_testquestion_FK` (`TestQuestionID`),
   KEY `testrecord_question_testrecord_FK` (`TestRecordID`),
