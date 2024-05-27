@@ -470,7 +470,7 @@ DROP TABLE IF EXISTS `testrecord`;
 CREATE TABLE `testrecord` (
   `TestRecordID` int NOT NULL AUTO_INCREMENT COMMENT '考试记录ID',
   `TestScore` float NOT NULL COMMENT '考试得分',
-  `FinishState` tinyint(1) NOT NULL COMMENT '完成状态（true or false）',
+  `FinishState` tinyint(1) NOT NULL COMMENT '完成状态',
   `StartTime` datetime NOT NULL COMMENT '考试开始时间',
   `UserID` int NOT NULL COMMENT '用户ID',
   `TestAnalyseID` int DEFAULT NULL COMMENT '考试分析ID',

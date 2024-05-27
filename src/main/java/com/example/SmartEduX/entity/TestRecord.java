@@ -23,8 +23,8 @@ public class TestRecord {
     private Integer testrecordid;
     @ApiModelProperty(value = "考试得分", example = "0")
     private Float testscore;
-    @ApiModelProperty(value = "完成状态", example = "true")
-    private Boolean finishstate;
+    @ApiModelProperty(value = "完成状态", example = "1")
+    private Integer finishstate;
     @ApiModelProperty(value = "考试开始时间", example = "2024-5-22 12:00:00")
     private Date starttime;
     @ApiModelProperty(value = "用户id", example = "1")
