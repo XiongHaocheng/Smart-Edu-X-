@@ -1,10 +1,12 @@
 package com.example.SmartEduX.Controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.example.SmartEduX.Mapper.TestRecordMapper;
 import com.example.SmartEduX.Mapper.UserMapper;
 import com.example.SmartEduX.common.Result;
 import com.example.SmartEduX.entity.TestRecord;
+import com.example.SmartEduX.entity.TestRecord_Question;
 import com.example.SmartEduX.entity.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 @Api(tags = "API接口")
@@ -42,7 +45,7 @@ public class TestRecordController {
         if(res1 != null){
 //            新建一个testrecord
             testRecord.setUserid(userid);
-            testRecord.setFinishstate(false);
+            testRecord.setFinishstate(0);
             Date currentDate = new Date();
 //            System.out.println(currentDate);
             testRecord.setStarttime(currentDate);
@@ -56,5 +59,28 @@ public class TestRecordController {
         }else{
             return Result.error("-1","新建考试记录：未查找到用户！");
         }
+    }
+
+    @ApiOperation("完成记录")
+    @CrossOrigin
+    @GetMapping("/endrecord")
+    public Result<?> endrecord(@RequestParam Integer rid) {
+        TestRecord testRecordFromDB = testRecordMapper.selectById(rid);
+        if(testRecordFromDB != null){
+            testRecordFromDB.setFinishstate(1);
+            testRecordMapper.updateById(testRecordFromDB);
+        }
+        return Result.success(testRecordFromDB,"成功");
+    }
+
+    @ApiOperation("完成记录")
+    @CrossOrigin
+    @GetMapping("/getrecordbyid")
+    public Result<?> getRecordByID(@RequestParam Integer pid, @RequestParam Integer userid) {
+        List<TestRecord> testRecords = testRecordMapper.selectList(
+                new LambdaQueryWrapper<TestRecord>()
+                        .eq(TestRecord::getTestpaperid, pid)
+                        .and(wrapper -> wrapper.eq(TestRecord::getUserid, userid)));
+            return Result.success(testRecords,"获取考试记录成功");
     }
 }
