@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.example.SmartEduX.Mapper.TestRecord_QuestionMapper;
 import com.example.SmartEduX.common.Result;
 import com.example.SmartEduX.entity.TestRecord_Question;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -13,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.io.IOException;
+import java.util.List;
 
 @Api(tags = "API接口")
 @RestController
@@ -23,11 +27,12 @@ public class TestRecord_QuestionController {
     @Resource
     private TestRecord_QuestionMapper testRecord_questionMapper;
 
+
     @ApiOperation("提交用户答案")
     @CrossOrigin
     @PostMapping ("/submitanswer")
     public Result<?> submitAnswer(@RequestBody String data){
-        System.out.println(data);
+//        System.out.println(data);
         Gson gson = new Gson();
         JsonObject jsonObject = gson.fromJson(data, JsonObject.class);
 
@@ -37,7 +42,7 @@ public class TestRecord_QuestionController {
         Integer score = jsonObject.get("score").getAsInt();
         Integer sortnum = jsonObject.get("sortnum").getAsInt();
         String useranswer = jsonObject.get("answer").getAsString();
-        System.out.println("答案"+useranswer);
+//        System.out.println("答案"+useranswer);
 
 //        从数据库中查看是否有这一试题的记录
         TestRecord_Question testRecord_questionfromDB =

@@ -5,13 +5,12 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.example.SmartEduX.Mapper.BigCourseMapper;
-import com.example.SmartEduX.Mapper.QuestionTestPaperMapper;
-import com.example.SmartEduX.Mapper.StudyPathModuleMapper;
-import com.example.SmartEduX.Mapper.TestQuestionMapper;
+import com.example.SmartEduX.Mapper.*;
 import com.example.SmartEduX.common.Result;
 import com.example.SmartEduX.entity.QuestionTestPaper;
 import com.example.SmartEduX.entity.TestQuestion;
+import com.example.SmartEduX.entity.TestRecord;
+import com.example.SmartEduX.entity.TestRecord_Question;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
@@ -38,6 +37,10 @@ public class TestQuestionController {
     @Resource
     private QuestionTestPaperMapper questionTestPaperMapper;
 
+    @Autowired
+    @Resource
+    private TestRecord_QuestionMapper testRecord_questionMapper;
+
     // 创建 DTO 类
     public class QuestionDTO {
         private Integer testquestionid;
@@ -55,6 +58,25 @@ public class TestQuestionController {
         private Integer testpaperid;
         private Integer score;
         private Integer sortnum;
+
+        public String getUseranswer() {
+            return useranswer;
+        }
+
+        public void setUseranswer(String useranswer) {
+            this.useranswer = useranswer;
+        }
+
+        public Integer getIscorrect() {
+            return iscorrect;
+        }
+
+        public void setIscorrect(Integer iscorrect) {
+            this.iscorrect = iscorrect;
+        }
+
+        private String useranswer;
+        private Integer iscorrect;
 
         public Integer getTestquestionid() {
             return testquestionid;
@@ -198,7 +220,6 @@ public class TestQuestionController {
     @GetMapping("/questions")
     public Result<?> getQuestionsByID(@RequestParam Integer paperid) {
         // 查询数据库中paperid的所有试题id
-        // 查询数据库中 paperid 的所有试题 id 和 sortNum
         QueryWrapper<QuestionTestPaper> wrapper = new QueryWrapper<>();
         wrapper.select()
                 .eq("TestPaperID", paperid);
@@ -247,6 +268,62 @@ public class TestQuestionController {
 
         return Result.success(questionDTOS,"成功");
 
+    }
+
+    @ApiOperation("获取用户某个记录的所有试题，包含用户答案，是否正确等")
+    @CrossOrigin
+    @GetMapping("/getrecordquestionsbyid")
+    public Result<?> getRecordQuestionsByID(@RequestParam Integer rid) {
+//        System.out.println(rid);
+        QueryWrapper<TestRecord_Question> wrapper = new QueryWrapper<>();
+        wrapper.select()
+                .eq("TestRecordID", rid);
+        List<TestRecord_Question> testRecord_questions = testRecord_questionMapper.selectList(wrapper);
+
+        // 获取试题 id
+        List<Integer> questionIds = testRecord_questions.stream()
+                .map(TestRecord_Question::getTestquestionid)
+                .collect(Collectors.toList());
+
+        // 查询试题详情
+        QueryWrapper<TestQuestion> questionWrapper = new QueryWrapper<>();
+        questionWrapper.in("TestQuestionID", questionIds);
+        List<TestQuestion> questions = testQuestionMapper.selectList(questionWrapper);
+
+        List<QuestionDTO> questionDTOS = questions.stream()
+                .map(question -> {
+                    QuestionDTO questionDTO = new QuestionDTO();
+                    BeanUtils.copyProperties(question, questionDTO);
+                    questionDTO.setSortnum(testRecord_questions.stream()
+                            .filter(qtp -> qtp.getTestquestionid().equals(question.getTestquestionid()))
+                            .findFirst()
+                            .map(TestRecord_Question::getSortnum)
+                            .orElse(null));
+                    questionDTO.setScore(testRecord_questions.stream()
+                            .filter(qtp -> qtp.getTestquestionid().equals(question.getTestquestionid()))
+                            .findFirst()
+                            .map(TestRecord_Question::getScore)
+                            .orElse(null));
+                    questionDTO.setIscorrect(testRecord_questions.stream()
+                            .filter(qtp -> qtp.getTestquestionid().equals(question.getTestquestionid()))
+                            .findFirst()
+                            .map(TestRecord_Question::getIscorrect)
+                            .orElse(null));
+                    questionDTO.setUseranswer(testRecord_questions.stream()
+                            .filter(qtp -> qtp.getTestquestionid().equals(question.getTestquestionid()))
+                            .findFirst()
+                            .map(TestRecord_Question::getUseranswer)
+                            .orElse(null));
+                    questionDTO.setTestquestionid(testRecord_questions.stream()
+                            .filter(qtp -> qtp.getTestquestionid().equals(question.getTestquestionid()))
+                            .findFirst()
+                            .map(TestRecord_Question::getTestquestionid)
+                            .orElse(null));
+                    return questionDTO;
+                })
+                .collect(Collectors.toList());
+
+        return Result.success(questionDTOS,"成功");
     }
 
 }
