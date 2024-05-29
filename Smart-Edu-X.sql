@@ -76,7 +76,7 @@ CREATE TABLE `bigcourse_user` (
 
 LOCK TABLES `bigcourse_user` WRITE;
 /*!40000 ALTER TABLE `bigcourse_user` DISABLE KEYS */;
-INSERT INTO `bigcourse_user` VALUES (2,10),(4,10),(1,10),(7,10);
+INSERT INTO `bigcourse_user` VALUES (4,10),(1,10),(7,10);
 /*!40000 ALTER TABLE `bigcourse_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -117,6 +117,34 @@ LOCK TABLES `comment` WRITE;
 /*!40000 ALTER TABLE `comment` DISABLE KEYS */;
 INSERT INTO `comment` VALUES (1,'https://img1.baidu.com/it/u=3622150954,2575811681&fm=253&app=120&size=w931&n=0&f=JPEG&fmt=auto?sec=1716397200&t=0b7c986b5fc51c2236c6a2f6147c391d','xhc','2024-05-21','很不错的课程',10,NULL,NULL,1),(2,'http://thirdqq.qlogo.cn/ek_qqapp/AQAiaTtkWG4N7cqBR7LCpBpHXZib6GTS2tm0AXwfGqVAIE2zho0g7NawiaQ6EykAZb3C9aerqIP/100','xxx','2024-05-21','能学到很多',11,NULL,NULL,1),(3,'https://img1.baidu.com/it/u=3622150954,2575811681&fm=253&app=120&size=w931&n=0&f=JPEG&fmt=auto?sec=1716397200&t=0b7c986b5fc51c2236c6a2f6147c391d','xhc','2024-05-21','博观而约取，厚积而薄发',10,NULL,NULL,2),(4,'https://img1.baidu.com/it/u=3622150954,2575811681&fm=253&app=120&size=w931&n=0&f=JPEG&fmt=auto?sec=1716397200&t=0b7c986b5fc51c2236c6a2f6147c391d','xhc','2024-05-21','课程内容不错',10,NULL,NULL,2),(5,'https://img1.baidu.com/it/u=3622150954,2575811681&fm=253&app=120&size=w931&n=0&f=JPEG&fmt=auto?sec=1716397200&t=0b7c986b5fc51c2236c6a2f6147c391d','xhc','2024-05-21','123123',10,NULL,NULL,1),(6,'https://img1.baidu.com/it/u=3622150954,2575811681&fm=253&app=120&size=w931&n=0&f=JPEG&fmt=auto?sec=1716397200&t=0b7c986b5fc51c2236c6a2f6147c391d','xhc','2024-05-21','123123',10,NULL,NULL,1),(7,'https://img1.baidu.com/it/u=3622150954,2575811681&fm=253&app=120&size=w931&n=0&f=JPEG&fmt=auto?sec=1716397200&t=0b7c986b5fc51c2236c6a2f6147c391d','xhc','2024-05-21','还行',10,NULL,NULL,3),(8,'https://img1.baidu.com/it/u=3622150954,2575811681&fm=253&app=120&size=w931&n=0&f=JPEG&fmt=auto?sec=1716397200&t=0b7c986b5fc51c2236c6a2f6147c391d','xhc','2024-05-21','评论',10,NULL,NULL,3),(9,'https://img1.baidu.com/it/u=3622150954,2575811681&fm=253&app=120&size=w931&n=0&f=JPEG&fmt=auto?sec=1716397200&t=0b7c986b5fc51c2236c6a2f6147c391d','xhc','2024-05-21','111',10,NULL,NULL,3),(10,'https://img1.baidu.com/it/u=3622150954,2575811681&fm=253&app=120&size=w931&n=0&f=JPEG&fmt=auto?sec=1716397200&t=0b7c986b5fc51c2236c6a2f6147c391d','xhc','2024-05-21','go web开发很不错',10,NULL,NULL,7),(11,'http://thirdqq.qlogo.cn/ek_qqapp/AQAiaTtkWG4N7cqBR7LCpBpHXZib6GTS2tm0AXwfGqVAIE2zho0g7NawiaQ6EykAZb3C9aerqIP/100','xxx','2024-05-21','xxx的评论',11,NULL,NULL,2),(12,'https://img1.baidu.com/it/u=3622150954,2575811681&fm=253&app=120&size=w931&n=0&f=JPEG&fmt=auto?sec=1716397200&t=0b7c986b5fc51c2236c6a2f6147c391d','xhc','2024-05-22','xhc的评论',10,NULL,37,NULL),(13,'https://img1.baidu.com/it/u=3622150954,2575811681&fm=253&app=120&size=w931&n=0&f=JPEG&fmt=auto?sec=1716397200&t=0b7c986b5fc51c2236c6a2f6147c391d','xhc','2024-05-22','8',10,NULL,37,NULL),(14,'https://img1.baidu.com/it/u=3622150954,2575811681&fm=253&app=120&size=w931&n=0&f=JPEG&fmt=auto?sec=1716397200&t=0b7c986b5fc51c2236c6a2f6147c391d','xhc','2024-05-22','新评论来了',10,NULL,44,NULL),(15,'http://thirdqq.qlogo.cn/ek_qqapp/AQAiaTtkWG4N7cqBR7LCpBpHXZib6GTS2tm0AXwfGqVAIE2zho0g7NawiaQ6EykAZb3C9aerqIP/100','xxx','2024-05-22','zap日志库的介绍很详细',11,NULL,35,NULL),(16,'http://thirdqq.qlogo.cn/ek_qqapp/AQAiaTtkWG4N7cqBR7LCpBpHXZib6GTS2tm0AXwfGqVAIE2zho0g7NawiaQ6EykAZb3C9aerqIP/100','xxx','2024-05-22','gin框架配置很不错',11,NULL,36,NULL),(17,'https://img1.baidu.com/it/u=3622150954,2575811681&fm=253&app=120&size=w931&n=0&f=JPEG&fmt=auto?sec=1716397200&t=0b7c986b5fc51c2236c6a2f6147c391d','xhc','2024-05-26','111',10,NULL,14,NULL);
 /*!40000 ALTER TABLE `comment` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `dialogbox`
+--
+
+DROP TABLE IF EXISTS `dialogbox`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `dialogbox` (
+  `DialogBoxID` int NOT NULL AUTO_INCREMENT,
+  `UserID` int NOT NULL,
+  `CreateTime` varchar(100) NOT NULL,
+  `DialogBoxName` varchar(100) NOT NULL,
+  PRIMARY KEY (`DialogBoxID`),
+  KEY `dialogbox_user_FK` (`UserID`),
+  CONSTRAINT `dialogbox_user_FK` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=96 DEFAULT CHARSET=utf8mb3 COMMENT='智能问答对话框';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `dialogbox`
+--
+
+LOCK TABLES `dialogbox` WRITE;
+/*!40000 ALTER TABLE `dialogbox` DISABLE KEYS */;
+INSERT INTO `dialogbox` VALUES (90,10,'2024-05-29 18:28:58','新建对话框'),(91,10,'2024-05-29 18:51:55','新建对话框'),(93,10,'2024-05-29 18:58:35','新建对话框'),(95,10,'2024-05-29 19:40:50','对话框');
+/*!40000 ALTER TABLE `dialogbox` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -209,10 +237,12 @@ CREATE TABLE `qanda` (
   `QAndAID` int NOT NULL AUTO_INCREMENT,
   `QuestionContent` varchar(500) NOT NULL COMMENT '提问内容',
   `AnswerContent` longtext NOT NULL COMMENT '回答内容',
-  `Time` datetime NOT NULL COMMENT '提问时间',
+  `Time` varchar(100) NOT NULL COMMENT '提问时间',
+  `DialogBoxID` int NOT NULL,
   PRIMARY KEY (`QAndAID`),
-  CONSTRAINT `qanda_user_FK` FOREIGN KEY (`QAndAID`) REFERENCES `user` (`UserID`) ON DELETE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='人工智能提问回答';
+  KEY `qanda_dialogbox_FK` (`DialogBoxID`),
+  CONSTRAINT `qanda_dialogbox_FK` FOREIGN KEY (`DialogBoxID`) REFERENCES `dialogbox` (`DialogBoxID`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=146 DEFAULT CHARSET=utf8mb3 COMMENT='人工智能提问回答';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -221,6 +251,7 @@ CREATE TABLE `qanda` (
 
 LOCK TABLES `qanda` WRITE;
 /*!40000 ALTER TABLE `qanda` DISABLE KEYS */;
+INSERT INTO `qanda` VALUES (116,'你是谁？','您好，我是讯飞星火认知大模型，由科大讯飞构建。\n我的存在旨在通过自然语言处理技术与人类进行流畅的交流，提供问题解答和满足广泛的认知智能需求。作为一个先进的人工智能系统，我能够理解和处理各种信息，支持人们在教育、医疗、金融等多个领域内的查询和任务执行。我的设计初衷是为了提高工作效率，促进知识的传播，并通过智能化的交互方式，帮助人们更好地获取和利用信息。','2024-05-29 18:29:10',90),(117,'你认为1+1等于几','在数学中，1+1等于2。这是基于我们使用的数学系统，即阿拉伯数字和基本的算术运算。这个事实是数学的一个基本规则，广泛被接受和使用。','2024-05-29 18:29:39',90),(118,'你可真聪明','谢谢您的认可！我的智能来源于科大讯飞的不断研发和优化。\n我被设计用来理解和处理语言，解答问题，以及协助解决各种认知任务。如果您有其他疑问或需要帮助，我会尽力为您提供支持和服务。','2024-05-29 18:29:59',90),(119,'为我生成一张照片','我可以为您提供如何生成照片的指导，但请注意，我无法直接创建或展示图片。以下是一些建议：\n1. 选择主题和背景：确定您想要拍摄的主题（如人物、风景等）以及背景。\n2. 使用合适的设备：选择一台高质量的相机或智能手机，并确保它处于良好状态。\n3. 设置光线：考虑光线的方向和强度，以确保照片清晰明亮。\n4. 调整相机设置：根据需要调整ISO、光圈和快门速度等相机设置。\n5. 构图和对焦：仔细安排主题在画面中的位置，并确保对焦点准确。\n6. 拍摄照片：按下快门按钮，捕捉您想要的场景。\n7. 后期处理：使用图像编辑软件进行必要的调整，如裁剪、调整亮度/对比度等。\n8. 保存和分享：将照片保存到您的设备上，并与他人分享或打印出来。\n请记住，摄影是一门艺术，需要时间和实践来提高。不断尝试不同的技巧和设置，以找到适合您风格的方法。','2024-05-29 18:51:19',90),(120,'自我介绍','我的目标是成为人类在信息时代的得力助手，帮助每个人更高效地完成工作，实现自我提升。\n自我介绍是向他人展示个人身份、背景和特点的一种方式。\n总之，我是一个集知识、智慧和学习能力于一体的认知智能大模型，旨在通过自然语言处理技术，为人类提供全面的信息支持和智能服务。一个有效的自我介绍可以让人们快速了解你是谁，你的专业或兴趣领域，以及可能的联系方式。我期待与您一起探索知识的海洋，解答您的疑惑，共同创造更加美好的未来。以下是进行自我介绍时可以考虑的几个要点：\n','2024-05-29 18:52:11',91),(121,'自我介绍','我的目标是成为人类在信息时代的得力助手，帮助每个人更高效地完成工作，实现自我提升。\n自我介绍是向他人展示个人身份、背景和特点的一种方式。\n总之，我是一个集知识、智慧和学习能力于一体的认知智能大模型，旨在通过自然语言处理技术，为人类提供全面的信息支持和智能服务。一个有效的自我介绍可以让人们快速了解你是谁，你的专业或兴趣领域，以及可能的联系方式。我期待与您一起探索知识的海洋，解答您的疑惑，共同创造更加美好的未来。以下是进行自我介绍时可以考虑的几个要点：\n\n### 1. 开场问候\n','2024-05-29 18:52:11',91),(122,'继续','我的目标是成为人类在信息时代的得力助手，帮助每个人更高效地完成工作，实现自我提升。\n自我介绍是向他人展示个人身份、背景和特点的一种方式。\n','2024-05-29 18:53:02',91),(126,'你好','你好！有什么可以帮你的吗？如果你有任何问题或者需要信息，随时欢迎提出。','2024-05-29 18:58:39',93),(127,'你是？','你好！我是讯飞星火认知大模型，一个由科大讯飞构建的认知智能大模型。\n我的主要功能是帮助用户回答问题并且提供信息。','2024-05-29 19:06:07',93),(128,'你是？','你好！我是讯飞星火认知大模型，一个由科大讯飞构建的认知智能大模型。\n我的主要功能是帮助用户回答问题并且提供信息。','2024-05-29 19:08:48',93),(129,'1+1？','1 + 1 = 2','2024-05-29 19:10:40',93),(130,'1+1','1 + 1 = 2','2024-05-29 19:10:47',93),(131,'123','看起来你发送了数字\"123\"，这有什么具体的意义或问题吗？如果有其他数学问题或需要帮助的地方，请告诉我！','2024-05-29 19:11:44',91),(132,'123','好的，看起来你可能是在测试或探索对话功能。如果你有任何具体的问题或需要帮助，请随时告诉我！如果\"123\"是一个数学问题或者你有其他的意图，也请详细说明，我很乐意帮助解答。','2024-05-29 19:12:45',93),(133,'是的','好的，如果你有其他问题或需要进一步的帮助，请随时告诉我！无论是数学问题、信息查询还是其他任何主题，我都会尽力提供帮助。','2024-05-29 19:13:29',93),(135,'1','如果你是在询问关于数字\"1\"的数学问题，那么这个数字本身是基本的整数之一。如果你有关于数字\"1\"的具体问题或者需要进一步的数学帮助，请详细说明，我会很乐意帮助解答。','2024-05-29 19:16:38',93),(136,'1','好的，如果你有其他问题或需要进一步的帮助，请随时告诉我！无论是数学问题、信息查询还是其他任何主题，我都会尽力提供帮助。','2024-05-29 19:21:11',91),(137,'是的','了解，如果你有其他问题或需要进一步的帮助，请随时告诉我！无论是数学问题、信息查询还是其他任何主题，我都会尽力提供帮助。','2024-05-29 19:21:30',90),(138,'好','好的！如果你有任何问题或需要帮助，随时欢迎回来。祝你有一个美好的一天！','2024-05-29 19:23:17',90),(142,'ok','好的，如果你有其他问题或需要进一步的帮助，请随时告诉我！无论是数学问题、信息查询还是其他任何主题，我都会尽力提供帮助。','2024-05-29 19:35:54',93),(145,'您可以为我解答一下这个学习问题吗？','当然，我会尽力帮助你。请告诉我你的问题是什么？','2024-05-29 19:40:54',95);
 /*!40000 ALTER TABLE `qanda` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -447,12 +478,6 @@ CREATE TABLE `testquestion` (
 --
 -- Dumping data for table `testquestion`
 --
-INSERT INTO smartedux.testquestion (TestQuestionID, QuestionText, QuestionImage, QuestionType, SingleChoice, MultipleChoice, FillBlankQuantity, SingleChoiceAnswer, MultipleChoiceAnswer, JudgeAnswer, FillBlankAnswer, Analysis) VALUES (1, '这是有图片的选择题测试()', 'https://img.tukuppt.com/png_preview/00/02/58/LFQPgeNTyr.jpg!/fw/780', '单选题', '[{"option": "A", "checked": false, "content": "选项A"}, {"option": "B", "checked": false, "content": "选项B"}, {"option": "C", "checked": false, "content": "选项C"}, {"option": "D", "checked": false, "content": "选项D"}]', null, null, 'A', null, null, null, '这是这道题的解析。');
-INSERT INTO smartedux.testquestion (TestQuestionID, QuestionText, QuestionImage, QuestionType, SingleChoice, MultipleChoice, FillBlankQuantity, SingleChoiceAnswer, MultipleChoiceAnswer, JudgeAnswer, FillBlankAnswer, Analysis) VALUES (2, '这是有无图片的选择题测试()', null, '单选题', '[{"option": "A", "checked": false, "content": "选项A"}, {"option": "B", "checked": false, "content": "选项B"}, {"option": "C", "checked": false, "content": "选项C"}, {"option": "D", "checked": false, "content": "选项D"}]', null, null, 'B', null, null, null, '无');
-INSERT INTO smartedux.testquestion (TestQuestionID, QuestionText, QuestionImage, QuestionType, SingleChoice, MultipleChoice, FillBlankQuantity, SingleChoiceAnswer, MultipleChoiceAnswer, JudgeAnswer, FillBlankAnswer, Analysis) VALUES (3, '这是多选题()', null, '多选题', 'null', '[{"option": "A", "checked": false, "content": "选项A"}, {"option": "B", "checked": false, "content": "选项B"}, {"option": "C", "checked": false, "content": "选项C"}, {"option": "D", "checked": false, "content": "选项D"}]', null, '', '["A", "C"]', null, null, null);
-INSERT INTO smartedux.testquestion (TestQuestionID, QuestionText, QuestionImage, QuestionType, SingleChoice, MultipleChoice, FillBlankQuantity, SingleChoiceAnswer, MultipleChoiceAnswer, JudgeAnswer, FillBlankAnswer, Analysis) VALUES (4, '这是填空题().()', null, '填空题', null, null, 2, null, null, null, '["1212", "212"]', null);
-INSERT INTO smartedux.testquestion (TestQuestionID, QuestionText, QuestionImage, QuestionType, SingleChoice, MultipleChoice, FillBlankQuantity, SingleChoiceAnswer, MultipleChoiceAnswer, JudgeAnswer, FillBlankAnswer, Analysis) VALUES (5, '这是判断题', null, '判断题', null, null, null, null, null, 1, null, null);
-
 
 LOCK TABLES `testquestion` WRITE;
 /*!40000 ALTER TABLE `testquestion` DISABLE KEYS */;
@@ -470,7 +495,7 @@ DROP TABLE IF EXISTS `testrecord`;
 CREATE TABLE `testrecord` (
   `TestRecordID` int NOT NULL AUTO_INCREMENT COMMENT '考试记录ID',
   `TestScore` float NOT NULL COMMENT '考试得分',
-  `FinishState` tinyint(1) NOT NULL COMMENT '完成状态',
+  `FinishState` tinyint(1) NOT NULL COMMENT '完成状态（true or false）',
   `StartTime` datetime NOT NULL COMMENT '考试开始时间',
   `UserID` int NOT NULL COMMENT '用户ID',
   `TestAnalyseID` int DEFAULT NULL COMMENT '考试分析ID',
@@ -482,7 +507,7 @@ CREATE TABLE `testrecord` (
   CONSTRAINT `testrecord_testanalyse_FK` FOREIGN KEY (`TestAnalyseID`) REFERENCES `testanalyse` (`TestAnalyseID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `testrecord_testpaper_FK` FOREIGN KEY (`TestPaperID`) REFERENCES `testpaper` (`TestPaperID`),
   CONSTRAINT `testrecord_user_FK` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb3 COMMENT='考试记录';
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb3 COMMENT='考试记录';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -491,7 +516,7 @@ CREATE TABLE `testrecord` (
 
 LOCK TABLES `testrecord` WRITE;
 /*!40000 ALTER TABLE `testrecord` DISABLE KEYS */;
-INSERT INTO `testrecord` VALUES (1,0,0,'2024-05-26 05:35:01',10,NULL,1),(2,0,0,'2024-05-26 07:26:49',10,NULL,1),(3,0,0,'2024-05-26 07:27:16',10,NULL,1);
+INSERT INTO `testrecord` VALUES (1,0,0,'2024-05-26 05:35:01',10,NULL,1),(2,0,0,'2024-05-26 07:26:49',10,NULL,1),(3,0,0,'2024-05-26 07:27:16',10,NULL,1),(4,0,0,'2024-05-27 09:22:07',10,NULL,1),(5,0,0,'2024-05-27 09:31:52',10,NULL,1),(6,0,0,'2024-05-27 09:31:59',10,NULL,1),(7,0,0,'2024-05-28 00:07:45',10,NULL,1),(8,0,0,'2024-05-28 00:08:18',10,NULL,1);
 /*!40000 ALTER TABLE `testrecord` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -507,7 +532,7 @@ CREATE TABLE `testrecord_question` (
   `TestRecordID` int NOT NULL COMMENT '记录ID',
   `Score` int NOT NULL COMMENT '试题分数',
   `SortNum` int NOT NULL COMMENT '试题序号',
-  `UserAnswer` varchar(5000) DEFAULT NULL COMMENT '用户答案',
+  `UserAnswer` json DEFAULT NULL COMMENT '用户答案',
   `IsCorrect` tinyint(1) DEFAULT NULL COMMENT '正确情况',
   KEY `testrecord_question_testquestion_FK` (`TestQuestionID`),
   KEY `testrecord_question_testrecord_FK` (`TestRecordID`),
@@ -650,4 +675,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-27 11:57:10
+-- Dump completed on 2024-05-29 19:46:11
