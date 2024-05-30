@@ -5,23 +5,26 @@ import com.example.SmartEduX.BigModelNew.BigModelNew;
 import com.example.SmartEduX.Mapper.QAndAMapper;
 import com.example.SmartEduX.common.Result;
 import com.example.SmartEduX.entity.QAndA;
+import com.example.SmartEduX.iflytek.WebIATWS;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+
 
 @Api(tags = "API接口")
 @RestController
 @RequestMapping("qanda")
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class QAndAController {
-
     public static  String answer = "";
+    public static  String audioResult = "";
+
     @Autowired
     @Resource
     private QAndAMapper qAndAMapper;
@@ -54,6 +57,14 @@ public class QAndAController {
         qAndAMapper.insert(newquestion);
         return Result.success("成功");
     }
+
+    @ApiOperation("语音输入问题")
+    @CrossOrigin
+    @GetMapping(value = "/addaudioquestion")
+    public Result<String> addAudioQuestion() throws Exception {
+        audioResult = "" ;
+        WebIATWS.main(new String[]{});
+        //System.out.println("获得的最终结果" + audioResult);
+        return Result.success(audioResult,"成功");
+    }
 }
-
-
