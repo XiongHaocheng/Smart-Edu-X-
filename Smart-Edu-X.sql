@@ -481,7 +481,7 @@ CREATE TABLE `testquestion` (
 
 LOCK TABLES `testquestion` WRITE;
 /*!40000 ALTER TABLE `testquestion` DISABLE KEYS */;
-INSERT INTO `testquestion` VALUES (1,'这是有图片的选择题测试()','https://img.tukuppt.com/png_preview/00/02/58/LFQPgeNTyr.jpg!/fw/780','单选题','[{\"option\": \"A\", \"checked\": false, \"content\": \"选项A\"}, {\"option\": \"B\", \"checked\": false, \"content\": \"选项B\"}, {\"option\": \"C\", \"checked\": false, \"content\": \"选项C\"}, {\"option\": \"D\", \"checked\": false, \"content\": \"选项D\"}]',NULL,NULL,'A',NULL,NULL,NULL,'这是这道题的解析。'),(2,'这是有无图片的选择题测试()',NULL,'单选题','[{\"option\": \"A\", \"checked\": false, \"content\": \"选项A\"}, {\"option\": \"B\", \"checked\": false, \"content\": \"选项B\"}, {\"option\": \"C\", \"checked\": false, \"content\": \"选项C\"}, {\"option\": \"D\", \"checked\": false, \"content\": \"选项D\"}]',NULL,NULL,'B',NULL,NULL,NULL,'无'),(3,'这是多选题()',NULL,'多选题','[{\"option\": \"A\", \"checked\": false, \"content\": \"选项A\"}, {\"option\": \"B\", \"checked\": false, \"content\": \"选项B\"}, {\"option\": \"C\", \"checked\": false, \"content\": \"选项C\"}, {\"option\": \"D\", \"checked\": false, \"content\": \"选项D\"}]',NULL,NULL,'','[\"A\", \"C\"]',NULL,NULL,NULL),(4,'这是填空题().()',NULL,'填空题',NULL,NULL,2,NULL,NULL,NULL,'[\"1212\", \"212\"]',NULL),(5,'这是判断题',NULL,'判断题',NULL,NULL,NULL,NULL,NULL,1,NULL,NULL);
+INSERT INTO `testquestion` VALUES (1,'这是有图片的选择题测试()','https://img.tukuppt.com/png_preview/00/02/58/LFQPgeNTyr.jpg!/fw/780','单选题','[{\"option\": \"A\", \"checked\": false, \"content\": \"选项A\"}, {\"option\": \"B\", \"checked\": false, \"content\": \"选项B\"}, {\"option\": \"C\", \"checked\": false, \"content\": \"选项C\"}, {\"option\": \"D\", \"checked\": false, \"content\": \"选项D\"}]',NULL,NULL,'A',NULL,NULL,NULL,'这是这道题的解析。'),(2,'这是有无图片的选择题测试()',NULL,'单选题','[{\"option\": \"A\", \"checked\": false, \"content\": \"选项A\"}, {\"option\": \"B\", \"checked\": false, \"content\": \"选项B\"}, {\"option\": \"C\", \"checked\": false, \"content\": \"选项C\"}, {\"option\": \"D\", \"checked\": false, \"content\": \"选项D\"}]',NULL,NULL,'B',NULL,NULL,NULL,'无'),(3,'这是多选题()',NULL,'多选题',NULL,'[{\"option\": \"A\", \"checked\": false, \"content\": \"选项A\"}, {\"option\": \"B\", \"checked\": false, \"content\": \"选项B\"}, {\"option\": \"C\", \"checked\": false, \"content\": \"选项C\"}, {\"option\": \"D\", \"checked\": false, \"content\": \"选项D\"}]',NULL,'','[\"A\", \"C\"]',NULL,NULL,NULL),(4,'这是填空题().()',NULL,'填空题',NULL,NULL,2,NULL,NULL,NULL,'[\"1212\", \"212\"]',NULL),(5,'这是判断题',NULL,'判断题',NULL,NULL,NULL,NULL,NULL,1,NULL,NULL);
 /*!40000 ALTER TABLE `testquestion` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -532,7 +532,7 @@ CREATE TABLE `testrecord_question` (
   `TestRecordID` int NOT NULL COMMENT '记录ID',
   `Score` int NOT NULL COMMENT '试题分数',
   `SortNum` int NOT NULL COMMENT '试题序号',
-  `UserAnswer` json DEFAULT NULL COMMENT '用户答案',
+  `UserAnswer` varchar(1000) DEFAULT NULL COMMENT '用户答案',
   `IsCorrect` tinyint(1) DEFAULT NULL COMMENT '正确情况',
   KEY `testrecord_question_testquestion_FK` (`TestQuestionID`),
   KEY `testrecord_question_testrecord_FK` (`TestRecordID`),
