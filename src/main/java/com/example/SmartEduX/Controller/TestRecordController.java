@@ -131,6 +131,8 @@ public class TestRecordController {
                 testRecord_questionMapper.update(question1,new LambdaQueryWrapper<TestRecord_Question>()
                         .eq(TestRecord_Question::getTestquestionid, question1.getTestquestionid())
                         .and(wrapper -> wrapper.eq(TestRecord_Question::getTestrecordid, question1.getTestrecordid())));
+            }else{
+                testRecord_questionMapper.insert(question);
             }
         }
 
