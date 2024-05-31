@@ -24,9 +24,7 @@ public class BigCourseController {
     @Autowired
     @Resource
     private BigCourseMapper bigCourseMapper;
-    @Autowired
-    @Resource
-    private BigCourse_UserMapper bigCourse_UserMapper;
+
     @ApiOperation("获取大课程信息")
     @CrossOrigin
     @GetMapping(value = "/bigcourseinfo")
@@ -90,77 +88,5 @@ public class BigCourseController {
         }
     }
 
-    @ApiOperation("用户订阅课程")
-    @CrossOrigin
-    @PostMapping("/subscribecourse")
-    public Result<?> getBigCourseID(@RequestParam Integer courseID, @RequestParam Integer userID) {
-    BigCourse_User bigcourse_user = new BigCourse_User();
-        bigcourse_user.setCourseid(courseID);
-        bigcourse_user.setUserid(userID);
-        bigCourse_UserMapper.insert(bigcourse_user);
-        return Result.success("订阅成功");
-    }
-
-    @ApiOperation("获取我的学习信息")
-    @CrossOrigin
-    @GetMapping(value = "/getmystudy")
-    public Result<?> getBigCourseID(@RequestParam Integer userID) {
-        QueryWrapper<BigCourse_User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("userid", userID);
-        List<BigCourse_User> bigCourse_User = bigCourse_UserMapper.selectList(queryWrapper);
-        if (bigCourse_User == null || bigCourse_User.isEmpty()) {
-            return Result.error("-1","找不到学习信息");
-        }
-        List<BigCourse> mystudyinfo = new ArrayList<>();
-        for (BigCourse_User courseUser : bigCourse_User) {
-            // 获取大课程ID
-            Integer bigCourseID = courseUser.getCourseid();
-            // 根据大课程ID查询大课程信息
-            BigCourse bigCourse = bigCourseMapper.selectById(bigCourseID);
-
-            // 将查询到的大课程信息存入 BigCourseInfo 对象中
-            BigCourse bigCourseInfo = new BigCourse();
-            bigCourseInfo.setCoursename(bigCourse.getCoursename());
-            bigCourseInfo.setCoursecover(bigCourse.getCoursecover());
-            bigCourseInfo.setCourseid(bigCourse.getCourseid());
-            // 将 BigCourseInfo 对象添加到列表中
-            mystudyinfo.add(bigCourseInfo);
-        }
-        //System.out.println(mystudyinfo);
-        return Result.success(mystudyinfo,"成功");
-    }
-    @ApiOperation("取消订阅")
-    @CrossOrigin
-    @PostMapping(value = "/deletesubscribe")
-    public Result<?> deleteSubscribe(@RequestParam Integer userID,@RequestParam Integer courseID) {
-        // 创建查询条件
-        QueryWrapper<BigCourse_User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("userid", userID).eq("courseid", courseID);
-
-        // 删除记录
-        int deleteCount = bigCourse_UserMapper.delete(queryWrapper);
-
-        if (deleteCount > 0) {
-            return Result.success("取消订阅成功");
-        } else {
-            return Result.error("-1", "取消订阅失败或记录不存在");
-        }
-    }
-
-    @ApiOperation("检查是否订阅")
-    @CrossOrigin
-    @PostMapping(value = "/isSubscribe")
-    public Result<Boolean> isSubscribe(@RequestParam Integer courseID, @RequestParam Integer userID) {
-        // 创建查询条件
-        QueryWrapper<BigCourse_User> queryWrapper = new QueryWrapper<>();
-        queryWrapper.eq("userid", userID).eq("courseid", courseID);
-        // 查询数据库
-        BigCourse_User bigCourseUser = bigCourse_UserMapper.selectOne(queryWrapper);
-        if(bigCourseUser==null){
-            return Result.success(false,"成功");//未订阅
-        }else{
-            return Result.success(true,"成功");//订阅了
-        }
-    }
 }
 
