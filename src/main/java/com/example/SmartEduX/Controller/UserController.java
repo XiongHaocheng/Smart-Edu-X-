@@ -1,11 +1,14 @@
 package com.example.SmartEduX.Controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.example.SmartEduX.LoginUser;
 import com.example.SmartEduX.Mapper.UserMapper;
 import com.example.SmartEduX.Utils.TokenUtils;
 import com.example.SmartEduX.common.Result;
+import com.example.SmartEduX.entity.ImageAndText;
 import com.example.SmartEduX.entity.User;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -124,6 +127,7 @@ public class UserController {
         }
 
     }
+
     @ApiOperation("获取用户头像")
     @CrossOrigin
     @GetMapping(value ="/useravatar")
@@ -132,4 +136,6 @@ public class UserController {
     String result = user.getUseravatar();
     return Result.success(result,"成功");
     }
+
+
 }
