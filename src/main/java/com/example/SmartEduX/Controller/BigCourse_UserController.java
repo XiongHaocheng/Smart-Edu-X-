@@ -189,7 +189,7 @@ public class BigCourse_UserController {
     @CrossOrigin
     @GetMapping("/getfinishnums")
     public Result<List<Integer>> getFinishNums(@RequestParam Integer userID, @RequestParam Integer courseID) throws InterruptedException {
-        System.out.println(courseID);
+       // System.out.println(courseID);
         QueryWrapper<BigCourse_User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("userid", userID).eq("courseid", courseID);
         BigCourse_User bigCourseUser = bigCourse_UserMapper.selectOne(queryWrapper);
