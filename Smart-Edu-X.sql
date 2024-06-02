@@ -63,11 +63,15 @@ DROP TABLE IF EXISTS `bigcourse_user`;
 CREATE TABLE `bigcourse_user` (
   `CourseID` int NOT NULL COMMENT '课程ID',
   `UserID` int NOT NULL COMMENT '用户ID',
+  `StudyTime` double NOT NULL DEFAULT '0' COMMENT '订阅之后记录学习时长',
+  `FinishNum` int DEFAULT NULL,
+  `UnfinishNum` int DEFAULT NULL,
+  `FinishVideoCourseName` json DEFAULT NULL COMMENT '已经完成学习的小章节课程名',
   KEY `bigcourse_FK` (`CourseID`),
   KEY `user_FK` (`UserID`),
   CONSTRAINT `bigcourse_FK` FOREIGN KEY (`CourseID`) REFERENCES `bigcourse` (`CourseID`),
   CONSTRAINT `user_FK` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='用户订阅大课程';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='用户学习大课程情况';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -76,7 +80,7 @@ CREATE TABLE `bigcourse_user` (
 
 LOCK TABLES `bigcourse_user` WRITE;
 /*!40000 ALTER TABLE `bigcourse_user` DISABLE KEYS */;
-INSERT INTO `bigcourse_user` VALUES (4,10),(1,10),(7,10),(1,11);
+INSERT INTO `bigcourse_user` VALUES (3,10,63.64,1,3,'[\"微信官方开发工具使用\"]'),(5,10,0,0,3,NULL),(6,10,25.080000000000005,1,3,'[\"Pytorch的安装\"]'),(1,11,3.72,1,7,'[\"HTML入门和工具选择\"]'),(7,11,0,0,4,NULL),(3,11,0,0,4,NULL);
 /*!40000 ALTER TABLE `bigcourse_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -134,7 +138,7 @@ CREATE TABLE `dialogbox` (
   PRIMARY KEY (`DialogBoxID`),
   KEY `dialogbox_user_FK` (`UserID`),
   CONSTRAINT `dialogbox_user_FK` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=104 DEFAULT CHARSET=utf8mb3 COMMENT='智能问答对话框';
+) ENGINE=InnoDB AUTO_INCREMENT=107 DEFAULT CHARSET=utf8mb3 COMMENT='智能问答对话框';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -584,30 +588,6 @@ INSERT INTO `user` VALUES (10,'xhc','$2a$10$8y.CQOie9LdTATz1cpug8Op/Bg.CV97ubLXK
 UNLOCK TABLES;
 
 --
--- Table structure for table `userstudycourse`
---
-
-DROP TABLE IF EXISTS `userstudycourse`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `userstudycourse` (
-  `UserID` int NOT NULL,
-  `BigCourseID` int NOT NULL,
-  `StudyTime` double NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='用户观看某节大课程的时长';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `userstudycourse`
---
-
-LOCK TABLES `userstudycourse` WRITE;
-/*!40000 ALTER TABLE `userstudycourse` DISABLE KEYS */;
-INSERT INTO `userstudycourse` VALUES (11,2,3.5800000000000005),(11,3,0.32);
-/*!40000 ALTER TABLE `userstudycourse` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
 -- Table structure for table `videocourse`
 --
 
@@ -699,4 +679,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-31 11:10:03
+-- Dump completed on 2024-05-31 18:15:39
