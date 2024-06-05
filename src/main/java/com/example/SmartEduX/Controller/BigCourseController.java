@@ -2,11 +2,8 @@ package com.example.SmartEduX.Controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.SmartEduX.Mapper.BigCourseMapper;
-import com.example.SmartEduX.Mapper.BigCourse_UserMapper;
 import com.example.SmartEduX.common.Result;
 import com.example.SmartEduX.entity.BigCourse;
-import com.example.SmartEduX.entity.BigCourse_User;
-import com.example.SmartEduX.entity.Comment;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

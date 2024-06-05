@@ -1,6 +1,5 @@
 server:
   port: 9090
-  max-http-header-size: 99999
 spring:
   mvc:
     path match:

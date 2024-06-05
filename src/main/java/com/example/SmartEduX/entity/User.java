@@ -32,7 +32,7 @@ public class User {
     @ApiModelProperty(value = "用户活跃度", example = "")
     private String useractivity;
     @ApiModelProperty(value = "用户得分", example = "")
-    private Double userscore;
+    private Integer userscore;
     @ApiModelProperty(value = "用户列", example = "")
     private String usercol;
     @ApiModelProperty(value = "令牌",  example = "")
