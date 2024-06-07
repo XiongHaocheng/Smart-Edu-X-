@@ -1,4 +1,4 @@
-package com.example.SmartEduX.BigModelNew;
+package com.example.SmartEduX.xunfeiAPI.BigModelNew;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;

@@ -1,17 +1,16 @@
 package com.example.SmartEduX.Controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.example.SmartEduX.BigModelNew.BigModelNew;
+import com.example.SmartEduX.xunfeiAPI.BigModelNew.BigModelNew;
 import com.example.SmartEduX.Mapper.QAndAMapper;
 import com.example.SmartEduX.common.Result;
 import com.example.SmartEduX.entity.QAndA;
-import com.example.SmartEduX.iflytek.WebIATWS;
+import com.example.SmartEduX.xunfeiAPI.iflytek.WebIATWS;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;

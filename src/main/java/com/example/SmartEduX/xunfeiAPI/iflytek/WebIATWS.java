@@ -1,4 +1,4 @@
-package com.example.SmartEduX.iflytek;
+package com.example.SmartEduX.xunfeiAPI.iflytek;
 
 import com.example.SmartEduX.Controller.QAndAController;
 import com.google.gson.Gson;
@@ -7,9 +7,6 @@ import okhttp3.*;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import javax.sound.sampled.*;
-import java.io.ByteArrayInputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.Charset;

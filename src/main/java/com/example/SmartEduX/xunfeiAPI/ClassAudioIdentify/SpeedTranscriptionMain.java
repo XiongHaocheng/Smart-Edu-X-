@@ -1,8 +1,14 @@
-package com.example.SmartEduX.ClassAudioIdentify;
-import com.example.SmartEduX.ClassAudioIdentify.request.*;
-import com.example.SmartEduX.ClassAudioIdentify.util.*;
+package com.example.SmartEduX.xunfeiAPI.ClassAudioIdentify;
+import com.example.SmartEduX.xunfeiAPI.ClassAudioIdentify.request.*;
+import com.example.SmartEduX.xunfeiAPI.ClassAudioIdentify.util.*;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.example.SmartEduX.xunfeiAPI.ClassAudioIdentify.request.FileReq;
+import com.example.SmartEduX.xunfeiAPI.ClassAudioIdentify.request.OpenReq;
+import com.example.SmartEduX.xunfeiAPI.ClassAudioIdentify.util.FileCaller;
+import com.example.SmartEduX.xunfeiAPI.ClassAudioIdentify.util.FileResp;
+import com.example.SmartEduX.xunfeiAPI.ClassAudioIdentify.util.OpenCaller;
+import com.example.SmartEduX.xunfeiAPI.ClassAudioIdentify.util.OpenResp;
 import com.google.gson.Gson;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;

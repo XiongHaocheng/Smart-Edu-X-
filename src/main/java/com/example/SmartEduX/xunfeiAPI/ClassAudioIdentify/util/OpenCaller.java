@@ -1,10 +1,9 @@
-package com.example.SmartEduX.ClassAudioIdentify.util;
+package com.example.SmartEduX.xunfeiAPI.ClassAudioIdentify.util;
 
 import com.alibaba.fastjson.JSON;
-import com.example.SmartEduX.ClassAudioIdentify.request.OpenReq;
+import com.example.SmartEduX.xunfeiAPI.ClassAudioIdentify.request.OpenReq;
 import lombok.Builder;
 import lombok.Data;
-import com.example.SmartEduX.ClassAudioIdentify.request.*;
 import okhttp3.*;
 
 @Data

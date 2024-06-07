@@ -1,4 +1,4 @@
-package com.example.SmartEduX.textLegal;
+package com.example.SmartEduX.xunfeiAPI.TextLegal;
 
 public class Constants {
     /**

@@ -1,4 +1,4 @@
-package com.example.SmartEduX.TextKeyWords;
+package com.example.SmartEduX.xunfeiAPI.TextKeyWords;
 
 import com.example.SmartEduX.common.Result;
 import io.swagger.annotations.Api;

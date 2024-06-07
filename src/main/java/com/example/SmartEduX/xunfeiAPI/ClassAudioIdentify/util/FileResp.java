@@ -1,4 +1,4 @@
-package com.example.SmartEduX.ClassAudioIdentify.util;
+package com.example.SmartEduX.xunfeiAPI.ClassAudioIdentify.util;
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Data;
 

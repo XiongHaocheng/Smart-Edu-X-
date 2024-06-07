@@ -1,14 +1,11 @@
-package com.example.SmartEduX.ClassAudioIdentify.util;
+package com.example.SmartEduX.xunfeiAPI.ClassAudioIdentify.util;
 
-import com.example.SmartEduX.ClassAudioIdentify.request.FileReq;
-import com.example.SmartEduX.ClassAudioIdentify.request.*;
+import com.example.SmartEduX.xunfeiAPI.ClassAudioIdentify.request.FileReq;
+import com.example.SmartEduX.xunfeiAPI.ClassAudioIdentify.request.*;
 import com.alibaba.fastjson.JSON;
 import lombok.Builder;
 import lombok.Data;
 import okhttp3.*;
-import okio.Buffer;
-
-import java.nio.charset.Charset;
 
 @Data
 @Builder
