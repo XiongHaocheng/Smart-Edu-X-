@@ -42,6 +42,8 @@ public class TestRecord_QuestionController {
         Integer score = jsonObject.get("score").getAsInt();
         Integer sortnum = jsonObject.get("sortnum").getAsInt();
         String useranswer = jsonObject.get("answer").getAsString();
+        Integer userid = jsonObject.get("userid").getAsInt();
+        String type = jsonObject.get("type").getAsString();
 //        System.out.println("答案"+useranswer);
 
 //        从数据库中查看是否有这一试题的记录
@@ -57,6 +59,8 @@ public class TestRecord_QuestionController {
             testRecord_question.setScore(score);
             testRecord_question.setSortnum(sortnum);
             testRecord_question.setUseranswer(useranswer);
+            testRecord_question.setUserid(userid);
+            testRecord_question.setQuestiontype(type);
 
             testRecord_questionMapper.insert(testRecord_question);
             return Result.success("成功");
@@ -68,9 +72,5 @@ public class TestRecord_QuestionController {
                     .and(wrapper -> wrapper.eq(TestRecord_Question::getTestquestionid, questionid)));
             return Result.success("成功");
         }
-
-
-
     }
-
 }

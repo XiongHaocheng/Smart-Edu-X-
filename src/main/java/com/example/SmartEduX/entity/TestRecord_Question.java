@@ -36,5 +36,11 @@ public class TestRecord_Question {
     private String useranswer;
     @ApiModelProperty(value = "正确情况", example = "0")
     private Integer iscorrect;
+    @ApiModelProperty(value = "用户id", example = "0")
+    private Integer userid;
+    @ApiModelProperty(value = "试题类型", example = "0")
+    private String questiontype;
+
+
 
 }

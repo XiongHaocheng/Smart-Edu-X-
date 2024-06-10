@@ -534,14 +534,18 @@ DROP TABLE IF EXISTS `testrecord_question`;
 CREATE TABLE `testrecord_question` (
   `TestQuestionID` int NOT NULL COMMENT '试题ID',
   `TestRecordID` int NOT NULL COMMENT '记录ID',
+  `UserID` int NOT NULL COMMENT '用户',
   `Score` int NOT NULL COMMENT '试题分数',
   `SortNum` int NOT NULL COMMENT '试题序号',
+  `QuestionType` varchar(10) NOT NULL COMMENT '题目类型',
   `UserAnswer` varchar(1000) DEFAULT NULL COMMENT '用户答案',
   `IsCorrect` tinyint(1) DEFAULT NULL COMMENT '正确情况',
   KEY `testrecord_question_testquestion_FK` (`TestQuestionID`),
   KEY `testrecord_question_testrecord_FK` (`TestRecordID`),
+  KEY `testrecord_question_user_FK` (`UserID`),
   CONSTRAINT `testrecord_question_testquestion_FK` FOREIGN KEY (`TestQuestionID`) REFERENCES `testquestion` (`TestQuestionID`),
-  CONSTRAINT `testrecord_question_testrecord_FK` FOREIGN KEY (`TestRecordID`) REFERENCES `testrecord` (`TestRecordID`)
+  CONSTRAINT `testrecord_question_testrecord_FK` FOREIGN KEY (`TestRecordID`) REFERENCES `testrecord` (`TestRecordID`),
+  CONSTRAINT `testrecord_question_user_FK` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
