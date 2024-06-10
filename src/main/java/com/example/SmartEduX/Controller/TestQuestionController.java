@@ -326,4 +326,106 @@ public class TestQuestionController {
         return Result.success(questionDTOS,"成功");
     }
 
+    @ApiOperation("找出用户做错的所有错题,可能有重复")
+    @CrossOrigin
+    @GetMapping("/getwrongbook")
+    public Result<?> getWrongBook(@RequestParam Integer userid){
+        // 查询用户答错的题目
+        QueryWrapper<TestRecord_Question> wrapper = new QueryWrapper<>();
+        wrapper.select()
+                .eq("UserID", userid)
+                .eq("IsCorrect", 0);
+        List<TestRecord_Question> wrongQuestions = testRecord_questionMapper.selectList(wrapper);
+
+        // 获取答错题目的ID列表
+        List<Integer> questionIds = wrongQuestions.stream()
+                .map(TestRecord_Question::getTestquestionid)
+                .collect(Collectors.toList());
+
+        // 查询答错题目的详细信息
+        QueryWrapper<TestQuestion> questionWrapper = new QueryWrapper<>();
+        questionWrapper.in("TestQuestionID", questionIds);
+        List<TestQuestion> questions = testQuestionMapper.selectList(questionWrapper);
+
+        // 将答错题目的详细信息转换为QuestionDTO对象
+        List<QuestionDTO> questionDTOS = questions.stream()
+                .map(question -> {
+                    QuestionDTO questionDTO = new QuestionDTO();
+                    BeanUtils.copyProperties(question, questionDTO);
+                    questionDTO.setIscorrect(0);
+                    questionDTO.setUseranswer(wrongQuestions.stream()
+                            .filter(qtp -> qtp.getTestquestionid().equals(question.getTestquestionid()))
+                            .findFirst()
+                            .map(TestRecord_Question::getUseranswer)
+                            .orElse(null));
+                    return questionDTO;
+                })
+                .collect(Collectors.toList());
+
+        // 返回包含所有答错题目的QuestionDTO列表
+        return Result.success(questionDTOS,"成功");
+    }
+
+    @ApiOperation("根据题型找出用户做错的所有错题,可能有重复")
+    @CrossOrigin
+    @GetMapping("/getwrongbookbytype")
+    public Result<?> getWrongBookByType(@RequestParam Integer userid, @RequestParam String questiontype){
+        // 查询用户答错的题目
+        QueryWrapper<TestRecord_Question> wrapper = new QueryWrapper<>();
+        wrapper.select()
+                .eq("UserID", userid)
+                .eq("IsCorrect", 0);
+        if (!questiontype.equals("0")) {
+            wrapper.eq("QuestionType", questiontype);
+        }
+        List<TestRecord_Question> wrongQuestions = testRecord_questionMapper.selectList(wrapper);
+
+        // 获取答错题目的ID列表
+        List<Integer> questionIds = wrongQuestions.stream()
+                .map(TestRecord_Question::getTestquestionid)
+                .collect(Collectors.toList());
+
+        // 查询答错题目的详细信息
+        QueryWrapper<TestQuestion> questionWrapper = new QueryWrapper<>();
+        questionWrapper.in("TestQuestionID", questionIds);
+        List<TestQuestion> questions = testQuestionMapper.selectList(questionWrapper);
+
+        // 将答错题目的详细信息转换为QuestionDTO对象
+        List<QuestionDTO> questionDTOS = questions.stream()
+                .map(question -> {
+                    QuestionDTO questionDTO = new QuestionDTO();
+                    BeanUtils.copyProperties(question, questionDTO);
+                    questionDTO.setIscorrect(0);
+                    questionDTO.setUseranswer(wrongQuestions.stream()
+                            .filter(qtp -> qtp.getTestquestionid().equals(question.getTestquestionid()))
+                            .findFirst()
+                            .map(TestRecord_Question::getUseranswer)
+                            .orElse(null));
+                    return questionDTO;
+                })
+                .collect(Collectors.toList());
+
+        // 返回包含所有答错题目的QuestionDTO列表
+        return Result.success(questionDTOS,"成功");
+    }
+
+    @ApiOperation("查找用户单选题，多选题，判断题，填空题的数量")
+    @CrossOrigin
+    @GetMapping("/getwrongbookcount")
+    private Result<?> getWrongBookCount(@RequestParam Integer userid){
+        // 查询用户答错的题目
+        QueryWrapper<TestRecord_Question> wrapper = new QueryWrapper<>();
+        wrapper.select()
+                .eq("UserID", userid)
+                .eq("IsCorrect", 0);
+        List<TestRecord_Question> wrongQuestions = testRecord_questionMapper.selectList(wrapper);
+
+        // 根据题目类型进行分类统计
+        Map<String, Long> typeCount = wrongQuestions.stream()
+                .collect(Collectors.groupingBy(TestRecord_Question::getQuestiontype, Collectors.counting()));
+
+        // 返回统计结果
+        return Result.success(typeCount,"成功");
+    }
+
 }
