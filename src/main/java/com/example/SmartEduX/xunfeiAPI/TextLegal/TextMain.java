@@ -1,4 +1,4 @@
-package com.example.SmartEduX.textLegal;
+package com.example.SmartEduX.xunfeiAPI.TextLegal;
 
 import com.example.SmartEduX.Utils.MyUtil;
 import com.example.SmartEduX.common.Result;

@@ -188,12 +188,10 @@ public class BigCourse_UserController {
     @ApiOperation("获取已完成数和未完成数")
     @CrossOrigin
     @GetMapping("/getfinishnums")
-    public Result<List<Integer>> getFinishNums(@RequestParam Integer userID, @RequestParam Integer courseID) throws InterruptedException {
-        System.out.println(courseID);
+    public Result<List<Integer>> getFinishNums(@RequestParam Integer userID, @RequestParam Integer courseID) {
         QueryWrapper<BigCourse_User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("userid", userID).eq("courseid", courseID);
         BigCourse_User bigCourseUser = bigCourse_UserMapper.selectOne(queryWrapper);
-        System.out.println(bigCourseUser.toString());
         if (bigCourseUser == null) {
             return Result.error("-1","未找到对应记录");
         }

@@ -1,8 +1,6 @@
 package com.example.SmartEduX.Controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.example.SmartEduX.LoginUser;
 import com.example.SmartEduX.Mapper.UserMapper;
@@ -19,6 +17,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.Comparator;
+import java.util.List;
 
 @Api(tags = "API接口")
 @RestController
@@ -137,5 +137,27 @@ public class UserController {
     return Result.success(result,"成功");
     }
 
+    @ApiOperation("获取所有用户头像、用户名、和积分并从高到底排序")
+    @CrossOrigin
+    @GetMapping(value ="/allUserScore")
+    public Result<List<User>> getAllUserScore() {
+        List<User> userInfo = userMapper.selectList(null);
+        if (userInfo.isEmpty()) {
+            return Result.error("-1", "未找到任何数据");
+        }
+        // 对 userInfo 按 userScore 进行从高到低排序
+        userInfo.sort(Comparator.comparing(User::getUserscore).reversed());
 
+        // 返回排序后的全部数据
+        return Result.success(userInfo, "成功");
+    }
+
+    @ApiOperation("获取在线用户头像、用户名、和积分")
+    @CrossOrigin
+    @GetMapping(value ="/userScore")
+    public Result<Integer> getUserScore(@RequestParam Integer userId) {
+        User user = userMapper.selectById(userId);
+        Integer result = user.getUserscore();
+        return Result.success(result,"成功");
+    }
 }
