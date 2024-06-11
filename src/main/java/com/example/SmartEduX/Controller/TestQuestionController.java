@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -396,11 +397,11 @@ public class TestQuestionController {
                     QuestionDTO questionDTO = new QuestionDTO();
                     BeanUtils.copyProperties(question, questionDTO);
                     questionDTO.setIscorrect(0);
-                    questionDTO.setUseranswer(wrongQuestions.stream()
-                            .filter(qtp -> qtp.getTestquestionid().equals(question.getTestquestionid()))
-                            .findFirst()
-                            .map(TestRecord_Question::getUseranswer)
-                            .orElse(null));
+//                    questionDTO.setUseranswer(wrongQuestions.stream()
+//                            .filter(qtp -> qtp.getTestquestionid().equals(question.getTestquestionid()))
+//                            .findFirst()
+//                            .map(TestRecord_Question::getUseranswer)
+//                            .orElse(null));
                     return questionDTO;
                 })
                 .collect(Collectors.toList());
@@ -413,18 +414,26 @@ public class TestQuestionController {
     @CrossOrigin
     @GetMapping("/getwrongbookcount")
     private Result<?> getWrongBookCount(@RequestParam Integer userid){
-        // 查询用户答错的题目
+        // Initialize a map with all question types set to 0
+        Map<String, Long> typeCount = new HashMap<>();
+        typeCount.put("单选题", 0L);
+        typeCount.put("多选题", 0L);
+        typeCount.put("判断题", 0L);
+        typeCount.put("填空题", 0L);
+
+        // Query for the user's wrong answers
         QueryWrapper<TestRecord_Question> wrapper = new QueryWrapper<>();
         wrapper.select()
                 .eq("UserID", userid)
                 .eq("IsCorrect", 0);
         List<TestRecord_Question> wrongQuestions = testRecord_questionMapper.selectList(wrapper);
 
-        // 根据题目类型进行分类统计
-        Map<String, Long> typeCount = wrongQuestions.stream()
+        // Update the counts for each question type based on the wrong answers
+        Map<String, Long> wrongTypeCount = wrongQuestions.stream()
                 .collect(Collectors.groupingBy(TestRecord_Question::getQuestiontype, Collectors.counting()));
+        typeCount.putAll(wrongTypeCount);
 
-        // 返回统计结果
+        // Return the count map
         return Result.success(typeCount,"成功");
     }
 
