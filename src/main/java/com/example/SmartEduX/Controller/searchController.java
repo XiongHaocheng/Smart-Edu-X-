@@ -148,7 +148,7 @@ public class searchController {
     }
 
 
-    @ApiOperation("根据ID")
+    @ApiOperation("根据ID搜索结果")
     @CrossOrigin
     @PostMapping("/getid")
     public Result<Map<String, Integer>> getID(@RequestParam String name) {
