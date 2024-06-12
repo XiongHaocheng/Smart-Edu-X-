@@ -33,6 +33,7 @@ CREATE TABLE `bigcourse` (
   `TestPaperID` int DEFAULT NULL,
   `ModuleID` int DEFAULT NULL,
   `StudyPathID` int DEFAULT NULL,
+  `courseattachment` varchar(100) DEFAULT NULL COMMENT '课程附件',
   PRIMARY KEY (`CourseID`),
   KEY `bigcourse_testpaper_FK` (`TestPaperID`),
   KEY `bigcourse_studypathmodule_FK` (`ModuleID`),
@@ -49,7 +50,7 @@ CREATE TABLE `bigcourse` (
 
 LOCK TABLES `bigcourse` WRITE;
 /*!40000 ALTER TABLE `bigcourse` DISABLE KEYS */;
-INSERT INTO `bigcourse` VALUES (1,'Web前端：从零开始做网站','本课程专为零基础学员准备，从网页基础深入到网页布局开发。课程内容讲解详细，注重细节，让你从入门到精通，一周时间掌握HTML+CSS网页开发。经过学习与实战，可独立开发出高质量的静态网页项目。','	https://demo-api.meedu.xyz/storage/images/v43GltVoGF95TDaznUIa6fDmYcIDWQJlEOeh5EqN.png','前端开发','https://s2.loli.net/2024/05/27/7xOQMwI93Hsr4Fi.png','[\"HTML 网站的骨架\", \"CSS 网站的美颜\", \"项目网站的部署\"]',1,3,2),(2,'从零玩转HTML5（跨平台开发）','能够利用所学的html、css、photoshop对已经设计好的企业网站界面设计，手把手教会大家对企业网站进行进行切片制作和DIV+CSS布局，独立完成制作静态网站页面和模板，并完成浏览器兼容性测试。','	https://demo-api.meedu.xyz/storage/images/v9PYbvR7bCZXTSk3scR1GV1gccno1qOlnYB3cRS0.png\r\n','前端开发','https://s2.loli.net/2024/05/27/9vKnFxu1MP62bCg.png','[\"CSS3特性\", \"伸缩布局\"]',1,3,2),(3,'零基础吃透微信小程序','本教程目标是从零开始带领读者上手实战小程序开发，课程以微信小程序的核心概念作为主线，介绍配置文件、页面样式文件、JavaScript 的基本知识。并以指南针为例对基本知识进行扩展，另外加上开发工具的安装、小程序发布等内容。','https://demo-api.meedu.xyz/storage/images/N9LKos3c5HZt5MeNW4DFucRXxCPhSLM1ZlDLOtKh.png\r\n','小程序开发','https://s2.loli.net/2024/05/27/zxLKtsVH5afU3Zv.png','[\"小程序基础\", \"小程序进阶\"]',1,5,3),(4,'Vue2+Vue3前端框架入门与实战','如果你之前已经习惯了用jQuery操作DOM，学习Vue.js时请先抛开手动操作DOM的思维，因为Vue.js是数据驱动的，你无需手动操作DOM。 它通过一些特殊的HTML语法，将DOM和数据绑定起来。','https://demo-api.meedu.xyz/storage/images/74sZVx4EcT7das1EqgYaBrQj9HUFe0BXVBD5QyTK.png','前端开发','https://s2.loli.net/2024/05/27/baHchB8dIOFw6rZ.png','[\"课程介绍和开发工具\", \"ES6新特性\"]',1,4,2),(5,'SpringCloud实战（k8s&doceker）','本系列课程我将带大家从K8s基础入门到K8s项目实战，一条龙学习路径帮你学透K8s，成为K8s高级工程师，突破年薪30W！','	https://demo-api.meedu.xyz/storage/images/JLyw8tHNwvA62qa3oePHnGAYdp89Q64EUm0Jb9ss.png','后端开发','https://s2.loli.net/2024/05/27/ClK2Tz1Sh4ADwHU.png','[\"docker入门\", \"镜像仓库管理\"]',1,1,1),(6,'Pytorch深度学习入门与实战','PyTorch框架核心使用方法解读，基于最新算法（论文）展开项目实战，全部内容均基于真实数据集与实际任务需求展开，500+课时，30+大型项目实战，适合转行就业与进阶提升的同学们。','https://demo-api.meedu.xyz/storage/images/em6V36Mb8lHVYO1Pxc2cAXt7wDmKcxFo1Be0OkA2.png','深度学习','https://s2.loli.net/2024/05/27/KJLMT6hjz1ZgdsG.png','[\"Pytorch概述\", \"深度学习基础\"]',1,6,3),(7,'Go Web开发（进阶实战）','本课程介绍如何用Go语言进行Web应用的开发，将Go语言的特性与Web开发实战组合到一起，帮读者成功地构建跨平台的应用程序，节省Go语言开发Web的宝贵时间。有了这些针对真实问题的解决方案放在手边，大多数编程难题都会迎刃而解。','	https://demo-api.meedu.xyz/storage/images/pONk6mmw4R1NVpUhqu4SArdzG3NaxEcuRqDbDXwY.png','后端开发','https://s2.loli.net/2024/05/27/hXHNrivdJeqBjU1.png','[\"Go操作常见数据库\", \"Go Web开发常用组件\"]',1,6,3),(8,'一次性搞定Java入门（高新全栈+安卓）','本课程为Java零基础入门部分，让您快速上手Java编程，为Java网站开发，安卓程序设计与开发打下基础。 本课程已完结，走在技术前沿，用实力说话。','https://demo-api.meedu.xyz/storage/images/1K54to6jXihAkLAEJlauA4jGfKkr8fGxpvDfx5Rv.png','后端开发','https://s2.loli.net/2024/05/27/XYs7vgPy6hHuiwa.png','[\"Java环境安卓配置\", \"Java基本语法\", \"数据类型\", \"变量和常量\"]',1,1,1),(9,'Python数据分析（机器学习实战）','简单、实用的Python数据分析、数据挖掘视频教程，主要介绍Python在数据处理、数据分析、数据可视化、数据挖掘方面常用的实战方法与技巧。','	https://demo-api.meedu.xyz/storage/images/uoUR9iCcc1DPX1lOwFaL0GbUdw1tvIAAsaolj7n6.png','人工智能','https://s2.loli.net/2024/05/27/zxaVkjg4hbAwsUm.png','[\"人工智能入门指南\", \"Python科学计算库\"]',1,2,1),(10,'Uni-app实战视频点播小程序','全网最详细的Uniapp实战开发app小程序课程，7大实战开发案例（社区交友，商城，即时通讯，音频小说、网盘、点播、直播）帮助你获得技术优势并提高面试竞争力。','	https://demo-api.meedu.xyz/storage/images/rvX9mXmAEf285HBKb3JFFjvlBkMIVXPQQKGPVrqP.png','移动开发','https://s2.loli.net/2024/05/27/aEUBIO5dgDXcoCr.png','[\"准备工作\", \"项目分析和全局样式\", \"首页开发\", \"后端API开发\"]',1,NULL,NULL),(11,'微信公众号+小程序快速开发','本课程致力于打造一站式微信开发全方位学习模式，微信开发从入门到精通全套系统课程。从宝贵“实战案例”中总结“踩坑”经验，助你快速搭建微信公众号、小程序，彻底玩转微信开发。','https://demo-api.meedu.xyz/storage/images/VY3SVQog9nmUIPer80vaWea5bakgRJJUd7sA7IVV.png','移动开发','https://s2.loli.net/2024/05/27/iXJKyrIvsNuASF6.png','[\"微信开发基础\", \"公众号小程序实战案例\"]',1,NULL,NULL),(12,'IOS+Swift零基础教程（2021版iOS14）','课程会介绍需要用到的操作系统和开发工具，和编程语言 Swift 的注释、数据类型、函数、控制流语句（条件和循环）、可选类型、命名类型（枚举、类和结构体）的概念和使用方法，在 Project 项目中通过 .storyboard 文件进行应用的界面的实现，通过 .swift 文件进行应用的功能实现。','https://demo-api.meedu.xyz/storage/images/Qj2kY3vSI3o4rt5YCImxmWmxkNdwYQQYQraINNo5.png','移动开发','https://s2.loli.net/2024/05/27/Hlx1tr57EOfipKD.png','[\"Swift语言入门\", \"实战案例\"]',1,NULL,NULL),(13,'C++语言基础到进阶','关于内容特点 1、知识点讲解细致入微 2、结合大家平时易出现问题的点，详细解析 3、课程顺序符合思考逻辑，引导大家发现问题并解决问题 4、对于有C++基础的朋友，本系列视频，肯定能让你对C++有新的认识。','https://demo-api.meedu.xyz/storage/images/P0eroC3R9bAwUKvUY1z5HqLpTZdrwaif9qpXEBnC.png','后端开发','https://s2.loli.net/2024/05/27/xltrcYaJmO2SNez.png','[\"C++语言介绍\", \"基本语言\", \"类\"]',1,NULL,NULL);
+INSERT INTO `bigcourse` VALUES (1,'Web前端：从零开始做网站','本课程专为零基础学员准备，从网页基础深入到网页布局开发。课程内容讲解详细，注重细节，让你从入门到精通，一周时间掌握HTML+CSS网页开发。经过学习与实战，可独立开发出高质量的静态网页项目。','	https://demo-api.meedu.xyz/storage/images/v43GltVoGF95TDaznUIa6fDmYcIDWQJlEOeh5EqN.png','前端开发','https://s2.loli.net/2024/05/27/7xOQMwI93Hsr4Fi.png','[\"HTML 网站的骨架\", \"CSS 网站的美颜\", \"项目网站的部署\"]',1,3,2,'http://192.168.56.1:8081/测试2.pdf'),(2,'从零玩转HTML5（跨平台开发）','能够利用所学的html、css、photoshop对已经设计好的企业网站界面设计，手把手教会大家对企业网站进行进行切片制作和DIV+CSS布局，独立完成制作静态网站页面和模板，并完成浏览器兼容性测试。','	https://demo-api.meedu.xyz/storage/images/v9PYbvR7bCZXTSk3scR1GV1gccno1qOlnYB3cRS0.png\r\n','前端开发','https://s2.loli.net/2024/05/27/9vKnFxu1MP62bCg.png','[\"CSS3特性\", \"伸缩布局\"]',1,3,2,''),(3,'零基础吃透微信小程序','本教程目标是从零开始带领读者上手实战小程序开发，课程以微信小程序的核心概念作为主线，介绍配置文件、页面样式文件、JavaScript 的基本知识。并以指南针为例对基本知识进行扩展，另外加上开发工具的安装、小程序发布等内容。','https://demo-api.meedu.xyz/storage/images/N9LKos3c5HZt5MeNW4DFucRXxCPhSLM1ZlDLOtKh.png\r\n','小程序开发','https://s2.loli.net/2024/05/27/zxLKtsVH5afU3Zv.png','[\"小程序基础\", \"小程序进阶\"]',1,5,3,'http://192.168.56.1:8081/测试.pdf'),(4,'Vue2+Vue3前端框架入门与实战','如果你之前已经习惯了用jQuery操作DOM，学习Vue.js时请先抛开手动操作DOM的思维，因为Vue.js是数据驱动的，你无需手动操作DOM。 它通过一些特殊的HTML语法，将DOM和数据绑定起来。','https://demo-api.meedu.xyz/storage/images/74sZVx4EcT7das1EqgYaBrQj9HUFe0BXVBD5QyTK.png','前端开发','https://s2.loli.net/2024/05/27/baHchB8dIOFw6rZ.png','[\"课程介绍和开发工具\", \"ES6新特性\"]',1,4,2,''),(5,'SpringCloud实战（k8s&doceker）','本系列课程我将带大家从K8s基础入门到K8s项目实战，一条龙学习路径帮你学透K8s，成为K8s高级工程师，突破年薪30W！','	https://demo-api.meedu.xyz/storage/images/JLyw8tHNwvA62qa3oePHnGAYdp89Q64EUm0Jb9ss.png','后端开发','https://s2.loli.net/2024/05/27/ClK2Tz1Sh4ADwHU.png','[\"docker入门\", \"镜像仓库管理\"]',1,1,1,NULL),(6,'Pytorch深度学习入门与实战','PyTorch框架核心使用方法解读，基于最新算法（论文）展开项目实战，全部内容均基于真实数据集与实际任务需求展开，500+课时，30+大型项目实战，适合转行就业与进阶提升的同学们。','https://demo-api.meedu.xyz/storage/images/em6V36Mb8lHVYO1Pxc2cAXt7wDmKcxFo1Be0OkA2.png','深度学习','https://s2.loli.net/2024/05/27/KJLMT6hjz1ZgdsG.png','[\"Pytorch概述\", \"深度学习基础\"]',1,6,3,NULL),(7,'Go Web开发（进阶实战）','本课程介绍如何用Go语言进行Web应用的开发，将Go语言的特性与Web开发实战组合到一起，帮读者成功地构建跨平台的应用程序，节省Go语言开发Web的宝贵时间。有了这些针对真实问题的解决方案放在手边，大多数编程难题都会迎刃而解。','	https://demo-api.meedu.xyz/storage/images/pONk6mmw4R1NVpUhqu4SArdzG3NaxEcuRqDbDXwY.png','后端开发','https://s2.loli.net/2024/05/27/hXHNrivdJeqBjU1.png','[\"Go操作常见数据库\", \"Go Web开发常用组件\"]',1,6,3,''),(8,'一次性搞定Java入门（高新全栈+安卓）','本课程为Java零基础入门部分，让您快速上手Java编程，为Java网站开发，安卓程序设计与开发打下基础。 本课程已完结，走在技术前沿，用实力说话。','https://demo-api.meedu.xyz/storage/images/1K54to6jXihAkLAEJlauA4jGfKkr8fGxpvDfx5Rv.png','后端开发','https://s2.loli.net/2024/05/27/XYs7vgPy6hHuiwa.png','[\"Java环境安卓配置\", \"Java基本语法\", \"数据类型\", \"变量和常量\"]',1,1,1,NULL),(9,'Python数据分析（机器学习实战）','简单、实用的Python数据分析、数据挖掘视频教程，主要介绍Python在数据处理、数据分析、数据可视化、数据挖掘方面常用的实战方法与技巧。','	https://demo-api.meedu.xyz/storage/images/uoUR9iCcc1DPX1lOwFaL0GbUdw1tvIAAsaolj7n6.png','人工智能','https://s2.loli.net/2024/05/27/zxaVkjg4hbAwsUm.png','[\"人工智能入门指南\", \"Python科学计算库\"]',1,2,1,NULL),(10,'Uni-app实战视频点播小程序','全网最详细的Uniapp实战开发app小程序课程，7大实战开发案例（社区交友，商城，即时通讯，音频小说、网盘、点播、直播）帮助你获得技术优势并提高面试竞争力。','	https://demo-api.meedu.xyz/storage/images/rvX9mXmAEf285HBKb3JFFjvlBkMIVXPQQKGPVrqP.png','移动开发','https://s2.loli.net/2024/05/27/aEUBIO5dgDXcoCr.png','[\"准备工作\", \"项目分析和全局样式\", \"首页开发\", \"后端API开发\"]',1,NULL,NULL,NULL),(11,'微信公众号+小程序快速开发','本课程致力于打造一站式微信开发全方位学习模式，微信开发从入门到精通全套系统课程。从宝贵“实战案例”中总结“踩坑”经验，助你快速搭建微信公众号、小程序，彻底玩转微信开发。','https://demo-api.meedu.xyz/storage/images/VY3SVQog9nmUIPer80vaWea5bakgRJJUd7sA7IVV.png','移动开发','https://s2.loli.net/2024/05/27/iXJKyrIvsNuASF6.png','[\"微信开发基础\", \"公众号小程序实战案例\"]',1,NULL,NULL,NULL),(12,'IOS+Swift零基础教程（2021版iOS14）','课程会介绍需要用到的操作系统和开发工具，和编程语言 Swift 的注释、数据类型、函数、控制流语句（条件和循环）、可选类型、命名类型（枚举、类和结构体）的概念和使用方法，在 Project 项目中通过 .storyboard 文件进行应用的界面的实现，通过 .swift 文件进行应用的功能实现。','https://demo-api.meedu.xyz/storage/images/Qj2kY3vSI3o4rt5YCImxmWmxkNdwYQQYQraINNo5.png','移动开发','https://s2.loli.net/2024/05/27/Hlx1tr57EOfipKD.png','[\"Swift语言入门\", \"实战案例\"]',1,NULL,NULL,NULL),(13,'C++语言基础到进阶','关于内容特点 1、知识点讲解细致入微 2、结合大家平时易出现问题的点，详细解析 3、课程顺序符合思考逻辑，引导大家发现问题并解决问题 4、对于有C++基础的朋友，本系列视频，肯定能让你对C++有新的认识。','https://demo-api.meedu.xyz/storage/images/P0eroC3R9bAwUKvUY1z5HqLpTZdrwaif9qpXEBnC.png','后端开发','https://s2.loli.net/2024/05/27/xltrcYaJmO2SNez.png','[\"C++语言介绍\", \"基本语言\", \"类\"]',1,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `bigcourse` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -384,7 +385,7 @@ CREATE TABLE `teacher` (
   `TeacherPhone` varchar(100) NOT NULL,
   `TeacherToken` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`TeacherID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3 COMMENT='教师端';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -538,7 +539,7 @@ CREATE TABLE `testrecord` (
   CONSTRAINT `testrecord_testanalyse_FK` FOREIGN KEY (`TestAnalyseID`) REFERENCES `testanalyse` (`TestAnalyseID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `testrecord_testpaper_FK` FOREIGN KEY (`TestPaperID`) REFERENCES `testpaper` (`TestPaperID`),
   CONSTRAINT `testrecord_user_FK` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb3 COMMENT='考试记录';
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb3 COMMENT='考试记录';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -547,7 +548,7 @@ CREATE TABLE `testrecord` (
 
 LOCK TABLES `testrecord` WRITE;
 /*!40000 ALTER TABLE `testrecord` DISABLE KEYS */;
-INSERT INTO `testrecord` VALUES (1,0,0,'2024-05-26 05:35:01',10,NULL,1),(2,0,0,'2024-05-26 07:26:49',10,NULL,1),(3,0,0,'2024-05-26 07:27:16',10,NULL,1),(4,0,0,'2024-05-27 09:22:07',10,NULL,1),(5,0,0,'2024-05-27 09:31:52',10,NULL,1),(6,0,0,'2024-05-27 09:31:59',10,NULL,1),(7,0,0,'2024-05-28 00:07:45',10,NULL,1),(8,0,0,'2024-05-28 00:08:18',10,NULL,1),(9,0,0,'2024-05-30 00:32:11',11,NULL,1),(10,0,0,'2024-06-11 01:35:14',10,NULL,1),(11,0,0,'2024-06-11 01:41:12',10,NULL,1);
+INSERT INTO `testrecord` VALUES (1,0,0,'2024-05-26 05:35:01',10,NULL,1),(2,0,0,'2024-05-26 07:26:49',10,NULL,1),(11,0,0,'2024-06-11 01:41:12',10,NULL,1),(12,20,1,'2024-06-11 14:23:55',10,NULL,1);
 /*!40000 ALTER TABLE `testrecord` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -582,6 +583,7 @@ CREATE TABLE `testrecord_question` (
 
 LOCK TABLES `testrecord_question` WRITE;
 /*!40000 ALTER TABLE `testrecord_question` DISABLE KEYS */;
+INSERT INTO `testrecord_question` VALUES (1,12,10,10,1,'单选题','A',1),(2,12,10,10,2,'单选题','A',0),(3,12,10,10,3,'多选题','A',0),(4,12,10,10,4,'填空题','123,123',0),(5,12,10,10,5,'判断题','1',1);
 /*!40000 ALTER TABLE `testrecord_question` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -710,4 +712,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-11 19:03:05
+-- Dump completed on 2024-06-12 13:34:50

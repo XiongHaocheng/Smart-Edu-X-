@@ -84,6 +84,18 @@ public class BigCourseController {
             return Result.error("-1","课程不存在");
         }
     }
-
+    @ApiOperation("根据课程ID获取附件")
+    @CrossOrigin
+    @GetMapping(value = "/courseattachment")
+    public Result<?> getCourseAttachmentID(@RequestParam Integer courseID) {
+        QueryWrapper<BigCourse> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("courseid", courseID);
+        BigCourse course = bigCourseMapper.selectOne(queryWrapper);
+        String attachment = course.getCourseattachment();
+        if(attachment != "")
+            return Result.success(attachment,"成功");
+        else
+            return Result.error("-1","未找到附件");
+    }
 }
 

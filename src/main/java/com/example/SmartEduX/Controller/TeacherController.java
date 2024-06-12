@@ -124,7 +124,7 @@ public class TeacherController {
             dest.getParentFile().mkdirs();
         }
 
-        // 更新课程信息，将文件的本地路径存储到数据库中
+        // 更新课程信息，将文件的路径存储到数据库中
         BigCourse course = new BigCourse();
         course.setCourseid(courseid);
         course.setCourseattachment(filePath);
