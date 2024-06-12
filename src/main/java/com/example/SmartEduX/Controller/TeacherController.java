@@ -11,6 +11,8 @@ import com.example.SmartEduX.common.Result;
 import com.example.SmartEduX.entity.BigCourse;
 import com.example.SmartEduX.entity.Teacher;
 import com.example.SmartEduX.entity.User;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.models.auth.In;
@@ -153,5 +155,46 @@ public class TeacherController {
         bigCourseMapper.updateById(course);
 
         return Result.success("附件删除成功");
+    }
+    @ApiOperation("更改教师名")
+    @CrossOrigin
+    @PostMapping(value = "/changeteachername")
+    public Result<?> changeTeacherName(@RequestParam Integer teacherid,@RequestParam String teachername) {
+        Teacher teacher = teacherMapper.selectById(teacherid);
+        if (teacher == null) {
+            return Result.error("-1", "教师信息不存在");
+        }
+        // 将 attachment 字段置为空
+        teacher.setTeachername(teachername);
+        teacherMapper.updateById(teacher);
+        return Result.success(teachername,"更新成功");
+    }
+
+    @ApiOperation("更改教师密码")
+    @CrossOrigin
+    @PostMapping(value = "/updatePassword")
+    public Result<?> updatePassword(@RequestBody String passwordFormdata) {
+        Gson gson = new Gson();
+        JsonObject jsonObject = gson.fromJson(passwordFormdata, JsonObject.class);
+
+        // 从JsonObject中获取各个值
+        String teacherphone = jsonObject.get("teacherphone").getAsString();
+        String oldpassword = jsonObject.get("oldpassword").getAsString();
+        String newpassword = jsonObject.get("newpassword").getAsString();
+
+
+        Teacher teacherFromDb = teacherMapper.selectOne(new LambdaQueryWrapper<Teacher>()
+                .eq(Teacher::getTeacherphone, teacherphone));
+        String passwordFromDb = teacherFromDb.getTeacherpassword();
+
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        if(!passwordEncoder.matches(oldpassword, passwordFromDb)){
+            return Result.error("-1","原密码错误");
+        }else{
+            String encodedPassword = passwordEncoder.encode(newpassword);
+            teacherFromDb.setTeacherpassword(encodedPassword);
+            teacherMapper.updateById(teacherFromDb);
+            return Result.success(teacherFromDb,"更新密码成功！");
+        }
     }
 }
