@@ -34,4 +34,6 @@ public class BigCourse {
     private Integer studypathid;
     @ApiModelProperty(value = "试卷ID", example = "xhc")
     private Integer testpaperid;
+    @ApiModelProperty(value = "课程附件", example = "xhc")
+    private String courseattachment;
 }
