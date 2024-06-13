@@ -3,27 +3,23 @@ package com.example.SmartEduX.Controller;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.example.SmartEduX.LoginTeacher;
-import com.example.SmartEduX.Mapper.BigCourseMapper;
-import com.example.SmartEduX.Mapper.BigCourse_UserMapper;
-import com.example.SmartEduX.Mapper.TeacherMapper;
-import com.example.SmartEduX.Mapper.UserMapper;
+import com.example.SmartEduX.Mapper.*;
 import com.example.SmartEduX.Utils.TeacherTokenUtils;
 import com.example.SmartEduX.common.Result;
-import com.example.SmartEduX.entity.BigCourse;
-import com.example.SmartEduX.entity.BigCourse_User;
-import com.example.SmartEduX.entity.Teacher;
-import com.example.SmartEduX.entity.User;
+import com.example.SmartEduX.entity.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.io.File;
+import java.sql.Date;
+import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +42,12 @@ public class TeacherController {
     @Autowired
     @Resource
     private BigCourse_UserMapper bigCourse_UserMapper;
+    @Autowired
+    @Resource
+    private TestRecordMapper testRecordMapper;
+    @Autowired
+    @Resource
+    private TestPaperMapper testPaperMapper;
     @CrossOrigin
     @PostMapping("/login")
     public Result<?> login(@RequestBody Teacher teacher) {
@@ -249,4 +251,48 @@ public class TeacherController {
         // 返回查询到的课程数据
         return Result.success(userStudyTimes, "成功");
     }
+    @ApiOperation("获取考试记录")
+    @CrossOrigin
+    @GetMapping(value = "/testrecord")
+    public Result<List<Map<String, Object>>> getTestRecordInfo() {
+        // 根据课程ID列表查询数据库中符合条件的课程数据
+        List<TestRecord> testRecords = testRecordMapper.selectList(null);
+        if (testRecords.isEmpty()) {
+            // 如果未找到符合条件的课程数据，返回错误信息
+            return Result.error("-1", "未找到");
+        }
+        List<Map<String, Object>> result = new ArrayList<>();
+
+        for (TestRecord record : testRecords) {
+            // 获取当前记录的 userId
+            Integer userId = record.getUserid();
+            Integer testpaperId = record.getTestpaperid();
+            // 根据 userId 查询 user 表中的 username，假设这里使用 userMapper 查询
+            User user = userMapper.selectById(userId);
+            TestPaper testPaper = testPaperMapper.selectById(testpaperId);
+            if (user != null && testPaper != null) {
+                // 创建一个包含 TestRecord 和 username 的 Map
+                Map<String, Object> recordWithUsername = new HashMap<>();
+                recordWithUsername.put("testrecordid", record.getTestrecordid());
+                recordWithUsername.put("username", user.getUsername());
+                recordWithUsername.put("testpapername", testPaper.getTestpapername());
+                recordWithUsername.put("starttime", record.getStarttime());
+                recordWithUsername.put("finishstate", record.getFinishstate());
+                recordWithUsername.put("fullscore", testPaper.getFullscore());
+                recordWithUsername.put("testscore", record.getTestscore());
+                if(testPaper.getPassscore() > record.getTestscore()){
+                    recordWithUsername.put("ispass", 0);
+                }else{
+                    recordWithUsername.put("ispass", 1);
+                }
+                // 将当前记录添加到结果列表中
+                result.add(recordWithUsername);
+            }
+        }
+
+        // 返回查询到的课程数据
+        return Result.success(result, "成功");
+    }
+
+
 }
