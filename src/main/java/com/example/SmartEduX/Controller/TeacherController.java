@@ -1,14 +1,16 @@
 package com.example.SmartEduX.Controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.example.SmartEduX.LoginTeacher;
 import com.example.SmartEduX.Mapper.BigCourseMapper;
+import com.example.SmartEduX.Mapper.BigCourse_UserMapper;
 import com.example.SmartEduX.Mapper.TeacherMapper;
+import com.example.SmartEduX.Mapper.UserMapper;
 import com.example.SmartEduX.Utils.TeacherTokenUtils;
 import com.example.SmartEduX.common.Result;
 import com.example.SmartEduX.entity.BigCourse;
+import com.example.SmartEduX.entity.BigCourse_User;
 import com.example.SmartEduX.entity.Teacher;
 import com.example.SmartEduX.entity.User;
 import com.google.gson.Gson;
@@ -19,12 +21,13 @@ import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import java.io.File;
-import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Api(tags = "API接口")
 @RestController
@@ -37,6 +40,12 @@ public class TeacherController {
     @Autowired
     @Resource
     private BigCourseMapper bigCourseMapper;
+    @Autowired
+    @Resource
+    private UserMapper userMapper;
+    @Autowired
+    @Resource
+    private BigCourse_UserMapper bigCourse_UserMapper;
     @CrossOrigin
     @PostMapping("/login")
     public Result<?> login(@RequestBody Teacher teacher) {
@@ -196,5 +205,48 @@ public class TeacherController {
             teacherMapper.updateById(teacherFromDb);
             return Result.success(teacherFromDb,"更新密码成功！");
         }
+    }
+    @ApiOperation("获取学生信息")
+    @CrossOrigin
+    @GetMapping(value = "/studentmanageinfo")
+    public Result<List<User>> getStudentInfo() {
+        // 根据课程ID列表查询数据库中符合条件的课程数据
+        List<User> users = userMapper.selectList(null);
+        if (users.isEmpty()) {
+            // 如果未找到符合条件的课程数据，返回错误信息
+            return Result.error("-1", "未找到");
+        }
+        // 返回查询到的课程数据
+        return Result.success(users,"成功");
+    }
+    @ApiOperation("获取学生学习时长")
+    @CrossOrigin
+    @GetMapping(value = "/studentstudytime")
+    public Result<List<Map<String, Object>>> getStudentStudyTime() {
+        // 从数据库中查询所有用户学习数据
+        List<BigCourse_User> bigCourse_users = bigCourse_UserMapper.selectList(null);
+        if (bigCourse_users.isEmpty()) {
+            // 如果未找到符合条件的课程数据，返回错误信息
+            return Result.error("-1", "未找到");
+        }
+
+        // 使用一个 Map 来存储每个用户的总学习时长
+        Map<Integer, Double> userStudyTimeMap = new HashMap<>();
+        for (BigCourse_User user : bigCourse_users) {
+            userStudyTimeMap.put(user.getUserid(), userStudyTimeMap.getOrDefault(user.getUserid(), 0.00) + user.getStudytime());
+        }
+
+        // 将 Map 转换为 List<Map<String, Object>>
+        List<Map<String, Object>> userStudyTimes = userStudyTimeMap.entrySet().stream()
+                .map(entry -> {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("userid", entry.getKey());
+                    map.put("totalStudyTime", entry.getValue());
+                    return map;
+                })
+                .collect(Collectors.toList());
+
+        // 返回查询到的课程数据
+        return Result.success(userStudyTimes, "成功");
     }
 }
