@@ -97,5 +97,14 @@ public class BigCourseController {
         else
             return Result.error("-1","未找到附件");
     }
+    @ApiOperation("获取最感兴趣课程")
+    @CrossOrigin
+    @GetMapping(value = "/interestedcourse")
+    public Result<?> getCourseAttachmentID(@RequestParam String maxCourseName) {
+        QueryWrapper<BigCourse> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("coursename", maxCourseName);
+        List<BigCourse> course = bigCourseMapper.selectList(queryWrapper);
+        return Result.success(course,"成功");
+    }
 }
 

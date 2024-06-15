@@ -1,6 +1,7 @@
 package com.example.SmartEduX.Controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.example.SmartEduX.LoginTeacher;
 import com.example.SmartEduX.Mapper.*;
@@ -11,6 +12,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -292,6 +294,36 @@ public class TeacherController {
 
         // 返回查询到的课程数据
         return Result.success(result, "成功");
+    }
+    @ApiOperation("获取学习情况中的课程学习情况信息")
+    @CrossOrigin
+    @GetMapping(value = "/getlearntimecourse")
+    public Result<?> getLearnCourseTime(@RequestParam Integer userid) {
+        QueryWrapper<BigCourse_User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("userid", userid);
+        List<BigCourse_User> bigCourse_users = bigCourse_UserMapper.selectList(queryWrapper);
+        if (bigCourse_users == null || bigCourse_users.isEmpty()) {
+            return Result.error("-1", "找不到信息");
+        }
+        // 创建一个List来存储结果
+        List<Map<String, Object>> result = new ArrayList<>();
+
+        for (BigCourse_User bigCourse_user : bigCourse_users) {
+            // 查找课程名称
+            BigCourse bigCourse = bigCourseMapper.selectById(bigCourse_user.getCourseid());
+            if (bigCourse != null) {
+                Map<String, Object> courseInfo = new HashMap<>();
+                courseInfo.put("studytime", bigCourse_user.getStudytime());
+                courseInfo.put("finished", bigCourse_user.getFinishnum());
+                courseInfo.put("unfinished", bigCourse_user.getUnfinishnum());
+                courseInfo.put("coursename", bigCourse.getCoursename());
+                result.add(courseInfo);
+            }
+        }
+        // 创建返回对象
+        Map<String, Object> response = new HashMap<>();
+        response.put("courses", result);
+        return Result.success(response,"成功");
     }
 
 
