@@ -312,6 +312,11 @@ CREATE TABLE `question_testpaper` (
 LOCK TABLES `question_testpaper` WRITE;
 /*!40000 ALTER TABLE `question_testpaper` DISABLE KEYS */;
 INSERT INTO `question_testpaper` VALUES (1,1,10,1),(2,1,10,2),(3,1,10,3),(4,1,10,4),(5,1,10,5);
+INSERT INTO smartedux.question_testpaper (TestQuestionID, TestPaperID, Score, SortNum) VALUES (1, 2, 10, 1);
+INSERT INTO smartedux.question_testpaper (TestQuestionID, TestPaperID, Score, SortNum) VALUES (2, 2, 10, 2);
+INSERT INTO smartedux.question_testpaper (TestQuestionID, TestPaperID, Score, SortNum) VALUES (3, 2, 10, 3);
+INSERT INTO smartedux.question_testpaper (TestQuestionID, TestPaperID, Score, SortNum) VALUES (4, 2, 10, 4);
+INSERT INTO smartedux.question_testpaper (TestQuestionID, TestPaperID, Score, SortNum) VALUES (5, 2, 10, 5);
 /*!40000 ALTER TABLE `question_testpaper` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -479,7 +484,9 @@ CREATE TABLE `testpaper` (
 
 LOCK TABLES `testpaper` WRITE;
 /*!40000 ALTER TABLE `testpaper` DISABLE KEYS */;
-INSERT INTO `testpaper` VALUES (1,'测试试卷',50,30,5,'5');
+INSERT INTO smartedux.testpaper (TestPaperID, TestPaperName, FullScore, PassScore, QuestionNumber, Duration) VALUES (1, '测试试卷', 50, 30, 5, '5');
+INSERT INTO smartedux.testpaper (TestPaperID, TestPaperName, FullScore, PassScore, QuestionNumber, Duration) VALUES (2, '每日练习6月17日', 50, 30, 5, '5');
+
 /*!40000 ALTER TABLE `testpaper` ENABLE KEYS */;
 UNLOCK TABLES;
 
