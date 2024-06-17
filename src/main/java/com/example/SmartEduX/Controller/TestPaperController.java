@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Api(tags = "API接口")
 @RestController
@@ -25,18 +26,24 @@ public class TestPaperController {
     @Resource
     private TestPaperMapper testPaperMapper;
 
-    @ApiOperation("测试:获取所有的考试列表")
+    @ApiOperation("获取所有的考试列表，考试列表不包含有“每日练习”作为标题的考试项")
     @CrossOrigin
     @GetMapping("/alltestlist")
     public Result<?> getAllPaper() {
         // 查询数据库中所有的考试
-        List<TestPaper> testPaper = testPaperMapper.selectList(null);
-        if (testPaper.isEmpty()) {
+        List<TestPaper> allTestPapers = testPaperMapper.selectList(null);
+        if (allTestPapers.isEmpty()) {
             // 如果未找到任何问题数据，返回错误信息
             return Result.error("-1", "未找到任何问题数据");
         }
-        // 返回查询到的问题数据
-        return Result.success(testPaper,"成功");
+
+        // 过滤掉标题包含“每日练习”的考试项
+        List<TestPaper> filteredTestPapers = allTestPapers.stream()
+                .filter(paper -> !paper.getTestpapername().contains("每日练习"))
+                .collect(Collectors.toList());
+
+        // 返回过滤后的考试列表
+        return Result.success(filteredTestPapers, "成功");
     }
 
     @ApiOperation("根据考试id获取考试详细内容")
@@ -51,6 +58,19 @@ public class TestPaperController {
             return Result.error("-1", "未找到任何数据");
         }
 
+        return Result.success(testPaper,"成功");
+    }
+
+    @ApiOperation("查找以“每日练习”开头的试卷名称")
+    @CrossOrigin
+    @GetMapping("/practice")
+    public Result<?> getPracticePaper() {
+        QueryWrapper<TestPaper> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like("testpapername", "每日练习%");
+        List<TestPaper> testPaper = testPaperMapper.selectList(queryWrapper);
+        if (testPaper.isEmpty()) {
+            return Result.error("-1", "未找到任何数据");
+        }
         return Result.success(testPaper,"成功");
     }
 
