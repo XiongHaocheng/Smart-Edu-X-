@@ -56,7 +56,15 @@ public class QAndAController {
         qAndAMapper.insert(newquestion);
         return Result.success("成功");
     }
+    @ApiOperation("边学边问添加新问题并获取答案")
+    @CrossOrigin
+    @GetMapping(value = "/addlearningquestionnewquestion")
+    public Result<String> addLearningQuestionNewQuestion(@RequestParam String newQuestion) throws Exception {
 
+        BigModelNew.NewQuestion = newQuestion;
+        BigModelNew.main(new String[]{});
+        return Result.success(answer,"成功");
+    }
     @ApiOperation("语音输入问题")
     @CrossOrigin
     @GetMapping(value = "/addaudioquestion")

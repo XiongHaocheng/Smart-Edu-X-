@@ -171,8 +171,8 @@ public class BigModelNew extends WebSocketListener {
         }
         if (myJsonParse.header.status == 2) {
             // 可以关闭连接，释放资源
-            System.out.println();
-            System.out.println("*************************************************************************************");
+            //System.out.println();
+            //System.out.println("*************************************************************************************");
             allContentAdded = true; // 所有内容已经添加完毕
             if(canAddHistory()){
                 RoleContent roleContent=new RoleContent();

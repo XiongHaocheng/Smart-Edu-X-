@@ -34,7 +34,7 @@ public class UserController {
     @CrossOrigin
     @PostMapping("/register")
     public Result<?> register(@RequestBody User user) {
-        System.out.println(user.toString());
+        //System.out.println(user.toString());
         // 检查数据库中是否已存在相同用户名的用户
         User res1 = userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getUsername, user.getUsername()));
         User res2 = userMapper.selectOne(Wrappers.<User>lambdaQuery().eq(User::getUserphone, user.getUserphone()));
