@@ -56,7 +56,7 @@ public class SpeedTranscriptionMain {
             /** 1.1 如果是小文件走单个上传接口，建议不大于30M */
             FileResp<FileResp.UploadData> uploadResp = fileCaller.fileUpload(FileReq.Upload.builder().
                     appId(APP_ID).
-                    fileName("audio_sample_little.wav").
+                    fileName("测试.wav").
                     requestId("20211213152023").
                     data(IOUtils.toByteArray(fis))
                     .build());
