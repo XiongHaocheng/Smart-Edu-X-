@@ -12,15 +12,13 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.io.File;
-import java.sql.Date;
-import java.time.ZoneOffset;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,6 +36,9 @@ public class TeacherController {
     @Autowired
     @Resource
     private BigCourseMapper bigCourseMapper;
+    @Autowired
+    @Resource
+    private TeacherMonitorMapper teacherMonitorMapper;
     @Autowired
     @Resource
     private UserMapper userMapper;
@@ -326,5 +327,159 @@ public class TeacherController {
         return Result.success(response,"成功");
     }
 
+    @ApiOperation("获取上课闭眼睡觉次数信息")
+    @CrossOrigin
+    @GetMapping(value = "/sleepnums")
+    public Result<Map<String, Object>> getSleepNums() {
+        List<TeacherMonitor> allRecords = teacherMonitorMapper.selectList(
+                Wrappers.<TeacherMonitor>lambdaQuery().eq(TeacherMonitor::getType, 1)
+        );
+        // 获取近七天的日期
+        List<String> last7Days = getLast7Days();
+        // 筛选出近七天的记录
+        Map<Integer, Map<String, Integer>> userSleepData = new HashMap<>();
+        for (TeacherMonitor record : allRecords) {
+            if (last7Days.contains(record.getTime())) {
+                userSleepData
+                        .computeIfAbsent(record.getUserid(), k -> new HashMap<>())
+                        .put(record.getTime(), record.getNums());
+            }
+        }
+        // 构建返回的数据格式
+        List<String> usernames = new ArrayList<>();
+        List<Map<String, Object>> series = new ArrayList<>();
+        for (Map.Entry<Integer, Map<String, Integer>> entry : userSleepData.entrySet()) {
+            Integer userId = entry.getKey();
+            Map<String, Integer> sleepData = entry.getValue();
 
+            User user = userMapper.selectById(userId);
+            if (user != null) {
+                String username = user.getUsername();
+                usernames.add(username);
+
+                List<Integer> numsList = new ArrayList<>();
+                for (String day : last7Days) {
+                    numsList.add(sleepData.getOrDefault(day, 0));
+                }
+
+                Map<String, Object> seriesData = new HashMap<>();
+                seriesData.put("name", username);
+                seriesData.put("type", "line");
+                seriesData.put("stack", "Total");
+                seriesData.put("data", numsList);
+                series.add(seriesData);
+            }
+        }
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("data", usernames);
+        response.put("series", series);
+        return Result.success(response,"成功");
+    }
+    @ApiOperation("获取上课吃东西打哈欠次数信息")
+    @CrossOrigin
+    @GetMapping(value = "/eatnums")
+    public Result<Map<String, Object>> getEatNums() {
+        List<TeacherMonitor> allRecords = teacherMonitorMapper.selectList(
+                Wrappers.<TeacherMonitor>lambdaQuery().eq(TeacherMonitor::getType, 2)
+        );
+        // 获取近七天的日期
+        List<String> last7Days = getLast7Days();
+        // 筛选出近七天的记录
+        Map<Integer, Map<String, Integer>> userSleepData = new HashMap<>();
+        for (TeacherMonitor record : allRecords) {
+            if (last7Days.contains(record.getTime())) {
+                userSleepData
+                        .computeIfAbsent(record.getUserid(), k -> new HashMap<>())
+                        .put(record.getTime(), record.getNums());
+            }
+        }
+        // 构建返回的数据格式
+        List<String> usernames = new ArrayList<>();
+        List<Map<String, Object>> series = new ArrayList<>();
+        for (Map.Entry<Integer, Map<String, Integer>> entry : userSleepData.entrySet()) {
+            Integer userId = entry.getKey();
+            Map<String, Integer> sleepData = entry.getValue();
+
+            User user = userMapper.selectById(userId);
+            if (user != null) {
+                String username = user.getUsername();
+                usernames.add(username);
+
+                List<Integer> numsList = new ArrayList<>();
+                for (String day : last7Days) {
+                    numsList.add(sleepData.getOrDefault(day, 0));
+                }
+
+                Map<String, Object> seriesData = new HashMap<>();
+                seriesData.put("name", username);
+                seriesData.put("type", "line");
+                seriesData.put("stack", "Total");
+                seriesData.put("data", numsList);
+                series.add(seriesData);
+            }
+        }
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("data", usernames);
+        response.put("series", series);
+        return Result.success(response,"成功");
+    }
+    @ApiOperation("获取考试违规次数信息")
+    @CrossOrigin
+    @GetMapping(value = "/testnums")
+    public Result<Map<String, Object>> getTestsNums() {
+        List<TeacherMonitor> allRecords = teacherMonitorMapper.selectList(
+                Wrappers.<TeacherMonitor>lambdaQuery().eq(TeacherMonitor::getType, 3)
+        );
+        // 获取近七天的日期
+        List<String> last7Days = getLast7Days();
+        // 筛选出近七天的记录
+        Map<Integer, Map<String, Integer>> userSleepData = new HashMap<>();
+        for (TeacherMonitor record : allRecords) {
+            if (last7Days.contains(record.getTime())) {
+                userSleepData
+                        .computeIfAbsent(record.getUserid(), k -> new HashMap<>())
+                        .put(record.getTime(), record.getNums());
+            }
+        }
+        // 构建返回的数据格式
+        List<String> usernames = new ArrayList<>();
+        List<Map<String, Object>> series = new ArrayList<>();
+        for (Map.Entry<Integer, Map<String, Integer>> entry : userSleepData.entrySet()) {
+            Integer userId = entry.getKey();
+            Map<String, Integer> sleepData = entry.getValue();
+
+            User user = userMapper.selectById(userId);
+            if (user != null) {
+                String username = user.getUsername();
+                usernames.add(username);
+
+                List<Integer> numsList = new ArrayList<>();
+                for (String day : last7Days) {
+                    numsList.add(sleepData.getOrDefault(day, 0));
+                }
+
+                Map<String, Object> seriesData = new HashMap<>();
+                seriesData.put("name", username);
+                seriesData.put("type", "line");
+                seriesData.put("stack", "Total");
+                seriesData.put("data", numsList);
+                series.add(seriesData);
+            }
+        }
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("data", usernames);
+        response.put("series", series);
+        return Result.success(response,"成功");
+    }
+    private List<String> getLast7Days() {
+        List<String> result = new ArrayList<>();
+        LocalDate today = LocalDate.now();
+        for (int i = 6; i >= 0; i--) {
+            result.add(today.minusDays(i).toString());
+        }
+        return result;
+    }
 }
