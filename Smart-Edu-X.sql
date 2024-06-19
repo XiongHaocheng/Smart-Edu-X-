@@ -311,12 +311,7 @@ CREATE TABLE `question_testpaper` (
 
 LOCK TABLES `question_testpaper` WRITE;
 /*!40000 ALTER TABLE `question_testpaper` DISABLE KEYS */;
-INSERT INTO `question_testpaper` VALUES (1,1,10,1),(2,1,10,2),(3,1,10,3),(4,1,10,4),(5,1,10,5);
-INSERT INTO smartedux.question_testpaper (TestQuestionID, TestPaperID, Score, SortNum) VALUES (1, 2, 10, 1);
-INSERT INTO smartedux.question_testpaper (TestQuestionID, TestPaperID, Score, SortNum) VALUES (2, 2, 10, 2);
-INSERT INTO smartedux.question_testpaper (TestQuestionID, TestPaperID, Score, SortNum) VALUES (3, 2, 10, 3);
-INSERT INTO smartedux.question_testpaper (TestQuestionID, TestPaperID, Score, SortNum) VALUES (4, 2, 10, 4);
-INSERT INTO smartedux.question_testpaper (TestQuestionID, TestPaperID, Score, SortNum) VALUES (5, 2, 10, 5);
+INSERT INTO `question_testpaper` VALUES (1,1,10,1),(2,1,10,2),(3,1,10,3),(4,1,10,4),(5,1,10,5),(1,2,10,1),(2,2,10,2),(3,2,10,3),(4,2,10,4),(5,2,10,5);
 /*!40000 ALTER TABLE `question_testpaper` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -404,6 +399,35 @@ INSERT INTO `teacher` VALUES (1,'教师','$2a$10$lxc3ye77wj4C.3R6cszgxumrYJfNlPM
 UNLOCK TABLES;
 
 --
+-- Table structure for table `teachermonitor`
+--
+
+DROP TABLE IF EXISTS `teachermonitor`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `teachermonitor` (
+  `TeacherMonitorID` int NOT NULL AUTO_INCREMENT,
+  `Time` varchar(100) CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci NOT NULL COMMENT '时间',
+  `Nums` int NOT NULL DEFAULT '0' COMMENT '次数',
+  `Type` int NOT NULL COMMENT '1、上课睡觉；2、上课吃东西打哈欠；3、考试违规',
+  `UserID` int NOT NULL,
+  PRIMARY KEY (`TeacherMonitorID`),
+  KEY `teachermonitor_user_FK` (`UserID`),
+  CONSTRAINT `teachermonitor_user_FK` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb3 COMMENT='教师查看学生上课睡觉吃东西以及考试违规次数';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `teachermonitor`
+--
+
+LOCK TABLES `teachermonitor` WRITE;
+/*!40000 ALTER TABLE `teachermonitor` DISABLE KEYS */;
+INSERT INTO `teachermonitor` VALUES (1,'2024-06-13',5,1,10),(2,'2024-06-14',4,1,10),(3,'2024-06-15',3,1,11),(4,'2024-06-16',4,1,11),(5,'2024-06-17',10,1,11),(6,'2024-06-18',9,1,10),(7,'2024-06-19',9,1,10),(8,'2024-06-13',11,2,10),(9,'2024-06-14',12,2,10),(10,'2024-06-15',4,2,10),(11,'2024-06-16',7,2,10),(12,'2024-06-17',6,2,11),(13,'2024-06-10',8,2,11),(14,'2024-06-18',5,2,11),(15,'2024-06-19',15,2,11),(16,'2024-06-19',2,2,10),(17,'2024-06-19',2,3,10),(18,'2024-06-18',8,3,11);
+/*!40000 ALTER TABLE `teachermonitor` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `testanalyse`
 --
 
@@ -475,7 +499,7 @@ CREATE TABLE `testpaper` (
   `QuestionNumber` int NOT NULL COMMENT '题目数量',
   `Duration` varchar(100) NOT NULL COMMENT '持续时间',
   PRIMARY KEY (`TestPaperID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb3 COMMENT='试卷';
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb3 COMMENT='试卷';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -484,9 +508,7 @@ CREATE TABLE `testpaper` (
 
 LOCK TABLES `testpaper` WRITE;
 /*!40000 ALTER TABLE `testpaper` DISABLE KEYS */;
-INSERT INTO smartedux.testpaper (TestPaperID, TestPaperName, FullScore, PassScore, QuestionNumber, Duration) VALUES (1, '测试试卷', 50, 30, 5, '5');
-INSERT INTO smartedux.testpaper (TestPaperID, TestPaperName, FullScore, PassScore, QuestionNumber, Duration) VALUES (2, '每日练习6月17日', 50, 30, 5, '5');
-
+INSERT INTO `testpaper` VALUES (1,'测试试卷',50,30,5,'5'),(2,'每日练习6月17日',50,30,5,'5');
 /*!40000 ALTER TABLE `testpaper` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -546,7 +568,7 @@ CREATE TABLE `testrecord` (
   CONSTRAINT `testrecord_testanalyse_FK` FOREIGN KEY (`TestAnalyseID`) REFERENCES `testanalyse` (`TestAnalyseID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `testrecord_testpaper_FK` FOREIGN KEY (`TestPaperID`) REFERENCES `testpaper` (`TestPaperID`),
   CONSTRAINT `testrecord_user_FK` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb3 COMMENT='考试记录';
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb3 COMMENT='考试记录';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -555,7 +577,7 @@ CREATE TABLE `testrecord` (
 
 LOCK TABLES `testrecord` WRITE;
 /*!40000 ALTER TABLE `testrecord` DISABLE KEYS */;
-INSERT INTO `testrecord` VALUES (1,0,0,'2024-05-26 05:35:01',10,NULL,1),(2,0,0,'2024-05-26 07:26:49',10,NULL,1),(11,0,0,'2024-06-11 01:41:12',10,NULL,1),(12,20,1,'2024-06-11 14:23:55',10,NULL,1);
+INSERT INTO `testrecord` VALUES (1,0,0,'2024-05-26 05:35:01',10,NULL,1),(2,0,0,'2024-05-26 07:26:49',10,NULL,1),(11,0,0,'2024-06-11 01:41:12',10,NULL,1),(12,20,1,'2024-06-11 14:23:55',10,NULL,1),(13,30,1,'2024-06-19 00:32:34',10,NULL,2),(14,0,1,'2024-06-19 00:34:26',10,NULL,1),(15,0,0,'2024-06-19 02:31:59',10,NULL,1),(16,0,0,'2024-06-19 02:45:45',10,NULL,1),(17,0,0,'2024-06-19 02:45:53',10,NULL,2),(18,0,0,'2024-06-19 02:45:58',10,NULL,1);
 /*!40000 ALTER TABLE `testrecord` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -590,7 +612,7 @@ CREATE TABLE `testrecord_question` (
 
 LOCK TABLES `testrecord_question` WRITE;
 /*!40000 ALTER TABLE `testrecord_question` DISABLE KEYS */;
-INSERT INTO `testrecord_question` VALUES (1,12,10,10,1,'单选题','A',1),(2,12,10,10,2,'单选题','A',0),(3,12,10,10,3,'多选题','A',0),(4,12,10,10,4,'填空题','123,123',0),(5,12,10,10,5,'判断题','1',1);
+INSERT INTO `testrecord_question` VALUES (1,12,10,10,1,'单选题','A',1),(2,12,10,10,2,'单选题','A',0),(3,12,10,10,3,'多选题','A',0),(4,12,10,10,4,'填空题','123,123',0),(5,12,10,10,5,'判断题','1',1),(1,13,10,10,1,'单选题','A',1),(2,13,10,10,2,'单选题','A',0),(3,13,10,10,3,'多选题','A,C',1),(4,13,10,10,4,'填空题','1,12',0),(5,13,10,10,5,'判断题','1',1),(1,14,10,10,1,'单选题','B',0),(2,14,10,10,2,'单选题','C',0),(3,14,10,10,3,'多选题','B,D',0),(4,14,10,10,4,'填空题','1,1',0),(5,14,10,10,5,'判断题','0',0);
 /*!40000 ALTER TABLE `testrecord_question` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -623,7 +645,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES (10,'xhc','$2a$10$8y.CQOie9LdTATz1cpug8Op/Bg.CV97ubLXKPZ2PstIq77Tj37WFG','https://img1.baidu.com/it/u=3622150954,2575811681&fm=253&app=120&size=w931&n=0&f=JPEG&fmt=auto?sec=1716397200&t=0b7c986b5fc51c2236c6a2f6147c391d','18880448303','','0','0',20,'',NULL),(11,'xxx','$2a$10$8y.CQOie9LdTATz1cpug8Op/Bg.CV97ubLXKPZ2PstIq77Tj37WFG','http://thirdqq.qlogo.cn/ek_qqapp/AQAiaTtkWG4N7cqBR7LCpBpHXZib6GTS2tm0AXwfGqVAIE2zho0g7NawiaQ6EykAZb3C9aerqIP/100','15329541753',NULL,NULL,NULL,10,NULL,NULL);
+INSERT INTO `user` VALUES (10,'熊同学','$2a$10$8y.CQOie9LdTATz1cpug8Op/Bg.CV97ubLXKPZ2PstIq77Tj37WFG','https://img1.baidu.com/it/u=3622150954,2575811681&fm=253&app=120&size=w931&n=0&f=JPEG&fmt=auto?sec=1716397200&t=0b7c986b5fc51c2236c6a2f6147c391d','18880448303','','0','0',20,'',NULL),(11,'刘同学','$2a$10$8y.CQOie9LdTATz1cpug8Op/Bg.CV97ubLXKPZ2PstIq77Tj37WFG','http://thirdqq.qlogo.cn/ek_qqapp/AQAiaTtkWG4N7cqBR7LCpBpHXZib6GTS2tm0AXwfGqVAIE2zho0g7NawiaQ6EykAZb3C9aerqIP/100','15329541753',NULL,NULL,NULL,10,NULL,NULL);
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -719,4 +741,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-12 13:34:50
+-- Dump completed on 2024-06-19 11:03:30
