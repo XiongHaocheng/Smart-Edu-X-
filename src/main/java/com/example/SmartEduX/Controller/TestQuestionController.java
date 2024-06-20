@@ -19,9 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Api(tags = "API接口")
@@ -381,11 +380,15 @@ public class TestQuestionController {
         }
         List<TestRecord_Question> wrongQuestions = testRecord_questionMapper.selectList(wrapper);
 
-        // 获取答错题目的ID列表
+        // 获取答错题目的ID列表，并去重
         List<Integer> questionIds = wrongQuestions.stream()
                 .map(TestRecord_Question::getTestquestionid)
+                .distinct() // 去重
                 .collect(Collectors.toList());
 
+        if (questionIds.isEmpty()){
+            return Result.success(questionIds,"成功");
+        }
         // 查询答错题目的详细信息
         QueryWrapper<TestQuestion> questionWrapper = new QueryWrapper<>();
         questionWrapper.in("TestQuestionID", questionIds);
@@ -428,8 +431,12 @@ public class TestQuestionController {
                 .eq("IsCorrect", 0);
         List<TestRecord_Question> wrongQuestions = testRecord_questionMapper.selectList(wrapper);
 
-        // Update the counts for each question type based on the wrong answers
-        Map<String, Long> wrongTypeCount = wrongQuestions.stream()
+        // 根据 TestQuestionID 对错误答案进行分组，保留每个组的第一个对象
+        Map<Integer, TestRecord_Question> uniqueQuestions = wrongQuestions.stream()
+                .collect(Collectors.toMap(TestRecord_Question::getTestquestionid, Function.identity(), (e1, e2) -> e1, LinkedHashMap::new)); // 保持插入顺序
+
+        // 更新每个题型的计数，基于唯一的错误答案
+        Map<String, Long> wrongTypeCount = uniqueQuestions.values().stream()
                 .collect(Collectors.groupingBy(TestRecord_Question::getQuestiontype, Collectors.counting()));
         typeCount.putAll(wrongTypeCount);
 
