@@ -228,6 +228,13 @@ CREATE TABLE `knowledge` (
 
 LOCK TABLES `knowledge` WRITE;
 /*!40000 ALTER TABLE `knowledge` DISABLE KEYS */;
+INSERT INTO smartedux.knowledge (KnowledgeID, KnowledgeName, KnowledgeDomain) VALUES (1, '知识点1', '人工智能');
+INSERT INTO smartedux.knowledge (KnowledgeID, KnowledgeName, KnowledgeDomain) VALUES (2, '知识点2', '人工智能');
+INSERT INTO smartedux.knowledge (KnowledgeID, KnowledgeName, KnowledgeDomain) VALUES (3, '知识点3', '前端开发');
+INSERT INTO smartedux.knowledge (KnowledgeID, KnowledgeName, KnowledgeDomain) VALUES (4, '知识点4', '后端开发');
+INSERT INTO smartedux.knowledge (KnowledgeID, KnowledgeName, KnowledgeDomain) VALUES (5, '知识点5', '移动开发');
+INSERT INTO smartedux.knowledge (KnowledgeID, KnowledgeName, KnowledgeDomain) VALUES (6, '知识点6', '移动开发');
+INSERT INTO smartedux.knowledge (KnowledgeID, KnowledgeName, KnowledgeDomain) VALUES (7, '知识点7', '后端开发');
 /*!40000 ALTER TABLE `knowledge` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -283,6 +290,17 @@ CREATE TABLE `question_knowledge` (
 
 LOCK TABLES `question_knowledge` WRITE;
 /*!40000 ALTER TABLE `question_knowledge` DISABLE KEYS */;
+INSERT INTO smartedux.question_knowledge (TestQuestionID, KnowledgeID) VALUES (1, 1);
+INSERT INTO smartedux.question_knowledge (TestQuestionID, KnowledgeID) VALUES (1, 2);
+INSERT INTO smartedux.question_knowledge (TestQuestionID, KnowledgeID) VALUES (1, 4);
+INSERT INTO smartedux.question_knowledge (TestQuestionID, KnowledgeID) VALUES (2, 1);
+INSERT INTO smartedux.question_knowledge (TestQuestionID, KnowledgeID) VALUES (2, 2);
+INSERT INTO smartedux.question_knowledge (TestQuestionID, KnowledgeID) VALUES (2, 5);
+INSERT INTO smartedux.question_knowledge (TestQuestionID, KnowledgeID) VALUES (2, 6);
+INSERT INTO smartedux.question_knowledge (TestQuestionID, KnowledgeID) VALUES (3, 7);
+INSERT INTO smartedux.question_knowledge (TestQuestionID, KnowledgeID) VALUES (4, 3);
+INSERT INTO smartedux.question_knowledge (TestQuestionID, KnowledgeID) VALUES (5, 2);
+INSERT INTO smartedux.question_knowledge (TestQuestionID, KnowledgeID) VALUES (5, 5);
 /*!40000 ALTER TABLE `question_knowledge` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -438,12 +456,16 @@ CREATE TABLE `testanalyse` (
   `TestAnalyseID` int NOT NULL AUTO_INCREMENT COMMENT '考试分析ID',
   `QuestionNumber` int NOT NULL COMMENT '题目总数',
   `CorrectQuantity` int NOT NULL COMMENT '正确数量',
-  `Accuracy` float NOT NULL COMMENT '正确率',
-  `AccuracyProposal` varchar(100) NOT NULL COMMENT '正确率建议',
-  `KnowledgeMasterProposal` varchar(100) NOT NULL COMMENT '知识点掌握情况建议',
-  `RecommendCourse` json NOT NULL COMMENT '推荐课程',
+  `Accuracy` float COMMENT '正确率',
+  `AccuracyProposal` varchar(100) COMMENT '正确率建议',
+  `KnowledgeMasterProposal` varchar(100) COMMENT '知识点掌握情况建议',
+  `RecommendCourse` json COMMENT '推荐课程',
+  `TestRecordID` int COMMENT '考试记录ID',
+    `UserID` int NOT NULL,
+  KEY `testanalyse_testrecord_FK` (`TestRecordID`),
   PRIMARY KEY (`TestAnalyseID`),
-  CONSTRAINT `testanalyse_user_FK` FOREIGN KEY (`TestAnalyseID`) REFERENCES `user` (`UserID`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `testanalyse_user_FK` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `testanalyse_testrecord_FK` FOREIGN KEY (`TestRecordID`) REFERENCES `testrecord` (`TestRecordID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COMMENT='考试分析';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -466,8 +488,8 @@ DROP TABLE IF EXISTS `testanalyse_knowledge`;
 CREATE TABLE `testanalyse_knowledge` (
   `TestAnalyseID` int NOT NULL COMMENT '考试分析ID',
   `KnowledgeID` int NOT NULL COMMENT '知识点ID',
-  `ContainKnowledgeNum` int NOT NULL COMMENT '试卷中包含知识点个数',
-  `CorrectKnowledgeNum` int NOT NULL COMMENT '正确知识点个数',
+  `ContainKnowledgeNum` int COMMENT '试卷中包含知识点个数',
+  `CorrectKnowledgeNum` int COMMENT '正确知识点个数',
   KEY `testanalyse_knowledge_testanalyse_FK` (`TestAnalyseID`),
   KEY `testanalyse_knowledge_knowledgeID_FK` (`KnowledgeID`),
   CONSTRAINT `testanalyse_knowledge_knowledgeID_FK` FOREIGN KEY (`KnowledgeID`) REFERENCES `knowledge` (`KnowledgeID`),
@@ -559,13 +581,10 @@ CREATE TABLE `testrecord` (
   `FinishState` tinyint(1) NOT NULL COMMENT '完成状态（true or false）',
   `StartTime` datetime NOT NULL COMMENT '考试开始时间',
   `UserID` int NOT NULL COMMENT '用户ID',
-  `TestAnalyseID` int DEFAULT NULL COMMENT '考试分析ID',
   `TestPaperID` int DEFAULT NULL COMMENT '试卷ID',
   PRIMARY KEY (`TestRecordID`),
-  KEY `testrecord_testanalyse_FK` (`TestAnalyseID`),
   KEY `testrecord_user_FK` (`UserID`),
   KEY `testrecord_testpaper_FK` (`TestPaperID`),
-  CONSTRAINT `testrecord_testanalyse_FK` FOREIGN KEY (`TestAnalyseID`) REFERENCES `testanalyse` (`TestAnalyseID`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `testrecord_testpaper_FK` FOREIGN KEY (`TestPaperID`) REFERENCES `testpaper` (`TestPaperID`),
   CONSTRAINT `testrecord_user_FK` FOREIGN KEY (`UserID`) REFERENCES `user` (`UserID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb3 COMMENT='考试记录';
@@ -577,7 +596,6 @@ CREATE TABLE `testrecord` (
 
 LOCK TABLES `testrecord` WRITE;
 /*!40000 ALTER TABLE `testrecord` DISABLE KEYS */;
-INSERT INTO `testrecord` VALUES (1,0,0,'2024-05-26 05:35:01',10,NULL,1),(2,0,0,'2024-05-26 07:26:49',10,NULL,1),(11,0,0,'2024-06-11 01:41:12',10,NULL,1),(12,20,1,'2024-06-11 14:23:55',10,NULL,1),(13,30,1,'2024-06-19 00:32:34',10,NULL,2),(14,0,1,'2024-06-19 00:34:26',10,NULL,1),(15,0,0,'2024-06-19 02:31:59',10,NULL,1),(16,0,0,'2024-06-19 02:45:45',10,NULL,1),(17,0,0,'2024-06-19 02:45:53',10,NULL,2),(18,0,0,'2024-06-19 02:45:58',10,NULL,1);
 /*!40000 ALTER TABLE `testrecord` ENABLE KEYS */;
 UNLOCK TABLES;
 

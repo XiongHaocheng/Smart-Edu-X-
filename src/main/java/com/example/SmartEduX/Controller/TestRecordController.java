@@ -1,14 +1,11 @@
 package com.example.SmartEduX.Controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.example.SmartEduX.Mapper.TestRecordMapper;
-import com.example.SmartEduX.Mapper.TestRecord_QuestionMapper;
-import com.example.SmartEduX.Mapper.UserMapper;
+import com.example.SmartEduX.Mapper.*;
 import com.example.SmartEduX.common.Result;
-import com.example.SmartEduX.entity.TestRecord;
-import com.example.SmartEduX.entity.TestRecord_Question;
-import com.example.SmartEduX.entity.User;
+import com.example.SmartEduX.entity.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -42,6 +39,17 @@ public class TestRecordController {
     @Resource
     private TestRecord_QuestionMapper testRecord_questionMapper;
 
+    @Autowired
+    @Resource
+    private QuestionKnowledgeMapper questionKnowledgeMapper;
+
+    @Autowired
+    @Resource
+    private TestAnalyseKnowledgeMapper testAnalyseKnowledgeMapper;
+
+    @Autowired
+    @Resource
+    private TestAnalyseMapper testAnalyseMapper;
 
     @ApiOperation("添加一条新的记录")
     @CrossOrigin
@@ -122,10 +130,12 @@ public class TestRecordController {
         // 4. Use Gson to parse the "list" array
         List<TestRecord_Question> testRecord_questions = gson.fromJson(jsonArray, listType);
 
+
         for (TestRecord_Question question : testRecord_questions){
             TestRecord_Question question1 = testRecord_questionMapper.selectOne(new LambdaQueryWrapper<TestRecord_Question>()
                     .eq(TestRecord_Question::getTestquestionid, question.getTestquestionid())
                     .and(wrapper -> wrapper.eq(TestRecord_Question::getTestrecordid, question.getTestrecordid())));
+
             if(question1 != null){
                 question1.setIscorrect(question.getIscorrect());
                 testRecord_questionMapper.update(question1,new LambdaQueryWrapper<TestRecord_Question>()
@@ -136,8 +146,91 @@ public class TestRecordController {
             }
         }
 
-//        System.out.println(testRecord_questions);
+//        开始处理考试分析
+//        先查找是否已经有考试分析，根据TestRecordID
+        TestRecord testRecord = testRecordMapper.selectById(testRecord_questions.get(0).getTestrecordid());
+        TestAnalyse testAnalyse = testAnalyseMapper.selectById(testRecord_questions.get(0).getTestrecordid());
+        if(testAnalyse == null) {
+            testAnalyse = new TestAnalyse();
+            testAnalyse.setTestrecordid(testRecord.getTestrecordid());
+            testAnalyse.setQuestionnumber(testRecord_questions.size());
+            testAnalyse.setCorrectquantity(getCorrectQuantity(testRecord_questions));
+            testAnalyse.setUserid(testRecord.getUserid());
+            testAnalyse.setAccuracy((float) testAnalyse.getCorrectquantity() / testAnalyse.getQuestionnumber());
+            testAnalyse.setAccuracyproposal(getAccuracyProposal(testAnalyse.getAccuracy()));
+            testAnalyseMapper.insert(testAnalyse);
+
+//            处理testanalyse_knowledge
+            for (TestRecord_Question question : testRecord_questions){
+                List<QuestionKnowledge> questionKnowledges = getKnowledgeList(question.getTestquestionid());
+                for (QuestionKnowledge questionKnowledge : questionKnowledges){
+                    TestAnalyseKnowledge testAnalyseKnowledge = new TestAnalyseKnowledge();
+                    testAnalyseKnowledge.setTestanalyseid(testAnalyse.getTestanalyseid());
+                    testAnalyseKnowledge.setKnowledgeid(questionKnowledge.getKnowledgeid());
+//                    先查找testanalyseid和knowledgeid是否已经存在
+                    TestAnalyseKnowledge testAnalyseKnowledge1 = testAnalyseKnowledgeMapper.selectOne(new LambdaQueryWrapper<TestAnalyseKnowledge>()
+                            .eq(TestAnalyseKnowledge::getTestanalyseid, testAnalyseKnowledge.getTestanalyseid())
+                            .and(wrapper -> wrapper.eq(TestAnalyseKnowledge::getKnowledgeid, testAnalyseKnowledge.getKnowledgeid())));
+                    if(testAnalyseKnowledge1 == null) {
+//                       不存在，插入
+                        testAnalyseKnowledge.setContainknowledgenum(1);
+//                        如果用户答错了，设置为0
+                        if(question.getIscorrect() == 0) {
+                            testAnalyseKnowledge.setCorrectknowledgenum(0);
+                        }else{
+                            testAnalyseKnowledge.setCorrectknowledgenum(1);
+                        }
+                        testAnalyseKnowledgeMapper.insert(testAnalyseKnowledge);
+                    }else{
+//                        存在，更新
+                        testAnalyseKnowledge1.setContainknowledgenum(testAnalyseKnowledge1.getContainknowledgenum() + 1);
+                        //                        如果用户答错了，不变，如果答对了，加1
+                        if(question.getIscorrect() != 0) {
+                            testAnalyseKnowledge1.setCorrectknowledgenum(testAnalyseKnowledge1.getCorrectknowledgenum() + 1);
+                        }
+                        testAnalyseKnowledgeMapper.update(testAnalyseKnowledge1,new LambdaQueryWrapper<TestAnalyseKnowledge>()
+                                .eq(TestAnalyseKnowledge::getTestanalyseid, testAnalyseKnowledge1.getTestanalyseid())
+                                .and(wrapper -> wrapper.eq(TestAnalyseKnowledge::getKnowledgeid, testAnalyseKnowledge1.getKnowledgeid())));
+                    }
+                }
+            }
+
+
+        }
 
         return Result.success("成功");
     }
+
+    //    根据问题id，在question_knowledge中查找所有的知识点，返回列表
+    private List<QuestionKnowledge> getKnowledgeList(Integer questionid){
+        // 创建查询条件
+        QueryWrapper<QuestionKnowledge> wrapper = new QueryWrapper<>();
+        wrapper.in("testquestionid", questionid);
+
+        // 执行查询并返回结果
+        return questionKnowledgeMapper.selectList(wrapper);
+    }
+
+//    计算question中iscorrect=1的数量
+    private Integer getCorrectQuantity(List<TestRecord_Question> testRecord_questions){
+        Integer correctQuantity = 0;
+        for (TestRecord_Question question : testRecord_questions){
+            if(question.getIscorrect() == 1){
+                correctQuantity++;
+            }
+        }
+        return correctQuantity;
+    }
+
+//    正确率建议
+    private String getAccuracyProposal(Float accuracy){
+        if(accuracy >= 0.8){
+            return "你的正确率很高，继续保持！";
+        }else if(accuracy >= 0.6){
+            return "你的正确率一般，继续努力！";
+        }else{
+            return "你的正确率很低，需要加强练习！";
+        }
+    }
+
 }
