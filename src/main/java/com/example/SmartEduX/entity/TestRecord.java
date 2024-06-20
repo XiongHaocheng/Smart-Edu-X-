@@ -29,8 +29,6 @@ public class TestRecord {
     private Date starttime;
     @ApiModelProperty(value = "用户id", example = "1")
     private Integer userid;
-    @ApiModelProperty(value = "考试分析ID", example = "1")
-    private Integer testanalyseid;
     @ApiModelProperty(value = "试卷ID", example = "1")
     private Integer testpaperid;
 }

@@ -15,13 +15,13 @@ import lombok.NoArgsConstructor;
 @ApiModel("数据库字段")
 @TableName("testanalyse_knowledge")
 public class TestAnalyseKnowledge {
-    @ApiModelProperty(value = "考试分析ID", required = true, example = "1")
+    @ApiModelProperty(value = "考试分析ID", example = "1")
     private Integer testanalyseid;
-    @ApiModelProperty(value = "知识点ID", required = true, example = "1")
+    @ApiModelProperty(value = "知识点ID",example = "1")
     private Integer knowledgeid;
-    @ApiModelProperty(value = "包含知识点的个数", required = true, example = "1")
+    @ApiModelProperty(value = "包含知识点的个数", example = "1")
     private Integer containknowledgenum;
-    @ApiModelProperty(value = "正确知识点的个数", required = true, example = "1")
+    @ApiModelProperty(value = "正确知识点的个数", example = "1")
     private Integer correctknowledgenum;
 
 }
