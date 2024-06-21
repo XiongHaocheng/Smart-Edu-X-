@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,9 +21,7 @@ public class TeacherMonitor {
     @TableId(type = IdType.AUTO)
     private Integer teachermonitorid;
     @ApiModelProperty(value = "时间", example = "2024-6-19")
-    private String time;
-    @ApiModelProperty(value = "次数", example = "1")
-    private Integer nums;
+    private Date time;
     @ApiModelProperty(value = "类型", example = "xhc")
     private Integer type;
     @ApiModelProperty(value = "用户ID", example = "xhc")

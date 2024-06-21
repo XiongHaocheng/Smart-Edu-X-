@@ -27,6 +27,8 @@ public class TestRecord {
     private Integer finishstate;
     @ApiModelProperty(value = "考试开始时间", example = "2024-5-22 12:00:00")
     private Date starttime;
+    @ApiModelProperty(value = "考试结束时间", example = "2024-5-22 12:00:00")
+    private Date finishtime;
     @ApiModelProperty(value = "用户id", example = "1")
     private Integer userid;
     @ApiModelProperty(value = "试卷ID", example = "1")
