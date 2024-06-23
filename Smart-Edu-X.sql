@@ -459,7 +459,7 @@ CREATE TABLE `testanalyse` (
   `Accuracy` float COMMENT '正确率',
   `AccuracyProposal` varchar(100) COMMENT '正确率建议',
   `KnowledgeMasterProposal` varchar(100) COMMENT '知识点掌握情况建议',
-  `RecommendCourse` json COMMENT '推荐课程',
+  `RecommendCourse` varchar(20) COMMENT '推荐课程',
   `TestRecordID` int COMMENT '考试记录ID',
     `UserID` int NOT NULL,
   KEY `testanalyse_testrecord_FK` (`TestRecordID`),
