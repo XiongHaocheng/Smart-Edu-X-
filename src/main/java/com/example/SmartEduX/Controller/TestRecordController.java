@@ -13,11 +13,13 @@ import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.apache.ibatis.jdbc.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +52,10 @@ public class TestRecordController {
     @Autowired
     @Resource
     private TestAnalyseMapper testAnalyseMapper;
+
+    @Autowired
+    @Resource
+    private KnowledgeMapper knowledgeMapper;
 
     @ApiOperation("添加一条新的记录")
     @CrossOrigin
@@ -198,6 +204,14 @@ public class TestRecordController {
                 }
             }
 
+//            处理完testanalyse_knowledge后，更新testanalyse中的knowledge_proposal与推荐课程
+//            根据testanalyseid查询testanalyse_knowledge表中所有的表项目
+            List<TestAnalyseKnowledge> testAnalyseKnowledges = getTestAnalyseKnowledgeByID(testAnalyse.getTestanalyseid());
+            String proposal = getKnowledgeProposalByAnalyse(testAnalyseKnowledges);
+            testAnalyse.setKnowledgemasterproposal(proposal);
+            testAnalyse.setRecommendcourse("2,3,5");
+            testAnalyseMapper.update(testAnalyse,new LambdaQueryWrapper<TestAnalyse>()
+                    .eq(TestAnalyse::getTestanalyseid,testAnalyse.getTestanalyseid()));
 
         }
 
@@ -233,6 +247,58 @@ public class TestRecordController {
             return "你的正确率一般，继续努力！";
         }else{
             return "你的正确率很低，需要加强练习！";
+        }
+    }
+
+//    根据testanalyseid查询testanalyse_knowledge表中所有的表项目
+    private List<TestAnalyseKnowledge> getTestAnalyseKnowledgeByID(Integer analyseid){
+        List<TestAnalyseKnowledge> testAnalyseKnowledges = testAnalyseKnowledgeMapper.selectList(
+                new LambdaQueryWrapper<TestAnalyseKnowledge>().eq(TestAnalyseKnowledge::getTestanalyseid,analyseid)
+        );
+        if(! testAnalyseKnowledges.isEmpty()){
+            return testAnalyseKnowledges;
+        }else{
+            return null;
+        }
+    }
+
+//    根据testanalyse_knowledge列表生成建议
+    private String getKnowledgeProposalByAnalyse(List<TestAnalyseKnowledge> testAnalyseKnowledges){
+        Integer max_index = 0;
+        Float max_accuracy = 0f;
+        Integer min_index = 0;
+        Float min_accuracy = 1f;
+        List<Float> list = new ArrayList<>();
+        for( int i = 0;i<testAnalyseKnowledges.size();i++){
+            TestAnalyseKnowledge testAnalyseKnowledge = testAnalyseKnowledges.get(i);
+            Float accuracy = (float) testAnalyseKnowledge.getCorrectknowledgenum() / testAnalyseKnowledge.getContainknowledgenum();
+            if (accuracy < min_accuracy){
+                min_index = i;
+                min_accuracy = accuracy;
+            }
+            if (accuracy > max_accuracy){
+                max_index = i;
+                max_accuracy = accuracy;
+            }
+        }
+        String maxKnowledgeName = getKnowledgeNameByID(testAnalyseKnowledges.get(max_index).getKnowledgeid());
+        String minKnowledgeName = getKnowledgeNameByID(testAnalyseKnowledges.get(min_index).getKnowledgeid());
+
+        return "你的"+maxKnowledgeName+"掌握地很好，不过你的"+minKnowledgeName+"的掌握情况还需加强！";
+
+    }
+
+//    通过知识点id查询知识点的名称
+    private String getKnowledgeNameByID(Integer id){
+        Knowledge knowledge = knowledgeMapper.selectOne(
+                new LambdaQueryWrapper<Knowledge>().eq(
+                        Knowledge::getKnowledgeid,id
+                )
+        );
+        if (knowledge != null){
+            return knowledge.getKnowledgename();
+        }else{
+            return "error！";
         }
     }
 
