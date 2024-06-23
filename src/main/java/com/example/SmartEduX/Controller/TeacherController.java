@@ -12,6 +12,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -19,10 +20,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.io.File;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Api(tags = "API接口")
@@ -280,6 +280,7 @@ public class TeacherController {
                 recordWithUsername.put("username", user.getUsername());
                 recordWithUsername.put("testpapername", testPaper.getTestpapername());
                 recordWithUsername.put("starttime", record.getStarttime());
+                recordWithUsername.put("finishtime", record.getFinishtime());
                 recordWithUsername.put("finishstate", record.getFinishstate());
                 recordWithUsername.put("fullscore", testPaper.getFullscore());
                 recordWithUsername.put("testscore", record.getTestscore());
@@ -287,6 +288,12 @@ public class TeacherController {
                     recordWithUsername.put("ispass", 0);
                 }else{
                     recordWithUsername.put("ispass", 1);
+                }
+                boolean isCheating = checkForCheating(userId, record.getStarttime(), record.getFinishtime());
+                if (isCheating) {
+                    recordWithUsername.put("ischeat", 1);
+                } else {
+                    recordWithUsername.put("ischeat", 0);
                 }
                 // 将当前记录添加到结果列表中
                 result.add(recordWithUsername);
@@ -337,31 +344,31 @@ public class TeacherController {
         // 获取近七天的日期
         List<String> last7Days = getLast7Days();
         // 筛选出近七天的记录
-        Map<Integer, Map<String, Integer>> userSleepData = new HashMap<>();
+        Map<Integer, Map<String, Integer>> userViolationData = new HashMap<>();
         for (TeacherMonitor record : allRecords) {
-            if (last7Days.contains(record.getTime())) {
-                userSleepData
-                        .computeIfAbsent(record.getUserid(), k -> new HashMap<>())
-                        .put(record.getTime(), record.getNums());
+            Date date = record.getTime();
+            LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            String formattedDate = localDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            if (last7Days.contains(formattedDate)) {
+                int userId = record.getUserid();
+                userViolationData
+                        .computeIfAbsent(userId, k -> new HashMap<>())
+                        .merge(formattedDate, 1, Integer::sum);
             }
         }
-        // 构建返回的数据格式
         List<String> usernames = new ArrayList<>();
         List<Map<String, Object>> series = new ArrayList<>();
-        for (Map.Entry<Integer, Map<String, Integer>> entry : userSleepData.entrySet()) {
+        for (Map.Entry<Integer, Map<String, Integer>> entry : userViolationData.entrySet()) {
             Integer userId = entry.getKey();
-            Map<String, Integer> sleepData = entry.getValue();
-
+            Map<String, Integer> violationData = entry.getValue();
             User user = userMapper.selectById(userId);
             if (user != null) {
                 String username = user.getUsername();
                 usernames.add(username);
-
                 List<Integer> numsList = new ArrayList<>();
                 for (String day : last7Days) {
-                    numsList.add(sleepData.getOrDefault(day, 0));
+                    numsList.add(violationData.getOrDefault(day, 0));
                 }
-
                 Map<String, Object> seriesData = new HashMap<>();
                 seriesData.put("name", username);
                 seriesData.put("type", "line");
@@ -370,11 +377,10 @@ public class TeacherController {
                 series.add(seriesData);
             }
         }
-
         Map<String, Object> response = new HashMap<>();
         response.put("data", usernames);
         response.put("series", series);
-        return Result.success(response,"成功");
+        return Result.success(response, "成功");
     }
     @ApiOperation("获取上课吃东西打哈欠次数信息")
     @CrossOrigin
@@ -386,31 +392,31 @@ public class TeacherController {
         // 获取近七天的日期
         List<String> last7Days = getLast7Days();
         // 筛选出近七天的记录
-        Map<Integer, Map<String, Integer>> userSleepData = new HashMap<>();
+        Map<Integer, Map<String, Integer>> userViolationData = new HashMap<>();
         for (TeacherMonitor record : allRecords) {
-            if (last7Days.contains(record.getTime())) {
-                userSleepData
-                        .computeIfAbsent(record.getUserid(), k -> new HashMap<>())
-                        .put(record.getTime(), record.getNums());
+            Date date = record.getTime();
+            LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            String formattedDate = localDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            if (last7Days.contains(formattedDate)) {
+                int userId = record.getUserid();
+                userViolationData
+                        .computeIfAbsent(userId, k -> new HashMap<>())
+                        .merge(formattedDate, 1, Integer::sum);
             }
         }
-        // 构建返回的数据格式
         List<String> usernames = new ArrayList<>();
         List<Map<String, Object>> series = new ArrayList<>();
-        for (Map.Entry<Integer, Map<String, Integer>> entry : userSleepData.entrySet()) {
+        for (Map.Entry<Integer, Map<String, Integer>> entry : userViolationData.entrySet()) {
             Integer userId = entry.getKey();
-            Map<String, Integer> sleepData = entry.getValue();
-
+            Map<String, Integer> violationData = entry.getValue();
             User user = userMapper.selectById(userId);
             if (user != null) {
                 String username = user.getUsername();
                 usernames.add(username);
-
                 List<Integer> numsList = new ArrayList<>();
                 for (String day : last7Days) {
-                    numsList.add(sleepData.getOrDefault(day, 0));
+                    numsList.add(violationData.getOrDefault(day, 0));
                 }
-
                 Map<String, Object> seriesData = new HashMap<>();
                 seriesData.put("name", username);
                 seriesData.put("type", "line");
@@ -419,11 +425,10 @@ public class TeacherController {
                 series.add(seriesData);
             }
         }
-
         Map<String, Object> response = new HashMap<>();
         response.put("data", usernames);
         response.put("series", series);
-        return Result.success(response,"成功");
+        return Result.success(response, "成功");
     }
     @ApiOperation("获取考试违规次数信息")
     @CrossOrigin
@@ -435,31 +440,31 @@ public class TeacherController {
         // 获取近七天的日期
         List<String> last7Days = getLast7Days();
         // 筛选出近七天的记录
-        Map<Integer, Map<String, Integer>> userSleepData = new HashMap<>();
+        Map<Integer, Map<String, Integer>> userViolationData = new HashMap<>();
         for (TeacherMonitor record : allRecords) {
-            if (last7Days.contains(record.getTime())) {
-                userSleepData
-                        .computeIfAbsent(record.getUserid(), k -> new HashMap<>())
-                        .put(record.getTime(), record.getNums());
+            Date date = record.getTime();
+            LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            String formattedDate = localDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            if (last7Days.contains(formattedDate)) {
+                int userId = record.getUserid();
+                userViolationData
+                        .computeIfAbsent(userId, k -> new HashMap<>())
+                        .merge(formattedDate, 1, Integer::sum);
             }
         }
-        // 构建返回的数据格式
         List<String> usernames = new ArrayList<>();
         List<Map<String, Object>> series = new ArrayList<>();
-        for (Map.Entry<Integer, Map<String, Integer>> entry : userSleepData.entrySet()) {
+        for (Map.Entry<Integer, Map<String, Integer>> entry : userViolationData.entrySet()) {
             Integer userId = entry.getKey();
-            Map<String, Integer> sleepData = entry.getValue();
-
+            Map<String, Integer> violationData = entry.getValue();
             User user = userMapper.selectById(userId);
             if (user != null) {
                 String username = user.getUsername();
                 usernames.add(username);
-
                 List<Integer> numsList = new ArrayList<>();
                 for (String day : last7Days) {
-                    numsList.add(sleepData.getOrDefault(day, 0));
+                    numsList.add(violationData.getOrDefault(day, 0));
                 }
-
                 Map<String, Object> seriesData = new HashMap<>();
                 seriesData.put("name", username);
                 seriesData.put("type", "line");
@@ -468,11 +473,10 @@ public class TeacherController {
                 series.add(seriesData);
             }
         }
-
         Map<String, Object> response = new HashMap<>();
         response.put("data", usernames);
         response.put("series", series);
-        return Result.success(response,"成功");
+        return Result.success(response, "成功");
     }
     private List<String> getLast7Days() {
         List<String> result = new ArrayList<>();
@@ -482,4 +486,20 @@ public class TeacherController {
         }
         return result;
     }
+    private boolean checkForCheating(Integer userId, Date startTime, Date finishTime) {
+        List<TeacherMonitor> monitorRecords = teacherMonitorMapper.selectList(
+                Wrappers.<TeacherMonitor>lambdaQuery()
+                        .eq(TeacherMonitor::getUserid, userId)
+                        .eq(TeacherMonitor::getType, 3)
+        );
+
+        for (TeacherMonitor monitorRecord : monitorRecords) {
+            Date monitorTime = monitorRecord.getTime();
+            if (monitorTime.after(startTime) && monitorTime.before(finishTime)) {
+                return true; // Cheating detected
+            }
+        }
+        return false; // No cheating detected
+    }
+
 }

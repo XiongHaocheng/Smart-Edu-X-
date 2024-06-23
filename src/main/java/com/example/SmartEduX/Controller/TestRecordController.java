@@ -94,6 +94,9 @@ public class TestRecordController {
         if(testRecordFromDB != null){
             testRecordFromDB.setFinishstate(1);
             testRecordFromDB.setTestscore(score);
+            Date currentDate = new Date();
+//            System.out.println(currentDate);
+            testRecordFromDB.setFinishtime(currentDate);
             testRecordMapper.updateById(testRecordFromDB);
         }
         return Result.success(testRecordFromDB,"成功");
