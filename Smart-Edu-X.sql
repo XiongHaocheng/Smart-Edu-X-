@@ -445,7 +445,6 @@ CREATE TABLE `testanalyse` (
   `RecommendCourse` varchar(20) COMMENT '推荐课程',
   `TestRecordID` int COMMENT '考试记录ID',
     `UserID` int NOT NULL,
-  KEY `testanalyse_testrecord_FK` (`TestRecordID`),
   PRIMARY KEY (`TestAnalyseID`),
   KEY `testanalyse_testrecord_FK` (`TestRecordID`),
   KEY `testanalyse_user_FK` (`UserID`),
