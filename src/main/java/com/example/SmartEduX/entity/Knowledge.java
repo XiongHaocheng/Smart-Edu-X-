@@ -21,6 +21,6 @@ public class Knowledge {
     @ApiModelProperty(value = "知识点名称", example = "1")
     private String knowledgename;
     @ApiModelProperty(value = "知识点涉及领域", example = "xhc")
-    private Integer knowledgedomain;
+    private String knowledgedomain;
 
 }

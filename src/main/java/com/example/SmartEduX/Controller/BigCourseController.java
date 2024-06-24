@@ -6,6 +6,7 @@ import com.example.SmartEduX.common.Result;
 import com.example.SmartEduX.entity.BigCourse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -105,6 +106,30 @@ public class BigCourseController {
         queryWrapper.eq("coursename", maxCourseName);
         List<BigCourse> course = bigCourseMapper.selectList(queryWrapper);
         return Result.success(course,"成功");
+    }
+
+    @ApiOperation("获取最感兴趣课程")
+    @CrossOrigin
+    @GetMapping(value = "/getcoursebyidlist")
+    public Result<?> getCourseByIDList(@RequestParam String courseIDListstr) {
+        String[] courseIDList = courseIDListstr.split(",");
+        List<Integer> list = new ArrayList<>();
+        for( int i = 0; i < courseIDList.length; i++ ) {
+            list.add(Integer.parseInt(courseIDList[i]));
+        }
+        List<BigCourse> courseList = getCourseByIDListImpl(list);
+        return Result.success(courseList,"成功");
+    }
+
+    private List<BigCourse> getCourseByIDListImpl(@RequestParam List<Integer> courseIDList) {
+        List<BigCourse> courseList = new ArrayList<>();
+        for (Integer courseID : courseIDList) {
+            QueryWrapper<BigCourse> queryWrapper = new QueryWrapper<>();
+            queryWrapper.eq("courseid", courseID);
+            BigCourse course = bigCourseMapper.selectOne(queryWrapper);
+            courseList.add(course);
+        }
+        return courseList;
     }
 }
 
