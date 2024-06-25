@@ -35,6 +35,8 @@ public class User {
     private Integer userscore;
     @ApiModelProperty(value = "用户列", example = "")
     private String usercol;
+    @ApiModelProperty(value = "是否登录", example = "")
+    private Integer islogin;
     @ApiModelProperty(value = "令牌",  example = "")
     @TableField(exist = false)
     private String usertoken;

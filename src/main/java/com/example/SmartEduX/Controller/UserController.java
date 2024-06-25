@@ -85,10 +85,34 @@ public class UserController {
         // 可以增加用户访问计数
         LoginUser.addVisitCount();
 
+        //登录状态设为1
+        userFromDb.setIslogin(1);
+        // 更新数据库中的用户记录，确保事务原子性
+        userMapper.updateById(userFromDb);
         // 返回包含用户信息和Token的成功响应
         return Result.success(userFromDb,"登录成功");
     }
 
+    @CrossOrigin
+    @PostMapping("/logout")
+    public Result<?> logout(@RequestParam Integer userid){
+        // 假设user是请求中传来的用户对象，包含退出登录时的用户信息
+        User userFromDb = userMapper.selectOne(new LambdaQueryWrapper<User>()
+                .eq(User::getUserid, userid));
+        // 检查是否找到了用户
+        if (userFromDb == null) {
+            return Result.error("-1", "用户不存在");
+        }
+
+        // 更新数据库中的isLogin字段为0
+        userFromDb.setIslogin(0); // 设置isLogin字段为0
+
+        // 保存更新后的用户信息到数据库
+        userMapper.updateById(userFromDb);
+
+        // 返回成功的响应
+        return Result.success(null, "成功");
+    }
     @CrossOrigin
     @PostMapping("/update")
     public Result<?> update(@RequestBody User user) {
