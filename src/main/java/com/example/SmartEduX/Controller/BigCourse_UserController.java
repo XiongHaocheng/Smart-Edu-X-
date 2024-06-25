@@ -1,6 +1,7 @@
 package com.example.SmartEduX.Controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.example.SmartEduX.Mapper.BigCourseMapper;
@@ -197,5 +198,28 @@ public class BigCourse_UserController {
         }
         List<Integer> nums = Arrays.asList(bigCourseUser.getFinishnum(), bigCourseUser.getUnfinishnum());
         return Result.success(nums, "成功");
+    }
+
+    @ApiOperation("获取学习进度的三个数")
+    @CrossOrigin
+    @GetMapping("/getlearningprocess")
+    public Result<?> getLearningProcess(@RequestParam Integer userID) {
+        List<BigCourse_User> bigCourse_users = bigCourse_UserMapper.selectList(
+                new LambdaQueryWrapper<BigCourse_User>()
+                        .eq(BigCourse_User::getUserid, userID)
+        );
+        if (bigCourse_users.isEmpty()) {
+            return Result.success("0,0,0","成功");
+        }
+        int finishNum = 0;
+        int unfinishNum = 0;
+        int totalNum = 0;
+        for (BigCourse_User bigCourse_user : bigCourse_users) {
+            finishNum += bigCourse_user.getFinishnum();
+            unfinishNum += bigCourse_user.getUnfinishnum();
+            totalNum += bigCourse_user.getFinishnum() + bigCourse_user.getUnfinishnum();
+        }
+        String result = finishNum + "," + unfinishNum + "," + totalNum;
+        return Result.success(result, "成功");
     }
 }
