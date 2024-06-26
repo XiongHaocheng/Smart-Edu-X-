@@ -110,7 +110,7 @@ public class TestRecordController {
                 new LambdaQueryWrapper<TestRecord>()
                         .eq(TestRecord::getTestpaperid, pid)
                         .and(wrapper -> wrapper.eq(TestRecord::getUserid, userid)));
-            return Result.success(testRecords,"获取考试记录成功");
+            return Result.success(testRecords,"成功");
     }
 
     @ApiOperation("获取用户某张卷子的某个记录")

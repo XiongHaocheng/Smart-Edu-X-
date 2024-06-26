@@ -184,4 +184,17 @@ public class UserController {
         Integer result = user.getUserscore();
         return Result.success(result,"成功");
     }
+
+    @ApiOperation("积分+1")
+    @CrossOrigin
+    @PostMapping (value ="/updatescore")
+    public Result<Integer> update(@RequestParam Integer userId) {
+        User user = userMapper.selectById(userId);
+        // 更新用户的积分
+        user.setUserscore(user.getUserscore() + 1);
+        userMapper.updateById(user);
+
+        Integer result = user.getUserscore();
+        return Result.success(result, "成功");
+    }
 }

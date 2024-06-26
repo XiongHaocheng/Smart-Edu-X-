@@ -59,7 +59,7 @@ public class BigCourse_UserController {
         bigcourse_user.setUnfinishnum(sectionCount);
         bigcourse_user.setFinishnum(0);
         bigCourse_UserMapper.insert(bigcourse_user);
-        return Result.success("订阅成功");
+        return Result.success("成功");
     }
 
     @ApiOperation("获取我的学习信息")
