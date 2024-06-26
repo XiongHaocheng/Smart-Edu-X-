@@ -9,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,5 +27,5 @@ public class IntegralRecord {
     @ApiModelProperty(value = "用户ID", example = "1")
     private Integer userid;
     @ApiModelProperty(value = "时间", example = "xhc")
-    private String date;
+    private Date date;
 }

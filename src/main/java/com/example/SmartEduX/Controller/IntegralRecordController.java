@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 
 @Api(tags = "API接口")
@@ -26,14 +27,13 @@ public class IntegralRecordController {
     @CrossOrigin
     @PostMapping(value = "/updateintegralrecord")
     public Result<?> updateIntegralRecord(@RequestParam Integer userid,@RequestParam String source) {
-        // 获取当前时间的年月
-        LocalDate currentDate = LocalDate.now();
-        String currentYearMonth = currentDate.format(DateTimeFormatter.ofPattern("yyyy-MM"));
+        // 获取当前时间，精确到秒
+        Date currentDate = new Date();
         // 设置要更新的值
         IntegralRecord record = new IntegralRecord();
         record.setUserid(userid);
         record.setSource(source);
-        record.setDate(currentYearMonth);
+        record.setDate(currentDate);
         record.setScore(1);
         // 更新记录
         integralRecordMapper.insert(record);

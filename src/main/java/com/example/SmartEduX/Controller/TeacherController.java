@@ -496,10 +496,10 @@ public class TeacherController {
         for (TeacherMonitor monitorRecord : monitorRecords) {
             Date monitorTime = monitorRecord.getTime();
             if (monitorTime.after(startTime) && monitorTime.before(finishTime)) {
-                return true; // Cheating detected
+                return true;
             }
         }
-        return false; // No cheating detected
+        return false;
     }
 
 }
