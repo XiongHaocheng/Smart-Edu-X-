@@ -6,7 +6,6 @@ import com.example.SmartEduX.LoginUser;
 import com.example.SmartEduX.Mapper.UserMapper;
 import com.example.SmartEduX.Utils.TokenUtils;
 import com.example.SmartEduX.common.Result;
-import com.example.SmartEduX.entity.ImageAndText;
 import com.example.SmartEduX.entity.User;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
