@@ -446,7 +446,7 @@ CREATE TABLE `testanalyse` (
   `Accuracy` float DEFAULT NULL COMMENT '正确率',
   `AccuracyProposal` varchar(100) DEFAULT NULL COMMENT '正确率建议',
   `KnowledgeMasterProposal` varchar(100) DEFAULT NULL COMMENT '知识点掌握情况建议',
-  `RecommendCourse` json DEFAULT NULL COMMENT '推荐课程',
+  `RecommendCourse` varchar(20) DEFAULT NULL COMMENT '推荐课程',
   `TestRecordID` int DEFAULT NULL COMMENT '考试记录ID',
   `UserID` int NOT NULL,
   PRIMARY KEY (`TestAnalyseID`),
