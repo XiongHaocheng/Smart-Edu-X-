@@ -45,7 +45,7 @@ public class BigCourse_UserController {
     @ApiOperation("用户订阅课程")
     @CrossOrigin
     @PostMapping("/subscribecourse")
-    public Result<?> getBigCourseID(@RequestParam Integer courseID, @RequestParam Integer userID) {
+    public Result<?> SubscribeCourse(@RequestParam Integer courseID, @RequestParam Integer userID) {
         //先获取该课程的小节数
         QueryWrapper<VideoCourse> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("courseid", courseID);
@@ -65,7 +65,7 @@ public class BigCourse_UserController {
     @ApiOperation("获取我的学习信息")
     @CrossOrigin
     @GetMapping(value = "/getmystudy")
-    public Result<?> getBigCourseID(@RequestParam Integer userID) {
+    public Result<?> getMyStudy(@RequestParam Integer userID) {
         QueryWrapper<BigCourse_User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("userid", userID);
         List<BigCourse_User> bigCourse_User = bigCourse_UserMapper.selectList(queryWrapper);

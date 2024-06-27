@@ -108,7 +108,7 @@ public class BigCourseController {
         return Result.success(course,"成功");
     }
 
-    @ApiOperation("获取最感兴趣课程")
+    @ApiOperation("根据ID获取课程")
     @CrossOrigin
     @GetMapping(value = "/getcoursebyidlist")
     public Result<?> getCourseByIDList(@RequestParam String courseIDListstr) {
