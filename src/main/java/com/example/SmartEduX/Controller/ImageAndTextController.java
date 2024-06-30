@@ -59,7 +59,7 @@ public class ImageAndTextController {
     @GetMapping(value = "/topicinfo")
     public Result<List<ImageAndText>> getHotTopic(@RequestParam String currentNavItem){
         // 根据 currentNavItem 的值进行数据库查询
-        List<ImageAndText> topic = new ArrayList<>();
+        List<ImageAndText> topic;
         if (currentNavItem.equals("全部")) {
             topic = imageAndTextMapper.selectList(null);
         } else {
