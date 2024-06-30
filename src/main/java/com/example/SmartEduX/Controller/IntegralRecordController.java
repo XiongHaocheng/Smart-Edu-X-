@@ -1,9 +1,13 @@
 package com.example.SmartEduX.Controller;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.SmartEduX.Mapper.IntegralRecordMapper;
+import com.example.SmartEduX.Mapper.UserMapper;
 import com.example.SmartEduX.common.Result;
+import com.example.SmartEduX.entity.ImageAndText;
 import com.example.SmartEduX.entity.IntegralRecord;
+import com.example.SmartEduX.entity.User;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +17,7 @@ import javax.annotation.Resource;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.List;
 
 
 @Api(tags = "API接口")
@@ -41,4 +46,20 @@ public class IntegralRecordController {
 
         return Result.success("成功");
     }
+
+    @ApiOperation("获取积分记录")
+    @CrossOrigin
+    @GetMapping(value = "/getintegralrecord")
+    public Result<List<IntegralRecord>> getIntegralRecord(@RequestParam Integer userid){
+        // 根据 currentNavItem 的值进行数据库查询
+        List<IntegralRecord> record;
+
+        QueryWrapper<IntegralRecord> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("userid", userid);
+        record = integralRecordMapper.selectList(queryWrapper);
+
+        // 根据其他条件查询其他类型的课程
+        return Result.success(record,"成功");
+    }
+
 }
