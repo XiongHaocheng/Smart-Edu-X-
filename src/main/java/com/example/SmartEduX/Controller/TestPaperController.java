@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.SmartEduX.Mapper.BigCourseMapper;
 import com.example.SmartEduX.Mapper.BigCourse_UserMapper;
 import com.example.SmartEduX.Mapper.TestPaperMapper;
+import com.example.SmartEduX.Mapper.TestRecordMapper;
 import com.example.SmartEduX.common.Result;
 import com.example.SmartEduX.entity.*;
 import io.swagger.annotations.Api;
@@ -14,10 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Api(tags = "API接口")
@@ -38,6 +36,9 @@ public class TestPaperController {
     @Resource
     private BigCourseMapper bigCourseMapper;
 
+    @Autowired
+    @Resource
+    private TestRecordMapper testRecordMapper;
     @ApiOperation("获取所有的考试列表，考试列表不包含有“每日练习”作为标题的考试项")
     @CrossOrigin
     @GetMapping("/alltestlist")
@@ -136,5 +137,31 @@ public class TestPaperController {
         }
         return Result.success(testPaper,"成功");
     }
+    @ApiOperation("获取每套考试的最高分")
+    @CrossOrigin
+    @GetMapping("/maxtestlist")
+    public Result<?> getMaxTestList(@RequestParam Integer userid) {
+        // 1. 根据 userid 查询所有记录
+        QueryWrapper<TestRecord> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("userid", userid);
+        List<TestRecord> testRecords = testRecordMapper.selectList(queryWrapper);
 
+        // 2. 提取 testpaperid 并找到每个 testpaperid 对应的最高分
+        Map<Integer, Optional<TestRecord>> maxScoresOptional = testRecords.stream()
+                .collect(Collectors.groupingBy(TestRecord::getTestpaperid,
+                        Collectors.maxBy(Comparator.comparing(TestRecord::getTestscore))));
+
+        // 3. 将结果转换为需要的数据类型
+        List<Map<String, Object>> result = maxScoresOptional.entrySet().stream()
+                .map(entry -> {
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("testpaperid", entry.getKey());
+                    map.put("testscore", entry.getValue().map(TestRecord::getTestscore).orElse(0f));
+                    return map;
+                })
+                .collect(Collectors.toList());
+
+        // 4. 返回结果
+        return Result.success(result,"成功");
+    }
 }
