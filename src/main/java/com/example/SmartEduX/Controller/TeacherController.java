@@ -12,7 +12,6 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import io.swagger.models.auth.In;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -341,21 +340,36 @@ public class TeacherController {
         List<TeacherMonitor> allRecords = teacherMonitorMapper.selectList(
                 Wrappers.<TeacherMonitor>lambdaQuery().eq(TeacherMonitor::getType, 1)
         );
-        // 获取近七天的日期
-        List<String> last7Days = getLast7Days();
-        // 筛选出近七天的记录
+
+        if (allRecords.isEmpty()) {
+            return Result.success(Collections.emptyMap(), "没有记录");
+        }
+
+        Date farthestDate = allRecords.stream()
+                .map(TeacherMonitor::getTime)
+                .min(Date::compareTo)
+                .orElseThrow(() -> new IllegalStateException("无法找到最远的日期"));
+
+        LocalDate farthestLocalDate = farthestDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate today = LocalDate.now();
+        List<String> allDates = farthestLocalDate.datesUntil(today.plusDays(1))
+                .map(date -> date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+                .collect(Collectors.toList());
+
         Map<Integer, Map<String, Integer>> userViolationData = new HashMap<>();
         for (TeacherMonitor record : allRecords) {
             Date date = record.getTime();
             LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             String formattedDate = localDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            if (last7Days.contains(formattedDate)) {
+
+            if (!localDate.isBefore(farthestLocalDate)) {
                 int userId = record.getUserid();
                 userViolationData
                         .computeIfAbsent(userId, k -> new HashMap<>())
                         .merge(formattedDate, 1, Integer::sum);
             }
         }
+
         List<String> usernames = new ArrayList<>();
         List<Map<String, Object>> series = new ArrayList<>();
         for (Map.Entry<Integer, Map<String, Integer>> entry : userViolationData.entrySet()) {
@@ -366,7 +380,7 @@ public class TeacherController {
                 String username = user.getUsername();
                 usernames.add(username);
                 List<Integer> numsList = new ArrayList<>();
-                for (String day : last7Days) {
+                for (String day : allDates) {
                     numsList.add(violationData.getOrDefault(day, 0));
                 }
                 Map<String, Object> seriesData = new HashMap<>();
@@ -377,11 +391,15 @@ public class TeacherController {
                 series.add(seriesData);
             }
         }
+
         Map<String, Object> response = new HashMap<>();
         response.put("data", usernames);
         response.put("series", series);
+        response.put("allDates", allDates); // 返回所有的日期用于x轴
         return Result.success(response, "成功");
     }
+
+
     @ApiOperation("获取上课吃东西打哈欠次数信息")
     @CrossOrigin
     @GetMapping(value = "/eatnums")
@@ -389,21 +407,36 @@ public class TeacherController {
         List<TeacherMonitor> allRecords = teacherMonitorMapper.selectList(
                 Wrappers.<TeacherMonitor>lambdaQuery().eq(TeacherMonitor::getType, 2)
         );
-        // 获取近七天的日期
-        List<String> last7Days = getLast7Days();
-        // 筛选出近七天的记录
+
+        if (allRecords.isEmpty()) {
+            return Result.success(Collections.emptyMap(), "没有记录");
+        }
+
+        Date farthestDate = allRecords.stream()
+                .map(TeacherMonitor::getTime)
+                .min(Date::compareTo)
+                .orElseThrow(() -> new IllegalStateException("无法找到最远的日期"));
+
+        LocalDate farthestLocalDate = farthestDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate today = LocalDate.now();
+        List<String> allDates = farthestLocalDate.datesUntil(today.plusDays(1))
+                .map(date -> date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+                .collect(Collectors.toList());
+
         Map<Integer, Map<String, Integer>> userViolationData = new HashMap<>();
         for (TeacherMonitor record : allRecords) {
             Date date = record.getTime();
             LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             String formattedDate = localDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            if (last7Days.contains(formattedDate)) {
+
+            if (!localDate.isBefore(farthestLocalDate)) {
                 int userId = record.getUserid();
                 userViolationData
                         .computeIfAbsent(userId, k -> new HashMap<>())
                         .merge(formattedDate, 1, Integer::sum);
             }
         }
+
         List<String> usernames = new ArrayList<>();
         List<Map<String, Object>> series = new ArrayList<>();
         for (Map.Entry<Integer, Map<String, Integer>> entry : userViolationData.entrySet()) {
@@ -414,7 +447,7 @@ public class TeacherController {
                 String username = user.getUsername();
                 usernames.add(username);
                 List<Integer> numsList = new ArrayList<>();
-                for (String day : last7Days) {
+                for (String day : allDates) {
                     numsList.add(violationData.getOrDefault(day, 0));
                 }
                 Map<String, Object> seriesData = new HashMap<>();
@@ -425,9 +458,11 @@ public class TeacherController {
                 series.add(seriesData);
             }
         }
+
         Map<String, Object> response = new HashMap<>();
         response.put("data", usernames);
         response.put("series", series);
+        response.put("allDates", allDates); // 返回所有的日期用于x轴
         return Result.success(response, "成功");
     }
     @ApiOperation("获取考试违规次数信息")
@@ -437,21 +472,36 @@ public class TeacherController {
         List<TeacherMonitor> allRecords = teacherMonitorMapper.selectList(
                 Wrappers.<TeacherMonitor>lambdaQuery().eq(TeacherMonitor::getType, 3)
         );
-        // 获取近七天的日期
-        List<String> last7Days = getLast7Days();
-        // 筛选出近七天的记录
+
+        if (allRecords.isEmpty()) {
+            return Result.success(Collections.emptyMap(), "没有记录");
+        }
+
+        Date farthestDate = allRecords.stream()
+                .map(TeacherMonitor::getTime)
+                .min(Date::compareTo)
+                .orElseThrow(() -> new IllegalStateException("无法找到最远的日期"));
+
+        LocalDate farthestLocalDate = farthestDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate today = LocalDate.now();
+        List<String> allDates = farthestLocalDate.datesUntil(today.plusDays(1))
+                .map(date -> date.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+                .collect(Collectors.toList());
+
         Map<Integer, Map<String, Integer>> userViolationData = new HashMap<>();
         for (TeacherMonitor record : allRecords) {
             Date date = record.getTime();
             LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             String formattedDate = localDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            if (last7Days.contains(formattedDate)) {
+
+            if (!localDate.isBefore(farthestLocalDate)) {
                 int userId = record.getUserid();
                 userViolationData
                         .computeIfAbsent(userId, k -> new HashMap<>())
                         .merge(formattedDate, 1, Integer::sum);
             }
         }
+
         List<String> usernames = new ArrayList<>();
         List<Map<String, Object>> series = new ArrayList<>();
         for (Map.Entry<Integer, Map<String, Integer>> entry : userViolationData.entrySet()) {
@@ -462,7 +512,7 @@ public class TeacherController {
                 String username = user.getUsername();
                 usernames.add(username);
                 List<Integer> numsList = new ArrayList<>();
-                for (String day : last7Days) {
+                for (String day : allDates) {
                     numsList.add(violationData.getOrDefault(day, 0));
                 }
                 Map<String, Object> seriesData = new HashMap<>();
@@ -473,19 +523,14 @@ public class TeacherController {
                 series.add(seriesData);
             }
         }
+
         Map<String, Object> response = new HashMap<>();
         response.put("data", usernames);
         response.put("series", series);
+        response.put("allDates", allDates); // 返回所有的日期用于x轴
         return Result.success(response, "成功");
     }
-    private List<String> getLast7Days() {
-        List<String> result = new ArrayList<>();
-        LocalDate today = LocalDate.now();
-        for (int i = 6; i >= 0; i--) {
-            result.add(today.minusDays(i).toString());
-        }
-        return result;
-    }
+
     private boolean checkForCheating(Integer userId, Date startTime, Date finishTime) {
         List<TeacherMonitor> monitorRecords = teacherMonitorMapper.selectList(
                 Wrappers.<TeacherMonitor>lambdaQuery()
