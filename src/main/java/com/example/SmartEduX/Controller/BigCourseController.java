@@ -1,9 +1,14 @@
 package com.example.SmartEduX.Controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.SmartEduX.Mapper.BigCourseMapper;
+import com.example.SmartEduX.Mapper.BigCourse_KnowledgeMapper;
+import com.example.SmartEduX.Mapper.KnowledgeMapper;
 import com.example.SmartEduX.common.Result;
 import com.example.SmartEduX.entity.BigCourse;
+import com.example.SmartEduX.entity.BigCourse_Knowledge;
+import com.example.SmartEduX.entity.Knowledge;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.models.auth.In;
@@ -12,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Api(tags = "API接口")
@@ -22,7 +29,12 @@ public class BigCourseController {
     @Autowired
     @Resource
     private BigCourseMapper bigCourseMapper;
-
+    @Autowired
+    @Resource
+    private KnowledgeMapper knowledgeMapper;
+    @Autowired
+    @Resource
+    private BigCourse_KnowledgeMapper bigCourse_knowledgeMapper;
     @ApiOperation("获取大课程信息")
     @CrossOrigin
     @GetMapping(value = "/bigcourseinfo")
@@ -120,7 +132,43 @@ public class BigCourseController {
         List<BigCourse> courseList = getCourseByIDListImpl(list);
         return Result.success(courseList,"成功");
     }
+    @ApiOperation("根据薄弱知识点获取推荐课程")
+    @CrossOrigin
+    @GetMapping(value = "/recommendcourses")
+    public Result<?> getRecommendCourseList(@RequestParam String knowledge) {
+        // 将知识点字符串转换为列表
+        List<String> knowledgeList = Arrays.asList(knowledge.split(","));
+        // 通过知识点名在 knowledge 表中找到对应的 knowledgeid
+        List<Integer> knowledgeIds = new ArrayList<>();
+        for (String knowledgeName : knowledgeList) {
+            Knowledge knowledges = knowledgeMapper.selectOne(new LambdaQueryWrapper<Knowledge>()
+                    .eq(Knowledge::getKnowledgename, knowledgeName));
+            if (knowledges != null) {
+                knowledgeIds.add(knowledges.getKnowledgeid());
+            }
+        }
+        // 在 bigcourse_knowledge 表中通过 knowledgeid 找到对应的 bigcourseid（随机提取三个）
+        List<Integer> bigCourseIds = new ArrayList<>();
+        for (Integer knowledgeId : knowledgeIds) {
+            List<BigCourse_Knowledge> bigCourseKnowledgeList = bigCourse_knowledgeMapper.selectList(
+                    new LambdaQueryWrapper<BigCourse_Knowledge>().eq(BigCourse_Knowledge::getKnowledgeid, knowledgeId)
+            );
+            Collections.shuffle(bigCourseKnowledgeList); // 随机打乱列表
+            for (int i = 0; i < Math.min(3, bigCourseKnowledgeList.size()); i++) {
+                bigCourseIds.add(bigCourseKnowledgeList.get(i).getBigcourseid());
+            }
+        }
+        // 在 bigcourse 表中通过 bigcourseid 找到对应的记录
+        List<BigCourse> bigCourses = new ArrayList<>();
+        for (Integer bigCourseId : bigCourseIds) {
+            BigCourse bigCourse = bigCourseMapper.selectById(bigCourseId);
+            if (bigCourse != null) {
+                bigCourses.add(bigCourse);
+            }
+        }
 
+        return Result.success(bigCourses, "成功");
+    }
     private List<BigCourse> getCourseByIDListImpl(@RequestParam List<Integer> courseIDList) {
         List<BigCourse> courseList = new ArrayList<>();
         for (Integer courseID : courseIDList) {

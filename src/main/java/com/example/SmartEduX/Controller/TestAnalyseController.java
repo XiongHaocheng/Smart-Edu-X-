@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Api(tags = "API接口")
 @RestController
@@ -404,6 +405,61 @@ public class TestAnalyseController {
 
         return Result.success(list,"成功");
 
+    }
+
+    @ApiOperation("获取所有知识点对应的正确率")
+    @CrossOrigin
+    @GetMapping("/getknowledgecorrectrate")
+    public Result<?> getKnowledgeCorrectRate(@RequestParam Integer userid) {
+        List<Integer> analyseIDList = getAnalyseIDByUserID(userid);
+        List<KnowledgeDTO> list = new ArrayList<>();
+
+        for (Integer analyseID : analyseIDList) {
+            List<TestAnalyseKnowledge> testAnalyseKnowledgeList = testAnalyseKnowledgeMapper.selectList(
+                    new LambdaQueryWrapper<TestAnalyseKnowledge>().eq(TestAnalyseKnowledge::getTestanalyseid, analyseID)
+            );
+            for (TestAnalyseKnowledge testAnalyseKnowledge : testAnalyseKnowledgeList) {
+                KnowledgeDTO knowledgeDTO = new KnowledgeDTO();
+                knowledgeDTO.setKnowledgeid(testAnalyseKnowledge.getKnowledgeid());
+                knowledgeDTO.setContainknowledgenum(testAnalyseKnowledge.getContainknowledgenum());
+                knowledgeDTO.setCorrectknowledgenum(testAnalyseKnowledge.getCorrectknowledgenum());
+                knowledgeDTO.setKnowledgecontent(getKnowledgeContent(testAnalyseKnowledge.getKnowledgeid()).get(0));
+                list.add(knowledgeDTO);
+            }
+        }
+
+        // 合并相同知识点ID的数据，并计算正确率，保留两位小数
+        List<KnowledgeBasicInfo> knowledgeBasicInfoList = new ArrayList<>();
+        for (KnowledgeDTO knowledgeDTO : list) {
+            boolean flag = false;
+            for (KnowledgeBasicInfo knowledgeBasicInfo : knowledgeBasicInfoList) {
+                if (knowledgeBasicInfo.getKnowledgeid().equals(knowledgeDTO.getKnowledgeid())) {
+                    knowledgeBasicInfo.setContainknowledgenum(knowledgeBasicInfo.getContainknowledgenum() + knowledgeDTO.getContainknowledgenum());
+                    knowledgeBasicInfo.setCorrectknowledgenum(knowledgeBasicInfo.getCorrectknowledgenum() + knowledgeDTO.getCorrectknowledgenum());
+                    knowledgeBasicInfo.setCorrectrate(Math.round(((double) knowledgeBasicInfo.getCorrectknowledgenum() / knowledgeBasicInfo.getContainknowledgenum()) * 100.0) / 100.0);
+                    flag = true;
+                    break;
+                }
+            }
+            if (!flag) {
+                KnowledgeBasicInfo knowledgeBasicInfo = new KnowledgeBasicInfo();
+                knowledgeBasicInfo.setKnowledgeid(knowledgeDTO.getKnowledgeid());
+                knowledgeBasicInfo.setKnowledgecontent(knowledgeDTO.getKnowledgecontent());
+                knowledgeBasicInfo.setContainknowledgenum(knowledgeDTO.getContainknowledgenum());
+                knowledgeBasicInfo.setCorrectknowledgenum(knowledgeDTO.getCorrectknowledgenum());
+                knowledgeBasicInfo.setCorrectrate(Math.round(((double) knowledgeDTO.getCorrectknowledgenum() / knowledgeDTO.getContainknowledgenum()) * 100.0) / 100.0);
+                knowledgeBasicInfoList.add(knowledgeBasicInfo);
+            }
+        }
+
+        // 排序并提取correctrate最低的前三个
+        knowledgeBasicInfoList.sort(Comparator.comparingDouble(KnowledgeBasicInfo::getCorrectrate));
+        List<String> lowestCorrectRateContents = knowledgeBasicInfoList.stream()
+                .limit(3)
+                .map(KnowledgeBasicInfo::getKnowledgecontent)
+                .collect(Collectors.toList());
+
+        return Result.success(lowestCorrectRateContents, "成功");
     }
 
 //    根据courseid和userid，获取用户的学习时长
