@@ -77,7 +77,7 @@ CREATE TABLE `bigcourse_knowledge` (
 
 LOCK TABLES `bigcourse_knowledge` WRITE;
 /*!40000 ALTER TABLE `bigcourse_knowledge` DISABLE KEYS */;
-INSERT INTO `bigcourse_knowledge` VALUES (1,1),(1,2),(1,3),(1,4),(2,1),(2,2),(2,3),(2,4),(3,31),(3,33),(4,1),(4,2),(4,3),(4,4),(5,5),(5,6),(5,7),(5,8),(6,26),(6,27),(6,28),(7,8),(7,9),(8,10),(8,11),(8,14),(9,12),(10,15),(10,16),(10,17),(11,19),(11,20),(11,21),(11,22),(11,33),(12,23),(12,24),(12,25),(13,13),(13,14);
+INSERT INTO `bigcourse_knowledge` VALUES (1,1),(1,2),(1,3),(1,4),(2,1),(2,2),(2,3),(2,4),(3,31),(3,33),(4,1),(4,2),(4,3),(4,4),(5,5),(5,6),(5,7),(5,8),(6,26),(6,27),(6,28),(7,8),(7,9),(8,10),(8,11),(8,14),(9,12),(10,15),(10,16),(10,17),(11,19),(11,20),(11,21),(11,22),(11,33),(12,23),(12,24),(12,25),(13,13),(13,14),(9,34),(11,30),(5,30);
 /*!40000 ALTER TABLE `bigcourse_knowledge` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -726,4 +726,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-07-01 19:44:58
+-- Dump completed on 2024-07-01 19:49:18
