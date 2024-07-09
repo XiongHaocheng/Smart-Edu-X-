@@ -29,5 +29,7 @@ public class TestPaper {
     private Integer questionnumber;
     @ApiModelProperty(value = "持续时间", example = "10")
     private Integer duration;
+    @ApiModelProperty(value = "用户智能生成的试卷标识", example = "10")
+    private Integer foruserid;
 
 }

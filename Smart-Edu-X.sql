@@ -64,10 +64,10 @@ DROP TABLE IF EXISTS `bigcourse_knowledge`;
 CREATE TABLE `bigcourse_knowledge` (
   `BigCourseID` int NOT NULL COMMENT '课程ID',
   `KnowledgeID` int NOT NULL COMMENT '知识点ID',
-  KEY `videocourse_FK` (`BigCourseID`),
-  KEY `knowledge_FK` (`KnowledgeID`),
-  CONSTRAINT `knowledge_FK` FOREIGN KEY (`KnowledgeID`) REFERENCES `knowledge` (`KnowledgeID`),
-  CONSTRAINT `videocourse_FK` FOREIGN KEY (`BigCourseID`) REFERENCES `videocourse` (`VideoCourseID`)
+  KEY `videocourse_FK_1` (`BigCourseID`),
+  KEY `knowledge_FK_1` (`KnowledgeID`),
+  CONSTRAINT `knowledge_FK_1` FOREIGN KEY (`KnowledgeID`) REFERENCES `knowledge` (`KnowledgeID`),
+  CONSTRAINT `videocourse_FK_1` FOREIGN KEY (`BigCourseID`) REFERENCES `videocourse` (`VideoCourseID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -537,7 +537,9 @@ CREATE TABLE `testpaper` (
   `PassScore` int NOT NULL COMMENT '试卷及格分',
   `QuestionNumber` int NOT NULL COMMENT '题目数量',
   `Duration` varchar(100) NOT NULL COMMENT '持续时间',
-  PRIMARY KEY (`TestPaperID`)
+  `ForUserID` int default NULL COMMENT '用户智能生成的试卷',
+  PRIMARY KEY (`TestPaperID`),
+  FOREIGN KEY (`ForUserID`) references user(`UserID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb3 COMMENT='试卷';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -547,7 +549,7 @@ CREATE TABLE `testpaper` (
 
 LOCK TABLES `testpaper` WRITE;
 /*!40000 ALTER TABLE `testpaper` DISABLE KEYS */;
-INSERT INTO `testpaper` VALUES (1,'Web前端',50,30,5,'5'),(2,'每日练习6月17日',50,30,5,'5'),(3,'HTML5',50,30,5,'5'),(4,'微信小程序',50,30,5,'5'),(5,'前端框架Vue',50,30,5,'5'),(6,'SpringCloud',50,30,5,'5'),(7,'Pytorch深度学习',50,30,5,'5'),(8,'Go Web开发',50,30,5,'5'),(9,'Java入门',50,30,5,'5'),(10,'Python数据分析',50,30,5,'5'),(11,'Uni-app',50,30,5,'5'),(12,'微信公众号',50,30,5,'5'),(13,'iOS+Swift',50,30,5,'5'),(14,'C++编程',50,30,5,'5');
+INSERT INTO `testpaper` VALUES (1,'Web前端',50,30,5,'5',NULL),(2,'每日练习6月17日',50,30,5,'5',10),(3,'HTML5',50,30,5,'5',NULL),(4,'微信小程序',50,30,5,'5',NULL),(5,'前端框架Vue',50,30,5,'5',NULL),(6,'SpringCloud',50,30,5,'5',NULL),(7,'Pytorch深度学习',50,30,5,'5',NULL),(8,'Go Web开发',50,30,5,'5',NULL),(9,'Java入门',50,30,5,'5',NULL),(10,'Python数据分析',50,30,5,'5',NULL),(11,'Uni-app',50,30,5,'5',NULL),(12,'微信公众号',50,30,5,'5',NULL),(13,'iOS+Swift',50,30,5,'5',NULL),(14,'C++编程',50,30,5,'5',NULL);
 /*!40000 ALTER TABLE `testpaper` ENABLE KEYS */;
 UNLOCK TABLES;
 
