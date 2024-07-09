@@ -265,6 +265,8 @@ public class TestQuestionController {
 //        for (TestQuestion question : questions) {
 //            question.setSortNum(questionIdToSortNumMap.get(question.getTestquestionid()));
 //        }
+//        将questionDTOS按sortNum升序排序
+        questionDTOS.sort(Comparator.comparing(QuestionDTO::getSortnum));
 
         return Result.success(questionDTOS,"成功");
 

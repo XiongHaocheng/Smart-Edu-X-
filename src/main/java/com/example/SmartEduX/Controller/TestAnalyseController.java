@@ -43,7 +43,7 @@ public class TestAnalyseController {
     @Resource
     private TestRecordMapper testRecordMapper;
 
-    public class KnowledgeDTO{
+    public static class KnowledgeDTO{
         private Integer knowledgeid;
         private Integer containknowledgenum;
         private Integer correctknowledgenum;
@@ -100,7 +100,7 @@ public class TestAnalyseController {
         }
     }
 
-    public class KnowledgeBasicInfo{
+    public static class KnowledgeBasicInfo{
         private Integer knowledgeid;
         private String knowledgecontent;
         private String knowledgeDomain;
