@@ -23,9 +23,9 @@ import java.util.*;
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class TextRewriting {
     private String requestUrl = "https://api.xf-yun.com/v1/private/se3acbe7f";
-    private String APPID = "35ed47c0";
-    private String apiSecret = "MjdhNmE3YTMyOGZjZWJlOWZhYmM0MTAw";
-    private String apiKey = "95d01fff42f05acb54f20a80e3d518b7";
+    private String APPID = "c54fc911";
+    private String apiSecret = "YmI3YzI0Mzg2MmY0NWQzYmExNDYzM2Jj";
+    private String apiKey = "21ad048e11ea0df413094aae1567bb4e";
     private String LEVEL = "<L4>";
 
     private static Gson gson = new Gson();

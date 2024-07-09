@@ -1,7 +1,7 @@
 package com.example.SmartEduX.Controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.example.SmartEduX.Mapper.DialogBosMapper;
+import com.example.SmartEduX.Mapper.DialogBoxMapper;
 import com.example.SmartEduX.common.Result;
 import com.example.SmartEduX.entity.DialogBox;
 import io.swagger.annotations.Api;
@@ -21,14 +21,14 @@ import java.util.List;
 public class DialogBoxController {
     @Autowired
     @Resource
-    private DialogBosMapper dialogBosMapper;
+    private DialogBoxMapper dialogBoxMapper;
     @ApiOperation("获取全部对话框信息")
     @CrossOrigin
     @GetMapping(value = "/alldialogboxinfo")
     public Result<List<DialogBox>> getAllDialogBoxs(@RequestParam Integer userid) {
         QueryWrapper<DialogBox> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("userid", userid);
-        List<DialogBox> dialogBoxs = dialogBosMapper.selectList(queryWrapper);
+        List<DialogBox> dialogBoxs = dialogBoxMapper.selectList(queryWrapper);
         return Result.success(dialogBoxs,"成功");
     }
 
@@ -43,7 +43,7 @@ public class DialogBoxController {
         String formattedDateTime = now.format(formatter);
         newDialog.setCreatetime(formattedDateTime);
         newDialog.setDialogboxname("新建对话框");
-        dialogBosMapper.insert(newDialog);
+        dialogBoxMapper.insert(newDialog);
         return Result.success(newDialog,"新建对话框成功");
     }
     @ApiOperation("删除对话框")
@@ -55,7 +55,7 @@ public class DialogBoxController {
         queryWrapper.eq("dialogboxid", dialogboxid);
 
         // 删除记录
-        int deleteCount = dialogBosMapper.delete(queryWrapper);
+        int deleteCount = dialogBoxMapper.delete(queryWrapper);
 
         if (deleteCount > 0) {
             return Result.success("删除成功");
@@ -76,7 +76,7 @@ public class DialogBoxController {
             DialogBox dialogBox = new DialogBox();
             dialogBox.setDialogboxname(dialogboxname);
             // 执行更新操作
-            dialogBosMapper.update(dialogBox, queryWrapper);
+            dialogBoxMapper.update(dialogBox, queryWrapper);
             return Result.success("成功");
     }
 

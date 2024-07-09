@@ -1,8 +1,9 @@
 package com.example.SmartEduX.Controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.example.SmartEduX.Mapper.BigCourseMapper;
 import com.example.SmartEduX.Mapper.VideoCourseMapper;
 import com.example.SmartEduX.common.Result;
-import com.example.SmartEduX.entity.User;
+import com.example.SmartEduX.entity.BigCourse;
 import com.example.SmartEduX.entity.VideoCourse;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,7 +24,9 @@ public class VideoCourseController {
     @Autowired
     @Resource
     private VideoCourseMapper videoCourseMapper;
-
+    @Autowired
+    @Resource
+    private BigCourseMapper bigCourseMapper;
     @ApiOperation("获取录播课程目录信息")
     @CrossOrigin
     @GetMapping("/videocatagorycourseinfo")
@@ -103,6 +106,22 @@ public class VideoCourseController {
         VideoCourse videoCourse = videoCourseMapper.selectById(videoCourseID);
         String result = videoCourse.getPlaylink();
         return Result.success(result,"成功");
+    }
+
+    @ApiOperation("根据关键词获取类似课程")
+    @CrossOrigin
+    @PostMapping("/videocoursebykeywords")
+    public Result<?> getVideoCourseListByKeyWords(@RequestBody List<Map<String, Object>> keywordsList) {
+        try {
+            QueryWrapper<BigCourse> queryWrapper = new QueryWrapper<>();
+            for (Map<String, Object> keyword : keywordsList) {
+                queryWrapper.or(wrapper -> wrapper.like("coursename", "%" + keyword.get("word").toString() + "%"));
+            }
+            List<BigCourse> courses = bigCourseMapper.selectList(queryWrapper);
+            return Result.success(courses, "成功");
+        } catch (Exception e) {
+            return Result.error("-1", "查询失败：" + e.getMessage());
+        }
     }
 }
 

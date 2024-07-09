@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Configuration;
      *  mybatis-plus 分页插件
      */
     @Configuration
-    @MapperScan("com.example.SmartEdux.Mapper")
     @MapperScan("com.example.SmartEdux.Service")
     public class MybatisPlusConfig {
 

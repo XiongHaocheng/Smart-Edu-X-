@@ -370,26 +370,30 @@ public class TeacherController {
             }
         }
 
+        // 获取所有用户信息
+        List<User> allUsers = userMapper.selectList(null);
+
         List<String> usernames = new ArrayList<>();
         List<Map<String, Object>> series = new ArrayList<>();
-        for (Map.Entry<Integer, Map<String, Integer>> entry : userViolationData.entrySet()) {
-            Integer userId = entry.getKey();
-            Map<String, Integer> violationData = entry.getValue();
-            User user = userMapper.selectById(userId);
-            if (user != null) {
-                String username = user.getUsername();
-                usernames.add(username);
-                List<Integer> numsList = new ArrayList<>();
-                for (String day : allDates) {
-                    numsList.add(violationData.getOrDefault(day, 0));
-                }
-                Map<String, Object> seriesData = new HashMap<>();
-                seriesData.put("name", username);
-                seriesData.put("type", "line");
-                seriesData.put("stack", "Total");
-                seriesData.put("data", numsList);
-                series.add(seriesData);
+
+        for (User user : allUsers) {
+            int userId = user.getUserid();
+            String username = user.getUsername();
+            usernames.add(username);
+
+            Map<String, Integer> violationData = userViolationData.getOrDefault(userId, new HashMap<>());
+
+            List<Integer> numsList = new ArrayList<>();
+            for (String day : allDates) {
+                numsList.add(violationData.getOrDefault(day, 0));
             }
+
+            Map<String, Object> seriesData = new HashMap<>();
+            seriesData.put("name", username);
+            seriesData.put("type", "line");
+            seriesData.put("stack", "Total");
+            seriesData.put("data", numsList);
+            series.add(seriesData);
         }
 
         Map<String, Object> response = new HashMap<>();
@@ -398,7 +402,6 @@ public class TeacherController {
         response.put("allDates", allDates); // 返回所有的日期用于x轴
         return Result.success(response, "成功");
     }
-
 
     @ApiOperation("获取上课吃东西打哈欠次数信息")
     @CrossOrigin
@@ -437,26 +440,30 @@ public class TeacherController {
             }
         }
 
+        // 获取所有用户信息
+        List<User> allUsers = userMapper.selectList(null);
+
         List<String> usernames = new ArrayList<>();
         List<Map<String, Object>> series = new ArrayList<>();
-        for (Map.Entry<Integer, Map<String, Integer>> entry : userViolationData.entrySet()) {
-            Integer userId = entry.getKey();
-            Map<String, Integer> violationData = entry.getValue();
-            User user = userMapper.selectById(userId);
-            if (user != null) {
-                String username = user.getUsername();
-                usernames.add(username);
-                List<Integer> numsList = new ArrayList<>();
-                for (String day : allDates) {
-                    numsList.add(violationData.getOrDefault(day, 0));
-                }
-                Map<String, Object> seriesData = new HashMap<>();
-                seriesData.put("name", username);
-                seriesData.put("type", "line");
-                seriesData.put("stack", "Total");
-                seriesData.put("data", numsList);
-                series.add(seriesData);
+
+        for (User user : allUsers) {
+            int userId = user.getUserid();
+            String username = user.getUsername();
+            usernames.add(username);
+
+            Map<String, Integer> violationData = userViolationData.getOrDefault(userId, new HashMap<>());
+
+            List<Integer> numsList = new ArrayList<>();
+            for (String day : allDates) {
+                numsList.add(violationData.getOrDefault(day, 0));
             }
+
+            Map<String, Object> seriesData = new HashMap<>();
+            seriesData.put("name", username);
+            seriesData.put("type", "line");
+            seriesData.put("stack", "Total");
+            seriesData.put("data", numsList);
+            series.add(seriesData);
         }
 
         Map<String, Object> response = new HashMap<>();
@@ -502,26 +509,30 @@ public class TeacherController {
             }
         }
 
+        // 获取所有用户信息
+        List<User> allUsers = userMapper.selectList(null);
+
         List<String> usernames = new ArrayList<>();
         List<Map<String, Object>> series = new ArrayList<>();
-        for (Map.Entry<Integer, Map<String, Integer>> entry : userViolationData.entrySet()) {
-            Integer userId = entry.getKey();
-            Map<String, Integer> violationData = entry.getValue();
-            User user = userMapper.selectById(userId);
-            if (user != null) {
-                String username = user.getUsername();
-                usernames.add(username);
-                List<Integer> numsList = new ArrayList<>();
-                for (String day : allDates) {
-                    numsList.add(violationData.getOrDefault(day, 0));
-                }
-                Map<String, Object> seriesData = new HashMap<>();
-                seriesData.put("name", username);
-                seriesData.put("type", "line");
-                seriesData.put("stack", "Total");
-                seriesData.put("data", numsList);
-                series.add(seriesData);
+
+        for (User user : allUsers) {
+            int userId = user.getUserid();
+            String username = user.getUsername();
+            usernames.add(username);
+
+            Map<String, Integer> violationData = userViolationData.getOrDefault(userId, new HashMap<>());
+
+            List<Integer> numsList = new ArrayList<>();
+            for (String day : allDates) {
+                numsList.add(violationData.getOrDefault(day, 0));
             }
+
+            Map<String, Object> seriesData = new HashMap<>();
+            seriesData.put("name", username);
+            seriesData.put("type", "line");
+            seriesData.put("stack", "Total");
+            seriesData.put("data", numsList);
+            series.add(seriesData);
         }
 
         Map<String, Object> response = new HashMap<>();
