@@ -147,6 +147,55 @@ public class searchController {
         return Result.success(results,"成功");
     }
 
+    @ApiOperation("搜索学习路径的结果")
+    @CrossOrigin
+    @PostMapping("/searchlearnresult")
+    public Result<List<Object>> getLearnSearchResult(@RequestParam String query, @RequestParam String currentNavItem){
+        List<Object> results = new ArrayList<>();
+        if ("全部".equals(currentNavItem)) {
+            QueryWrapper<StudyPath> wrapper3 = new QueryWrapper<>();
+            wrapper3.like("studypathname", query).or().like("studypathdescription", query);
+            List<StudyPath> studyPaths = studyPathMapper.selectList(wrapper3);
+            for (StudyPath studyPath : studyPaths) {
+                // 创建一个对象，包含 text1 和 text2 两个字段
+                Map<String, String> item = new HashMap<>();
+                item.put("text1", studyPath.getStudypathname());
+                item.put("text2", studyPath.getStudypathdescription());
+                // 将对象添加到结果列表中
+                results.add(item);
+            }
+
+        }
+        if ("编程开发".equals(currentNavItem)) {
+            QueryWrapper<StudyPath> wrapper = new QueryWrapper<>();
+            wrapper.like("studypathname", query).or().like("studypathdescription", query);
+            wrapper.eq("studypathclassification", currentNavItem);
+            List<StudyPath> studyPaths = studyPathMapper.selectList(wrapper);
+            for (StudyPath studyPath : studyPaths) {
+                // 创建一个对象，包含 text1 和 text2 两个字段
+                Map<String, String> item = new HashMap<>();
+                item.put("text1", studyPath.getStudypathname());
+                item.put("text2", studyPath.getStudypathdescription());
+                // 将对象添加到结果列表中
+                results.add(item);
+            }
+        }
+        if ("产品运营".equals(currentNavItem)) {
+            QueryWrapper<StudyPath> wrapper = new QueryWrapper<>();
+            wrapper.like("studypathname", query).or().like("studypathdescription", query);
+            wrapper.eq("studypathclassification", currentNavItem);
+            List<StudyPath> studyPaths = studyPathMapper.selectList(wrapper);
+            for (StudyPath studyPath : studyPaths) {
+                // 创建一个对象，包含 text1 和 text2 两个字段
+                Map<String, String> item = new HashMap<>();
+                item.put("text1", studyPath.getStudypathname());
+                item.put("text2", studyPath.getStudypathdescription());
+                // 将对象添加到结果列表中
+                results.add(item);
+            }
+        }
+        return Result.success(results,"成功");
+    }
 
     @ApiOperation("根据ID搜索结果")
     @CrossOrigin
@@ -187,6 +236,24 @@ public class searchController {
         if (imageAndText != null) {
             Integer imageAndTextid = imageAndText.getImageandtextid();
             result.put("imageAndTextid", imageAndTextid);
+            return Result.success(result, "成功");
+        }
+        return Result.error("-1", "失败");
+    }
+
+    @ApiOperation("根据ID搜索学习路径")
+    @CrossOrigin
+    @PostMapping("/getlearnid")
+    public Result<Map<String, Integer>> getLearnID(@RequestParam String name) {
+
+        QueryWrapper<StudyPath> queryWrapper3 = new QueryWrapper<>();
+        queryWrapper3.eq("studypathname", name);
+        StudyPath studyPath  =  studyPathMapper.selectOne(queryWrapper3);
+
+        Map<String, Integer> result = new HashMap<>();
+        if (studyPath != null) {
+            Integer studyPathid = studyPath.getStudypathid();
+            result.put("studyPathid", studyPathid);
             return Result.success(result, "成功");
         }
         return Result.error("-1", "失败");
