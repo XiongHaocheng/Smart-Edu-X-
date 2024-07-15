@@ -152,48 +152,20 @@ public class searchController {
     @PostMapping("/searchlearnresult")
     public Result<List<Object>> getLearnSearchResult(@RequestParam String query, @RequestParam String currentNavItem){
         List<Object> results = new ArrayList<>();
-        if ("全部".equals(currentNavItem)) {
-            QueryWrapper<StudyPath> wrapper3 = new QueryWrapper<>();
-            wrapper3.like("studypathname", query).or().like("studypathdescription", query);
-            List<StudyPath> studyPaths = studyPathMapper.selectList(wrapper3);
-            for (StudyPath studyPath : studyPaths) {
-                // 创建一个对象，包含 text1 和 text2 两个字段
-                Map<String, String> item = new HashMap<>();
-                item.put("text1", studyPath.getStudypathname());
-                item.put("text2", studyPath.getStudypathdescription());
-                // 将对象添加到结果列表中
-                results.add(item);
-            }
+        QueryWrapper<StudyPath> wrapper3 = new QueryWrapper<>();
+        wrapper3.like("studypathname", query).or().like("studypathdescription", query);
+        List<StudyPath> studyPaths = studyPathMapper.selectList(wrapper3);
+        for (StudyPath studyPath : studyPaths) {
 
+            Map<String, String> item = new HashMap<>();
+            item.put("text1", studyPath.getStudypathname());
+            item.put("text2", studyPath.getStudypathdescription());
+            item.put("text3", studyPath.getStudypathcover());
+            item.put("text4", String.valueOf(studyPath.getCoursenumber()));
+            // 将对象添加到结果列表中
+            results.add(item);
         }
-        if ("编程开发".equals(currentNavItem)) {
-            QueryWrapper<StudyPath> wrapper = new QueryWrapper<>();
-            wrapper.like("studypathname", query).or().like("studypathdescription", query);
-            wrapper.eq("studypathclassification", currentNavItem);
-            List<StudyPath> studyPaths = studyPathMapper.selectList(wrapper);
-            for (StudyPath studyPath : studyPaths) {
-                // 创建一个对象，包含 text1 和 text2 两个字段
-                Map<String, String> item = new HashMap<>();
-                item.put("text1", studyPath.getStudypathname());
-                item.put("text2", studyPath.getStudypathdescription());
-                // 将对象添加到结果列表中
-                results.add(item);
-            }
-        }
-        if ("产品运营".equals(currentNavItem)) {
-            QueryWrapper<StudyPath> wrapper = new QueryWrapper<>();
-            wrapper.like("studypathname", query).or().like("studypathdescription", query);
-            wrapper.eq("studypathclassification", currentNavItem);
-            List<StudyPath> studyPaths = studyPathMapper.selectList(wrapper);
-            for (StudyPath studyPath : studyPaths) {
-                // 创建一个对象，包含 text1 和 text2 两个字段
-                Map<String, String> item = new HashMap<>();
-                item.put("text1", studyPath.getStudypathname());
-                item.put("text2", studyPath.getStudypathdescription());
-                // 将对象添加到结果列表中
-                results.add(item);
-            }
-        }
+
         return Result.success(results,"成功");
     }
 
