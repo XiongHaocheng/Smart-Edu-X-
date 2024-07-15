@@ -250,7 +250,7 @@ public class TestAnalyseController {
         return Result.success(list,"成功");
     }
 
-    @ApiOperation("智能分析雷达图数据")
+    @ApiOperation("通过userid和domain获取雷达图数据")
     @CrossOrigin
     @GetMapping("/getradardatabyidanddomain")
     public Result<?> getRadarDataByIDAndDomain(@RequestParam Integer userid, @RequestParam String domain){

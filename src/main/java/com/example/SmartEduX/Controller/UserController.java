@@ -175,7 +175,7 @@ public class UserController {
         return Result.success(userInfo, "成功");
     }
 
-    @ApiOperation("获取在线用户头像、用户名、和积分")
+    @ApiOperation("获取在线用户积分")
     @CrossOrigin
     @GetMapping(value ="/userScore")
     public Result<Integer> getUserScore(@RequestParam Integer userId) {

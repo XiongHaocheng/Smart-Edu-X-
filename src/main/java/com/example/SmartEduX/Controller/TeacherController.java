@@ -214,13 +214,10 @@ public class TeacherController {
     @CrossOrigin
     @GetMapping(value = "/studentmanageinfo")
     public Result<List<User>> getStudentInfo() {
-        // 根据课程ID列表查询数据库中符合条件的课程数据
         List<User> users = userMapper.selectList(null);
         if (users.isEmpty()) {
-            // 如果未找到符合条件的课程数据，返回错误信息
             return Result.error("-1", "未找到");
         }
-        // 返回查询到的课程数据
         return Result.success(users,"成功");
     }
     @ApiOperation("获取学生学习时长")
