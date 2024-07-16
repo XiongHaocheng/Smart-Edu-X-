@@ -1,6 +1,4 @@
 package com.example.SmartEduX.Controller;
-
-
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
@@ -10,8 +8,8 @@ import com.example.SmartEduX.Mapper.VideoCourseMapper;
 import com.example.SmartEduX.common.Result;
 import com.example.SmartEduX.entity.BigCourse;
 import com.example.SmartEduX.entity.BigCourse_User;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.example.SmartEduX.entity.VideoCourse;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import io.swagger.annotations.Api;
@@ -134,8 +132,7 @@ public class BigCourse_UserController {
         //如果没有查找到数据，那么先插入新的userid、courseid进去，并把time设为0
         if(bigCourse_User == null){
             //插入新数据
-           return Result.error("-1","用户未订阅该课程，不必记录");
-
+            return Result.error("-1","用户未订阅该课程，不必记录");
         }
         // 计算新的观看时长
         Double curTime = (Double)bigCourse_User.getStudytime();
@@ -151,35 +148,30 @@ public class BigCourse_UserController {
             String finishVideoCourseNameJson = bigCourse_User.getFinishvideocoursename();
             List<String> finishVideoCourseNames;
 
-            try {
-                // 如果 JSON 字符串不为空，则将其解析为 List
-                if (finishVideoCourseNameJson != null && !finishVideoCourseNameJson.isEmpty()) {
-                    Gson gson = new Gson();
-                    finishVideoCourseNames = gson.fromJson(finishVideoCourseNameJson, new TypeToken<List<String>>() {
-                    }.getType());
-                }else {
-                    finishVideoCourseNames = new ArrayList<>();
-                }
+            // 如果 JSON 字符串不为空，则将其解析为 List
+            if (finishVideoCourseNameJson != null && !finishVideoCourseNameJson.isEmpty()) {
+                Gson gson = new Gson();
+                finishVideoCourseNames = gson.fromJson(finishVideoCourseNameJson, new TypeToken<List<String>>() {}.getType());
+            } else {
+                finishVideoCourseNames = new ArrayList<>();
+            }
 
-                // 检查是否已经包含指定的视频课程名称
-                if (!finishVideoCourseNames.contains(videocoursename)) {
-                    // 更新完成次数和未完成次数
-                    bigCourse_User.setFinishnum(bigCourse_User.getFinishnum() + 1);
-                    bigCourse_User.setUnfinishnum(bigCourse_User.getUnfinishnum() - 1);
+            // 检查是否已经包含指定的视频课程名称
+            if (!finishVideoCourseNames.contains(videocoursename)) {
+                // 更新完成次数和未完成次数
+                bigCourse_User.setFinishnum(bigCourse_User.getFinishnum() + 1);
+                bigCourse_User.setUnfinishnum(bigCourse_User.getUnfinishnum() - 1);
 
-                    // 添加新的视频课程名称
-                    finishVideoCourseNames.add(videocoursename);
-                    String updatedFinishVideoCourseNameJson = objectMapper.writeValueAsString(finishVideoCourseNames);
-                    bigCourse_User.setFinishvideocoursename(updatedFinishVideoCourseNameJson);
+                // 添加新的视频课程名称
+                finishVideoCourseNames.add(videocoursename);
+                String updatedFinishVideoCourseNameJson = new Gson().toJson(finishVideoCourseNames);
+                bigCourse_User.setFinishvideocoursename(updatedFinishVideoCourseNameJson);
 
-                    // 更新数据库记录
-                    bigCourse_UserMapper.updateById(bigCourse_User);
-                    return Result.success(null, "成功");
-                } else {
-                    return Result.error("-1", "已学习该课程");
-                }
-            } catch (IOException e) {
-                return Result.error("-1", "处理 JSON 数据时出错");
+                // 更新数据库记录
+                bigCourse_UserMapper.update(bigCourse_User, updateWrapper);
+                return Result.success(null, "成功");
+            } else {
+                return Result.error("-1", "已学习该课程");
             }
         } else {
             return Result.error("-1", "没有完成观看");
