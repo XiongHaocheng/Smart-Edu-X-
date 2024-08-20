@@ -51,7 +51,8 @@ public class UserController {
 
         // 只保存加密后的密码
         user.setUserpassword(encodedPassword);
-
+        //给定默认头像
+        user.setUseravatar("https://img2.baidu.com/it/u=328229478,3191671923&fm=253&fmt=auto&app=138&f=JPEG?w=500&h=501");
         // 将用户信息插入数据库
         userMapper.insert(user);
 

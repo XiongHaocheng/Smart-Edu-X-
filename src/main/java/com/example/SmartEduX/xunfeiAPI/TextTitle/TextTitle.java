@@ -15,8 +15,8 @@ import java.io.*;
 @RequestMapping("texttitle")
 @CrossOrigin(origins = "*", maxAge = 3600)
 class TextTitle {
-    public static final String API_KEY = "Rhtsc94d2UGYGE1gqPPUX09R";
-    public static final String SECRET_KEY = "R1ge1ImE0p1ee9BxhSaMmYbOX48VkMyI";
+    public static final String API_KEY = "kWlyUenjSR8tdL0fxLD2ckZ4";
+    public static final String SECRET_KEY = "Dx33YqmWPp362PWpGTOSpWCHJCk2VezH";
 
     static final OkHttpClient HTTP_CLIENT = new OkHttpClient().newBuilder().build();
 

@@ -538,8 +538,10 @@ public class TeacherController {
         response.put("allDates", allDates); // 返回所有的日期用于x轴
         return Result.success(response, "成功");
     }
-
     private boolean checkForCheating(Integer userId, Date startTime, Date finishTime) {
+        if(finishTime == null){
+            return false;
+        }
         List<TeacherMonitor> monitorRecords = teacherMonitorMapper.selectList(
                 Wrappers.<TeacherMonitor>lambdaQuery()
                         .eq(TeacherMonitor::getUserid, userId)
@@ -554,5 +556,6 @@ public class TeacherController {
         }
         return false;
     }
+
 
 }

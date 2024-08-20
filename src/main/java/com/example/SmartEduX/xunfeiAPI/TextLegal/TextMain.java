@@ -30,8 +30,8 @@ public class TextMain {
         String content = textInput;// 送检文本
 
         // 词库指定
-        final String lib_ids_1 = "37c311a56faf41d88db6bcdc56b956f4"; // 根据自己创建获取词库ID  黑名单
-        final String lib_ids_2 = "f37b7508053f4491820e961381cb2bd9"; // 根据自己创建获取词库ID  白名单
+        final String lib_ids_1 = "d37742d5f4884fa991c350f476bd532d"; // 根据自己创建获取词库ID  黑名单
+        final String lib_ids_2 = "639c6b0ed7a147a6a7dc9d5c7b4c4333"; // 根据自己创建获取词库ID  白名单
         /**
          * 业务参数
          * --- 如果需要使用黑白名单资源，放开lib_ids与categories参数

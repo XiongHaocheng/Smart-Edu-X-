@@ -27,9 +27,9 @@ import java.util.List;
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class SpeedTranscriptionMain {
     // 控制台获取以下信息
-    private static String APP_ID = "c54fc911";
-    private static String API_SECRET = "YmI3YzI0Mzg2MmY0NWQzYmExNDYzM2Jj";
-    private static String API_KEY = "21ad048e11ea0df413094aae1567bb4e";
+    private static String APP_ID = "85bf2fd6";
+    private static String API_SECRET = "NWFlMWY0NmQ0YTJjMzJkMWZmZjBmOTE4";
+    private static String API_KEY = "97239b290235ac540fa582ef34096a22";
 
     private static String FILE_URL_PREFIX = "https://upload-ost-api.xfyun.cn/file"; // 上传文件的地址开头
 
